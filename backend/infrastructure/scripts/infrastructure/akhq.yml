@@ -1,0 +1,9 @@
+akhq:
+  connections:
+    docker-kafka-server:
+      properties:
+        bootstrap.servers: "kafka_broker:9092"
+  clients-defaults:
+    consumer:
+      properties:
+        default.api.timeout.ms: 120000
