@@ -7,3 +7,48 @@ scrape_configs:
     metrics_path: /api/v1/actuator/prometheus
     static_configs:
       - targets: ['host.docker.internal:8090']
+
+  - job_name: "gateway-service"
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+
+  - job_name: "auth-service"
+    metrics_path: /api/v1/actuator/prometheus
+    static_configs:
+      - targets: [ 'host.docker.internal:8097' ]
+
+  - job_name: "feedback-service"
+    metrics_path: /api/v1/actuator/prometheus
+    static_configs:
+      - targets: [ 'host.docker.internal:8095' ]
+
+  - job_name: "importer-service"
+    metrics_path: /api/v1/actuator/prometheus
+    static_configs:
+      - targets: [ 'host.docker.internal:8094' ]
+
+  - job_name: "kitchenboard-service"
+    metrics_path: /api/v1/actuator/prometheus
+    static_configs:
+      - targets: [ 'host.docker.internal:8093' ]
+
+  - job_name: "mailer-service"
+    metrics_path: /api/v1/actuator/prometheus
+    static_configs:
+      - targets: [ 'host.docker.internal:8092' ]
+
+  - job_name: "menu-service"
+    metrics_path: /api/v1/actuator/prometheus
+    static_configs:
+      - targets: [ 'host.docker.internal:8096' ]
+
+  - job_name: "orders-service"
+    metrics_path: /api/v1/actuator/prometheus
+    static_configs:
+      - targets: [ 'host.docker.internal:8091' ]
+
+  - job_name: "restaurant-service"
+    metrics_path: /api/v1/actuator/prometheus
+    static_configs:
+      - targets: [ 'host.docker.internal:8098' ]

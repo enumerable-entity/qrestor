@@ -85,7 +85,7 @@ services:
     environment:
       - POSTGRES_USER=qrestor
       - POSTGRES_PASSWORD=qrestor
-      - POSTGRES_DB=qrestor
+      - POSTGRES_DB=qrestor_default_db
     volumes:
       - ../../data/postgres-data:/var/lib/postgresql/data
       - ./init-postgres.sql:/docker-entrypoint-initdb.d/init-postgres.sql:ro
