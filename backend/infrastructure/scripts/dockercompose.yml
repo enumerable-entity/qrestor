@@ -1,0 +1,64 @@
+version: '3.8'
+
+#zipkin, grafana, prometheus, postgres, redis, mongodb, minio services
+services:
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - 9411:9411
+    networks:
+      - backend
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    networks:
+      - backend
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    networks:
+      - backend
+  postgres:
+    image: postgres:12.3-alpine
+    container_name: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - backend
+  redis:
+    image: redis:6.0.5-alpine
+    container_name: redis
+    ports:
+      - 6379:6379
+    networks:
+      - backend
+  mongodb:
+    image: mongo:4.2.8-bionic
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - 9000:9000
+    environment:
+      - MINIO_ACCESS_KEY=minio
+      - MINIO_SECRET_KEY=minio123
+    volumes:
+      - minio:/data
+    networks:
+      - backend

@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+#Eureka discovery client configuration
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+#Spring cloud gateway configuration
+spring:
+  application:
+    -name: api-gateway
+  cloud:
+    config:
+      enabled: false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: qresolver
+          uri: lb://qresolver
+          predicates:
+            - Path=/qr/**
+          filters:
+            - RewritePath=/qr/(?<segment>.*), /api/v1/qr/${segment}
+management:
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
