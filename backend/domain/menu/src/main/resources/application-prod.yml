@@ -1,10 +1,41 @@
-server:
-  port: 8096
-  servlet:
-    context-path: /api/v1/
+#PostgreSQL
 spring:
-  application:
-    name: menu
+  datasource:
+    url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
+    username: ${AUTH_SERVICE_DB_USER:${spring.application.name}}
+    password: ${AUTH_SERVICE_DB_PASSWORD:${spring.application.name}}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show_sql: true
+        use_sql_comments: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog-master.xml
+  data:
+    mongodb:
+      uri: ${MONGODB_CONN_STRING:mongodb://localhost:27017/${spring.application.name}}
+      database: ${MONGODB_DB_NAME:${spring.application.name}}
+      username: ${MONGODB_DB_USER:${spring.application.name}}
+      password: ${MONGODB_DB_PASSWORD:${spring.application.name}}
+
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        cache: DEBUG
+        stat: DEBUG
 eureka:
   client:
     register-with-eureka: true

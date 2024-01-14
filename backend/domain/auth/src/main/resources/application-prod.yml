@@ -1,18 +1,3 @@
-server:
-  port: 8097
-  servlet:
-    context-path: /api/v1/
-spring:
-  application:
-    name: auth
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-  instance:
-    hostname: localhost
 management:
   metrics:
     tags:
@@ -27,3 +12,36 @@ management:
   zipkin:
     tracing:
       endpoint: http://localhost:9411/api/v2/spans
+
+#PostgreSQL
+spring:
+  datasource:
+    url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
+    username: ${AUTH_SERVICE_DB_USER:${spring.application.name}}
+    password: ${AUTH_SERVICE_DB_PASSWORD:${spring.application.name}}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show_sql: true
+        use_sql_comments: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog-master.xml
+
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        cache: DEBUG
+        stat: DEBUG
