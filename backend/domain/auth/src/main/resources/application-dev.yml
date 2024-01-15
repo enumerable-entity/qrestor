@@ -1,4 +1,6 @@
 #PostgreSQL
+app:
+  domain: http://localhost:8097
 spring:
   datasource:
     url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
@@ -13,7 +15,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         show_sql: true
-        use_sql_comments: true
         jdbc:
           lob:
             non_contextual_creation: true
@@ -28,16 +29,38 @@ spring:
         password: ${REDIS_PASSWORD:qrestor123}
         database: ${REDIS_DB:0}
         timeout: 10000
+  threads:
+    virtual:
+      enabled: true
 
 
 
+#  security:
+#    oauth2:
+#      authorizationserver:
+#        client:
+#          client-1:
+#            registration:
+#              client-id: "qresolver"
+#              client-secret: "qresolver"
+#              client-authentication-methods:
+#                - "client_secret_basic"
+#              authorization-grant-types:
+#                - "authorization_code"
+#                - "refresh_token"
+#              redirect-uris:
+#                - "http://127.0.0.1:8090/login/oauth2/code/"
+#              scopes:
+#                - "openid"
+#            require-authorization-consent: false
+#            require-proof-key: false
+#        issuer: "http://127.0.0.1:8097"
+#    user:
+#      password: "qrestor123"
 logging:
   level:
-    org:
-      hibernate:
-        SQL: DEBUG
-        cache: DEBUG
-        stat: DEBUG
+    springframework:
+      security: TRACE
 
 
 eureka:
