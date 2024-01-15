@@ -26,6 +26,8 @@ spring:
 logging:
   level:
     org:
+      springframework:
+        security: TRACE
       hibernate:
         SQL: DEBUG
         cache: DEBUG
