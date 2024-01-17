@@ -20,15 +20,15 @@ services:
     image: bitnami/kafka:3.6.1
     container_name: kafka_broker
     ports:
-      - "9092:9092"
-    restart: always
+      - "9092:9092" #Bootstrap server, node-1 port
     volumes:
       - kafka_data:/bitnami
     environment:
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka_broker:9092
+      - KAFKA_LISTENERS=INTERNAL://kafka:9091,PLAINTEXT://0.0.0.0:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,INTERNAL://kafka:9091
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT
     depends_on:
       - zookeeper
     networks:

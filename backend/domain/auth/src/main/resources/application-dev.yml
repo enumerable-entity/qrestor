@@ -32,31 +32,6 @@ spring:
   threads:
     virtual:
       enabled: true
-
-
-
-#  security:
-#    oauth2:
-#      authorizationserver:
-#        client:
-#          client-1:
-#            registration:
-#              client-id: "qresolver"
-#              client-secret: "qresolver"
-#              client-authentication-methods:
-#                - "client_secret_basic"
-#              authorization-grant-types:
-#                - "authorization_code"
-#                - "refresh_token"
-#              redirect-uris:
-#                - "http://127.0.0.1:8090/login/oauth2/code/"
-#              scopes:
-#                - "openid"
-#            require-authorization-consent: false
-#            require-proof-key: false
-#        issuer: "http://127.0.0.1:8097"
-#    user:
-#      password: "qrestor123"
 logging:
   level:
     springframework:
