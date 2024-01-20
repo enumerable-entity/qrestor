@@ -33,7 +33,7 @@ spring:
           lob:
             non_contextual_creation: true
   kafka:
-    bootstrap-servers: localhost:9093
+    bootstrap-servers: localhost:9092
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/changelog-master.xml

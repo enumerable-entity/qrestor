@@ -7,26 +7,17 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.ApplicationEvent;
 
-import java.time.Clock;
-
 @Getter
 @Setter
-public class UsersEvent extends ApplicationEvent {
+public class UserEvent extends ApplicationEvent {
 
     private final UserEventType userEventType;
     private final SystemUserEntity newUser;
     private final TokenEntity token;
 
 
-    public UsersEvent(Object source, UserEventType userEventType, SystemUserEntity newUser, TokenEntity token) {
+    public UserEvent(Object source, UserEventType userEventType, SystemUserEntity newUser, TokenEntity token) {
         super(source);
-        this.userEventType = userEventType;
-        this.newUser = newUser;
-        this.token = token;
-    }
-
-    public UsersEvent(Object source, Clock clock, UserEventType userEventType, SystemUserEntity newUser, TokenEntity token) {
-        super(source, clock);
         this.userEventType = userEventType;
         this.newUser = newUser;
         this.token = token;

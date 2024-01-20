@@ -1,4 +1,4 @@
-package com.qrestor.auth.config.security;
+package com.qrestor.auth.security;
 
 import com.qrestor.auth.user.service.SystemUserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +16,6 @@ public class QrestorUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return systemUserService.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Qrestor user not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("QRestor user not found"));
     }
 }

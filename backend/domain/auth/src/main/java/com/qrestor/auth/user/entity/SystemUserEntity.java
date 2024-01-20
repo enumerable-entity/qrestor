@@ -1,21 +1,23 @@
 package com.qrestor.auth.user.entity;
 
 import com.qrestor.auth.authority.SystemRoleEntity;
-import com.qrestor.auth.token.entity.TokenEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @Builder
-@Table(name = "SYSTEM_USERS", indexes = {
+@Table(name = "system_users", schema = "auth", indexes = {
         @Index(name = "IDX_SYSTEM_USERS_USERNAME", columnList = "USERNAME", unique = true),
-        @Index(name = "IDX_SYSTEM_USERS_EMAIL", columnList = "EMAIL", unique = true)
+        @Index(name = "IDX_SYSTEM_USERS_EMAIL", columnList = "EMAIL", unique = true),
+        @Index(name = "IDX_SYSTEM_USERS_UUID", columnList = "UUID", unique = true)
 })
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +26,11 @@ public class SystemUserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ID", nullable = false)
     private Long id;
+
+    @GeneratedValue
+    @Builder.Default
+    @Column(name = "UUID", nullable = false, unique = true, updatable = false)
+    private UUID uuid = UUID.randomUUID();
 
     @Column(name = "USERNAME", nullable = false, unique = true)
     private String username;
@@ -46,7 +53,7 @@ public class SystemUserEntity implements UserDetails {
     @Column(name = "ENABLED", nullable = false)
     private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "SYSTEM_USER_TO_ROLE",
             joinColumns = @JoinColumn(name = "SYSTEM_USER_ID", referencedColumnName = "ID"),
@@ -54,7 +61,19 @@ public class SystemUserEntity implements UserDetails {
     )
     private Collection<SystemRoleEntity> authorities;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<TokenEntity> tokens;
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        SystemUserEntity that = (SystemUserEntity) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
 
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }

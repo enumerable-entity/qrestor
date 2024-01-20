@@ -4,7 +4,8 @@ import com.qrestor.auth.api.dto.LoginRequestDTO;
 import com.qrestor.auth.api.dto.LoginResponseDTO;
 import com.qrestor.auth.api.dto.PasswordChangeDTO;
 import com.qrestor.auth.api.dto.PasswordResetDTO;
-import com.qrestor.auth.user.service.UserAuthenticationServiceImpl;
+import com.qrestor.auth.user.service.interfaces.UserAuthenticationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,10 +18,10 @@ import static com.qrestor.auth.api.RestEndpoints.*;
 @RequiredArgsConstructor
 public class UserAuthenticationController {
 
-    private final UserAuthenticationServiceImpl userAuthenticationServiceImpl;
+    private final UserAuthenticationService userAuthenticationServiceImpl;
 
     @PostMapping(LOGIN)
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
         LoginResponseDTO tokens = userAuthenticationServiceImpl.authenticate(loginRequestDTO);
         return ResponseEntity.ok().body(tokens);
     }

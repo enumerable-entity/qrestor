@@ -1,13 +1,13 @@
 package com.qrestor.auth.user.service;
 
 import com.qrestor.auth.api.dto.RegistrationRequestDTO;
-import com.qrestor.auth.config.security.enums.SystemRole;
-import com.qrestor.auth.config.security.enums.TokenType;
+import com.qrestor.auth.authority.SystemRole;
+import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.entity.TokenEntity;
 import com.qrestor.auth.token.service.TokenService;
 import com.qrestor.auth.user.entity.SystemUserEntity;
 import com.qrestor.auth.user.enums.UserEventType;
-import com.qrestor.auth.user.events.UsersEvent;
+import com.qrestor.auth.user.events.UserEvent;
 import com.qrestor.auth.authority.RoleRepository;
 import com.qrestor.auth.user.repository.SystemUserRepository;
 import com.qrestor.auth.user.service.interfaces.UserRegistrationService;
@@ -48,8 +48,9 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
                 .authorities(roleRepository.findByAuthority(SystemRole.RESTAURATEUR.name()))
                 .build();
         userRepository.save(newSystemUser);
+        userRepository.flush();
         eventPublisher.publishEvent(
-                new UsersEvent(this, UserEventType.REGISTRATION, newSystemUser,
+                new UserEvent(this, UserEventType.REGISTRATION, newSystemUser,
                         tokenService.getNewTokenFor(newSystemUser, TokenType.EMAIL_VERIFICATION)));
     }
 
@@ -63,6 +64,9 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
             token.setUsedAt(LocalDateTime.now());
             token.getUser().setEnabled(true);
             tokenService.save(token);
+
+            eventPublisher.publishEvent(
+                    new UserEvent(this, UserEventType.REGISTRATION_CONFIRMATION, token.getUser(), null));
         }, () -> {
             throw new RuntimeException("Invalid email confirmation token");
         });

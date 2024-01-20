@@ -1,6 +1,6 @@
 package com.qrestor.auth.token.service;
 
-import com.qrestor.auth.config.security.enums.TokenType;
+import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.entity.TokenEntity;
 import com.qrestor.auth.token.repository.TokenRepository;
 import com.qrestor.auth.user.entity.SystemUserEntity;

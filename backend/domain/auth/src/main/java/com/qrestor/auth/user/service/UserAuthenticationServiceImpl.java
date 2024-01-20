@@ -4,16 +4,20 @@ import com.qrestor.auth.api.dto.LoginRequestDTO;
 import com.qrestor.auth.api.dto.LoginResponseDTO;
 import com.qrestor.auth.api.dto.PasswordChangeDTO;
 import com.qrestor.auth.api.dto.PasswordResetDTO;
-import com.qrestor.auth.config.security.enums.TokenType;
+import com.qrestor.auth.security.jwt.JwtService;
+import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.entity.TokenEntity;
 import com.qrestor.auth.token.service.TokenService;
 import com.qrestor.auth.user.entity.SystemUserEntity;
 import com.qrestor.auth.user.enums.UserEventType;
-import com.qrestor.auth.user.events.UsersEvent;
+import com.qrestor.auth.user.events.UserEvent;
 import com.qrestor.auth.user.repository.SystemUserRepository;
 import com.qrestor.auth.user.service.interfaces.UserAuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,6 +33,8 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     private final TokenService tokenService;
     private final ApplicationEventPublisher eventPublisher;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
     @Override
     public void sendResetPasswordEmail(PasswordResetDTO resetDTO) {
@@ -37,7 +43,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
             TokenEntity resetPassToken = tokenService.getNewTokenFor(systemUserEntity, TokenType.PASSWORD_RESET);
             tokenService.save(resetPassToken);
             eventPublisher.publishEvent(
-                    new UsersEvent(this, UserEventType.PASSWORD_RESET, systemUserEntity, resetPassToken));
+                    new UserEvent(this, UserEventType.PASSWORD_RESET, systemUserEntity, resetPassToken));
         }, () -> {
             throw new RuntimeException("User not found");
         });
@@ -77,7 +83,13 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
     @Override
     public LoginResponseDTO authenticate(LoginRequestDTO loginRequestDTO) {
+        Authentication authenticate = authenticationManager.authenticate(mapLoginRequestToAuthentication(loginRequestDTO));
+        return new LoginResponseDTO(
+                jwtService.generateToken((SystemUserEntity) authenticate.getPrincipal()),
+                jwtService.generateToken((SystemUserEntity) authenticate.getPrincipal()));//todo: implement refresh token
+    }
 
-        return null;
+    private Authentication mapLoginRequestToAuthentication(LoginRequestDTO loginRequestDTO) {
+        return new UsernamePasswordAuthenticationToken(loginRequestDTO.email(), loginRequestDTO.password());
     }
 }
