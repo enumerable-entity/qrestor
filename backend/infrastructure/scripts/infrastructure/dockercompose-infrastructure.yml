@@ -76,7 +76,21 @@ services:
       - "9090:9090"
     networks:
       - backend_net
-
+  kafka-metrics-exporter:
+    image: danielqsj/kafka-exporter:v1.7.0
+    container_name: kafka_metrics_exporter
+    command: ["--kafka.server=kafka:9091"]
+    ports:
+      - "9308:9308"
+    networks:
+      - backend_net
+  redis-metrics-exporter:
+    image: oliver006/redis_exporter:v1.56.0
+    container_name: redis_metrics_exporter
+    ports:
+      - "9121:9121"
+    networks:
+      - backend_net
   postgres:
     image: postgres:16.1-alpine3.19
     container_name: postgres_db_server
