@@ -1,7 +1,7 @@
 package com.qrestor.auth.kafka.producers;
 
 import com.qrestor.auth.kafka.KafkaMessageSender;
-import com.qrestor.auth.kafka.KafkaTopicConfig;
+import com.qrestor.commons.kafka.KafkaTopics;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ public class KafkaProducer<T> {
     }
 
     private String getTopic(T emailSendRequestDTO) {
-        String topicName = KafkaTopicConfig.getTOPICS().get(emailSendRequestDTO.getClass());
+        String topicName = KafkaTopics.getTOPICS().get(emailSendRequestDTO.getClass());
         if (topicName == null)
             throw new RuntimeException("Topic not found for class: " + emailSendRequestDTO.getClass().getName());
         return topicName;

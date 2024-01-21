@@ -1,5 +1,6 @@
 package com.qrestor.auth.security;
 
+import com.qrestor.commons.common.QrestorPrincipal;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.context.SecurityContextHolder;
 

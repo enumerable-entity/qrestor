@@ -1,4 +1,3 @@
-#PostgreSQL
 app:
   domain: https://wanted-talented-peacock.ngrok-free.app
   auth:
@@ -34,13 +33,13 @@ spring:
       time-to-live: 200000
   data:
     redis:
-        repositories:
-          enabled: false
-        host: ${REDIS_HOST:localhost}
-        port: ${REDIS_PORT:6379}
-        password: ${REDIS_PASSWORD:qrestor123}
-        database: ${REDIS_DB:0}
-        timeout: 10000
+      repositories:
+        enabled: false
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:qrestor123}
+      database: ${REDIS_DB:0}
+      timeout: 10000
   threads:
     virtual:
       enabled: true
@@ -53,8 +52,8 @@ logging:
       cache: TRACE
       data: TRACE
       web: TRACE
-
-
+    hibernate:
+      cache: TRACE
 eureka:
   client:
     register-with-eureka: true

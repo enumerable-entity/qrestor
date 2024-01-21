@@ -19,7 +19,7 @@ import static com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO.USER_NAME_P
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class MessageSender {
+public class EmailMessageSender {
 
     private final SendGridConfig sendGridConfig;
 

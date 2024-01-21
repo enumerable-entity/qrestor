@@ -7,6 +7,7 @@ import com.qrestor.auth.user.entity.SystemUserEntity;
 import com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO;
 import com.qrestor.commons.kafka.dto.UserKafkaSyncDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import static com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO.URL_PARAM;
 import static com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO.USER_NAME_PARAM;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class UserRegistrationEventListener implements ApplicationListener<UserEvent> {
 
@@ -61,6 +63,7 @@ public class UserRegistrationEventListener implements ApplicationListener<UserEv
     private void handleRegistration(UserEvent event) {
         SystemUserEntity newUser = event.getNewUser();
         TokenEntity activationEmailToken = event.getToken();
+        log.info("Sending activation email: {}", activationEmailToken);
         mailerProducer.send(new KafkaEmailSendRequestDTO(
                 newUser.getEmail(),
                 EMAIL_VERIFICATION,
@@ -80,7 +83,7 @@ public class UserRegistrationEventListener implements ApplicationListener<UserEv
 
     private void handleRegistrationConfirmation(UserEvent event) {
         SystemUserEntity confirmedUser = event.getNewUser();
-        userProducer.send(new UserKafkaSyncDTO(confirmedUser.getUuid(), confirmedUser.getUsername()));
+        userProducer.send(new UserKafkaSyncDTO(confirmedUser.getId(), confirmedUser.getUuid(), confirmedUser.getUsername()));
     }
 
 }

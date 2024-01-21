@@ -1,7 +1,7 @@
 package com.qrestor.auth.security.jwt;
 
 import com.qrestor.auth.authority.SystemRoleEntity;
-import com.qrestor.auth.security.QrestorPrincipal;
+import com.qrestor.commons.common.QrestorPrincipal;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

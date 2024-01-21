@@ -1,4 +1,4 @@
-package com.qrestor.auth.security;
+package com.qrestor.commons.common;
 
 import java.security.Principal;
 import java.util.UUID;
