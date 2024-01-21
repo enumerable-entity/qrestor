@@ -1,6 +1,5 @@
-#PostgreSQL
 app:
-  domain: http://qrestor.api.internal:8097
+  domain: https://wanted-talented-peacock.ngrok-free.app
   sendgrid:
     enabled: false
     api-key: SG.V4up34hDQYeKaU2AwhoHpA.Su8Tr2NZpU5oC4KKXVKoO4bbEK2pKAN7iDDXkLeIehA

@@ -25,11 +25,11 @@ spring:
         - id: qr-code-resolving
           uri: lb://qresolver
           predicates:
-            - Path=/qr/**
+            - Path=/qr/**, /qresolver/**
           filters:
-            - RewritePath=/qr/(?<segment>.*), /qresolver/api/v1/qr/${segment}
+            - RewritePath=/qresolver/(?<segment>.*), /${segment}
         - id: auth
-          uri: lb://auth
+          uri: http://auth:8097
           predicates:
             - Path=/auth/**
           filters:
@@ -51,5 +51,6 @@ management:
 logging:
   level:
     reactor:
-      netty: info
+      netty: TRACE
+    org.springframework.cloud.gateway: TRACE
     org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: TRACE
