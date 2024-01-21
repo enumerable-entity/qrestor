@@ -1,3 +1,5 @@
+app:
+  domain: https://qrestor.com
 management:
   metrics:
     tags:

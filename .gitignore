@@ -20,5 +20,5 @@ backend/domain/restaurant/target
 backend/infrastructure/data
 backend/infrastructure/eureka/target
 backend/infrastructure/gateway/target
-.jpb
+.jpb/jpb-settings.xml
 

@@ -1,10 +1,32 @@
 server:
   port: 8092
   servlet:
-    context-path: /api/v1/
+    context-path: /${spring.application.name}/api/v1
+app:
+  global-name: QRestor
 spring:
   application:
     name: mailer
+  kafka:
+
+    admin:
+      properties:
+        bootstrap.servers: localhost:9092
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: auth-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+#        spring.kafka.consumer.auto-offset-reset: earliest
+#        spring.kafka.consumer.enable-auto-commit: true
+#        spring.kafka.consumer.auto-commit-interval: 1000
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 3
 eureka:
   client:
     register-with-eureka: true

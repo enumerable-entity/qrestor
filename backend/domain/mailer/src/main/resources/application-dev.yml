@@ -1,4 +1,10 @@
 #PostgreSQL
+app:
+  domain: http://qrestor.api.internal:8097
+  sendgrid:
+    enabled: false
+    api-key: SG.V4up34hDQYeKaU2AwhoHpA.Su8Tr2NZpU5oC4KKXVKoO4bbEK2pKAN7iDDXkLeIehA
+    from-email: qrestor@qrestor.com
 spring:
   datasource:
     url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
@@ -21,8 +27,6 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/changelog-master.xml
-
-
 logging:
   level:
     org:

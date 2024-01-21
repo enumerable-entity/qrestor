@@ -1,6 +1,6 @@
 package com.qrestor.auth.api.exception;
 
-import com.qrestor.auth.api.dto.errors.ApiErrorResponseDTO;
+import com.qrestor.commons.errors.dto.ApiErrorResponseDTO;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,11 +1,11 @@
 package com.qrestor.auth.user.events;
 
 
-import com.qrestor.auth.kafka.dto.KafkaEmailSendRequestDTO;
-import com.qrestor.auth.kafka.dto.UserKafkaSyncDTO;
 import com.qrestor.auth.kafka.producers.KafkaProducer;
 import com.qrestor.auth.token.entity.TokenEntity;
 import com.qrestor.auth.user.entity.SystemUserEntity;
+import com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO;
+import com.qrestor.commons.kafka.dto.UserKafkaSyncDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -13,17 +13,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static com.qrestor.auth.api.RestEndpoints.FORGOT_PASSWORD;
-import static com.qrestor.auth.api.RestEndpoints.VERIFY_EMAIL;
-import static com.qrestor.auth.common.enums.EmailRequestType.EMAIL_VERIFICATION;
-import static com.qrestor.auth.common.enums.EmailRequestType.PASSWORD_RESET;
+import static com.qrestor.auth.api.RestEndpoints.*;
+import static com.qrestor.commons.common.EmailRequestType.EMAIL_VERIFICATION;
+import static com.qrestor.commons.common.EmailRequestType.PASSWORD_RESET;
+import static com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO.URL_PARAM;
+import static com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO.USER_NAME_PARAM;
 
 @Component
 @RequiredArgsConstructor
 public class UserRegistrationEventListener implements ApplicationListener<UserEvent> {
 
-    private static final String USERNAME = "username";
-    private static final String URL = "url";
     private final KafkaProducer<UserKafkaSyncDTO> userProducer;
     private final KafkaProducer<KafkaEmailSendRequestDTO> mailerProducer;
 
@@ -56,7 +55,7 @@ public class UserRegistrationEventListener implements ApplicationListener<UserEv
         mailerProducer.send(new KafkaEmailSendRequestDTO(
                 user.getEmail(),
                 PASSWORD_RESET,
-                prepareParams(user, FORGOT_PASSWORD, resetPassToken)));
+                prepareParams(user, AUTH + FORGOT_PASSWORD, resetPassToken)));
     }
 
     private void handleRegistration(UserEvent event) {
@@ -65,13 +64,13 @@ public class UserRegistrationEventListener implements ApplicationListener<UserEv
         mailerProducer.send(new KafkaEmailSendRequestDTO(
                 newUser.getEmail(),
                 EMAIL_VERIFICATION,
-                prepareParams(newUser, VERIFY_EMAIL, activationEmailToken)));
+                prepareParams(newUser, REGISTRATION + VERIFY_EMAIL, activationEmailToken)));
     }
 
     private Map<String, String> prepareParams(SystemUserEntity newUser, String path, TokenEntity token) {
         return Map.of(
-                USERNAME, newUser.getUsername(),
-                URL, prepareUrl(path, token)
+                USER_NAME_PARAM, newUser.getUsername(),
+                URL_PARAM, prepareUrl(path, token)
         );
     }
 

@@ -1,7 +1,7 @@
 package com.qrestor.auth.kafka;
 
-import com.qrestor.auth.kafka.dto.KafkaEmailSendRequestDTO;
-import com.qrestor.auth.kafka.dto.UserKafkaSyncDTO;
+import com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO;
+import com.qrestor.commons.kafka.dto.UserKafkaSyncDTO;
 import lombok.Getter;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;
@@ -10,12 +10,13 @@ import org.springframework.kafka.config.TopicBuilder;
 
 import java.util.Map;
 
+import static com.qrestor.commons.kafka.KafkaTopics.MAILER_TOPIC;
+import static com.qrestor.commons.kafka.KafkaTopics.USERS_TOPIC;
+
 
 @Configuration
 public class KafkaTopicConfig {
 
-    public static final String USERS_TOPIC = "users";
-    public static final String MAILER_TOPIC = "mailer";
 
     @Getter
     private static final Map<Class, String> TOPICS = Map.of(
@@ -27,6 +28,7 @@ public class KafkaTopicConfig {
     public NewTopic usersSyncTopic() {
         return TopicBuilder.name(USERS_TOPIC).build();
     }
+
     @Bean
     public NewTopic mailerTopic() {
         return TopicBuilder.name(MAILER_TOPIC).build();

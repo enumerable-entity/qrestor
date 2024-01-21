@@ -1,4 +1,4 @@
-package com.qrestor.auth.common.enums;
+package com.qrestor.commons.common;
 
 public enum EmailRequestType {
     EMAIL_VERIFICATION,
