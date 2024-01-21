@@ -9,6 +9,7 @@ spring:
     admin:
       properties:
         bootstrap.servers: localhost:9092
+      fail-fast: true
     consumer:
       bootstrap-servers: localhost:9092
       group-id: auth-service-group

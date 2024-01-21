@@ -4,6 +4,7 @@ import com.qrestor.auth.user.entity.SystemUserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.data.redis.core.RedisHash;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;

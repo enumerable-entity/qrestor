@@ -4,6 +4,8 @@ import com.qrestor.auth.api.dto.LoginRequestDTO;
 import com.qrestor.auth.api.dto.LoginResponseDTO;
 import com.qrestor.auth.api.dto.PasswordChangeDTO;
 import com.qrestor.auth.api.dto.PasswordResetDTO;
+import com.qrestor.auth.user.dto.UserDescriptorDTO;
+import com.qrestor.auth.user.dto.UserInformationDTO;
 import com.qrestor.auth.user.service.interfaces.UserAuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +45,12 @@ public class UserAuthenticationController {
     public ResponseEntity<Void> changePassword(@RequestBody PasswordChangeDTO changeDTO) {
         userAuthenticationServiceImpl.changePassword(changeDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(ME)
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserDescriptorDTO> aboutMe() {
+        return ResponseEntity.ok(userAuthenticationServiceImpl.aboutMe());
     }
 
 }

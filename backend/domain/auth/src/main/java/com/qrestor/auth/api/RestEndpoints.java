@@ -4,6 +4,7 @@ public interface RestEndpoints {
 
     String AUTH = "/authentication";
     String LOGIN = "/login";
+    String ME = "/me";
     String LOGOUT = "/logout";
     String REFRESH = "/refresh";
     String REGISTRATION = "/registration";

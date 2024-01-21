@@ -61,6 +61,18 @@ public class SystemUserEntity implements UserDetails {
     )
     private Collection<SystemRoleEntity> authorities;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
+    @JoinColumn(name = "INFORMATION_ID", referencedColumnName = "ID")
+    private SystemUserInformationEntity information;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
+    @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ID")
+    private AddressEntity address;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
+    @JoinColumn(name = "SETTINGS_ID", referencedColumnName = "ID")
+    private SystemUserSettings settings;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -75,5 +87,18 @@ public class SystemUserEntity implements UserDetails {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "uuid = " + uuid + ", " +
+                "username = " + username + ", " +
+                "email = " + email + ", " +
+                "accountNonExpired = " + accountNonExpired + ", " +
+                "accountNonLocked = " + accountNonLocked + ", " +
+                "credentialsNonExpired = " + credentialsNonExpired + ", " +
+                "enabled = " + enabled + ")";
     }
 }

@@ -4,13 +4,17 @@ import com.qrestor.auth.api.dto.LoginRequestDTO;
 import com.qrestor.auth.api.dto.LoginResponseDTO;
 import com.qrestor.auth.api.dto.PasswordChangeDTO;
 import com.qrestor.auth.api.dto.PasswordResetDTO;
+import com.qrestor.auth.security.SecurityUtils;
 import com.qrestor.auth.security.jwt.JwtService;
 import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.entity.TokenEntity;
 import com.qrestor.auth.token.service.TokenService;
+import com.qrestor.auth.user.dto.UserDescriptorDTO;
+import com.qrestor.auth.user.dto.UserInformationDTO;
 import com.qrestor.auth.user.entity.SystemUserEntity;
 import com.qrestor.auth.user.enums.UserEventType;
 import com.qrestor.auth.user.events.UserEvent;
+import com.qrestor.auth.user.mapper.UserDescriptorMapper;
 import com.qrestor.auth.user.repository.SystemUserRepository;
 import com.qrestor.auth.user.service.interfaces.UserAuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +39,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final UserDescriptorMapper userDescriptorMapper;
 
     @Override
     public void sendResetPasswordEmail(PasswordResetDTO resetDTO) {
@@ -87,6 +92,12 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
         return new LoginResponseDTO(
                 jwtService.generateToken((SystemUserEntity) authenticate.getPrincipal()),
                 jwtService.generateToken((SystemUserEntity) authenticate.getPrincipal()));//todo: implement refresh token
+    }
+
+    @Override
+    public UserDescriptorDTO aboutMe() {
+        Optional<SystemUserEntity> loggedInUser = userRepository.findOneByUsername(SecurityUtils.getPrincipalUsername());
+        return loggedInUser.map(userDescriptorMapper::toDto).orElse(null);
     }
 
     private Authentication mapLoginRequestToAuthentication(LoginRequestDTO loginRequestDTO) {

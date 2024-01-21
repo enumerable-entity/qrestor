@@ -4,6 +4,8 @@ import com.qrestor.auth.api.dto.LoginRequestDTO;
 import com.qrestor.auth.api.dto.LoginResponseDTO;
 import com.qrestor.auth.api.dto.PasswordChangeDTO;
 import com.qrestor.auth.api.dto.PasswordResetDTO;
+import com.qrestor.auth.user.dto.UserDescriptorDTO;
+import com.qrestor.auth.user.dto.UserInformationDTO;
 
 public interface UserAuthenticationService {
     void sendResetPasswordEmail(PasswordResetDTO resetDTO);
@@ -13,4 +15,6 @@ public interface UserAuthenticationService {
     void changePassword(PasswordChangeDTO changeDTO);
 
     LoginResponseDTO authenticate(LoginRequestDTO loginRequestDTO);
+
+    UserDescriptorDTO aboutMe();
 }

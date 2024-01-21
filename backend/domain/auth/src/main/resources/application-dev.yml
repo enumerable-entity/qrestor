@@ -7,6 +7,8 @@ app:
       expiration: ${AUTH_SERVICE_TOKEN_EXPIRATION:#{1000 * 60 * 60 *24 * 7}}
       issuer: ${AUTH_SERVICE_TOKEN_ISSUER:${spring.application.name}}
 spring:
+  banner:
+    location: banner.txt
   datasource:
     url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
     username: ${AUTH_SERVICE_DB_USER:${spring.application.name}}
@@ -23,12 +25,17 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/changelog-master.xml
+  cache:
+    type: redis
+    redis:
+      time-to-live: 200000
   data:
     redis:
+        repositories:
+          enabled: false
         host: ${REDIS_HOST:localhost}
         port: ${REDIS_PORT:6379}
         password: ${REDIS_PASSWORD:qrestor123}
@@ -38,9 +45,14 @@ spring:
     virtual:
       enabled: true
 logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
   level:
     springframework:
       security: TRACE
+      cache: TRACE
+      data: TRACE
+      web: TRACE
 
 
 eureka:

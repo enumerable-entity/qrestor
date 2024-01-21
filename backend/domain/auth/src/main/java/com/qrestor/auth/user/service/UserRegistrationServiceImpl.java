@@ -1,6 +1,7 @@
 package com.qrestor.auth.user.service;
 
 import com.qrestor.auth.api.dto.RegistrationRequestDTO;
+import com.qrestor.auth.authority.RoleService;
 import com.qrestor.auth.authority.SystemRole;
 import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.entity.TokenEntity;
@@ -14,6 +15,7 @@ import com.qrestor.auth.user.service.interfaces.UserRegistrationService;
 import com.qrestor.auth.user.validation.SystemUserValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserRegistrationServiceImpl implements UserRegistrationService {
 
@@ -31,6 +34,8 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
     private final SystemUserValidator systemUserValidator;
     private final ApplicationEventPublisher eventPublisher;
     private final TokenService tokenService;
+    private final RoleService roleService;
+
 
 
     @Override
@@ -45,13 +50,14 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
                 .accountNonExpired(true)
                 .credentialsNonExpired(true)
                 .enabled(false)
-                .authorities(roleRepository.findByAuthority(SystemRole.RESTAURATEUR.name()))
+                .authorities(roleService.findByAuthority(SystemRole.RESTAURATEUR.name()))
                 .build();
         userRepository.save(newSystemUser);
         userRepository.flush();
         eventPublisher.publishEvent(
                 new UserEvent(this, UserEventType.REGISTRATION, newSystemUser,
                         tokenService.getNewTokenFor(newSystemUser, TokenType.EMAIL_VERIFICATION)));
+        log.info("New user registered: {}", newSystemUser.getUsername());
     }
 
     @Override
