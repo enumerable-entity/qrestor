@@ -27,7 +27,13 @@ spring:
           predicates:
             - Path=/qr/**
           filters:
-            - RewritePath=/qr/(?<segment>.*), /api/v1/qr/${segment}
+            - RewritePath=/qr/(?<segment>.*), /qresolver/api/v1/qr/${segment}
+        - id: auth
+          uri: lb://auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - RewritePath=/auth/(?<segment>.*), /auth/api/v1/${segment}
 management:
   metrics:
     tags:
