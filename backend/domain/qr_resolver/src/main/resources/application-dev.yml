@@ -1,4 +1,5 @@
-#PostgreSQL
+app:
+  domain: http://qrestor.api.internal:8080
 spring:
   datasource:
     url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
@@ -29,9 +30,7 @@ logging:
       springframework:
         security: TRACE
       hibernate:
-        SQL: DEBUG
-        cache: DEBUG
-        stat: DEBUG
+        cache: TRACE
 eureka:
   client:
     register-with-eureka: true

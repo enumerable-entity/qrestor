@@ -1,6 +1,6 @@
 #PostgreSQL
 app:
-  domain: http://qrestor.api.internal:8097
+  domain: https://wanted-talented-peacock.ngrok-free.app
   auth:
     jwt:
       secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}

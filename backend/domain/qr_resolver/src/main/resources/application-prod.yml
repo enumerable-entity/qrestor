@@ -29,7 +29,6 @@ logging:
       hibernate:
         SQL: DEBUG
         cache: DEBUG
-        stat: DEBUG
 eureka:
   client:
     register-with-eureka: true

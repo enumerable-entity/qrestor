@@ -75,7 +75,7 @@ public class UserRegistrationEventListener implements ApplicationListener<UserEv
     }
 
     private String prepareUrl(String path, TokenEntity token) {
-        return domain + api_prefix + path + token.getValue();
+        return domain + path + token.getValue();
     }
 
     private void handleRegistrationConfirmation(UserEvent event) {

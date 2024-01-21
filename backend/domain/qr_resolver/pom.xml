@@ -49,9 +49,12 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-        </plugins>
-    </build>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>QRestor releases</name>
+            <url>https://maven.pkg.github.com/enumerable-entity/qrestor</url>
+        </repository>
+    </distributionManagement>
 
 </project>
