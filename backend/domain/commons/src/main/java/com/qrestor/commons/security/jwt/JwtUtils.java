@@ -1,18 +1,17 @@
-package com.qrestor.auth.security.jwt;
+package com.qrestor.commons.security.jwt;
 
-import com.qrestor.auth.authority.SystemRoleEntity;
-import com.qrestor.auth.user.entity.SystemUserEntity;
+import com.qrestor.commons.security.QrestorPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.experimental.UtilityClass;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
-
-import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 
 @UtilityClass
 public class JwtUtils {
@@ -30,13 +29,13 @@ public class JwtUtils {
     }
 
 
-    public String generateToken(SystemUserEntity userDetails, String secretKey,
+    public String generateToken(QrestorPrincipal userDetails, String secretKey,
                                 long expirationTime, String issuer) {
-        List<String> authorities = userDetails.getAuthorities().stream().map(SystemRoleEntity::getAuthority).toList();
+        List<String> authorities = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         return generateToken(Map.of(CLAIM_ROLES, authorities), userDetails, secretKey, expirationTime, issuer);
     }
 
-    public String generateToken(Map<String, Object> claims, SystemUserEntity userDetails, String secretKey,
+    public String generateToken(Map<String, Object> claims, QrestorPrincipal userDetails, String secretKey,
                                 long expirationTime, String issuer) {
         return Jwts.builder()
                 .addClaims(claims)
@@ -45,7 +44,7 @@ public class JwtUtils {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .setIssuer(issuer)
-                .signWith(HS512, secretKey)
+                .signWith(SignatureAlgorithm.HS512, secretKey)
                 //.compressWith(new GzipCompressionCodec())
                 .compact();
     }

@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper
 public interface SystemUserMapper {
+    @Mapping(target = "id", ignore = true)
     UserKafkaSyncDTO toDto(SystemUser systemUser);
     @Mapping(target = "qrCodes", ignore = true)
     SystemUser toEntity(UserKafkaSyncDTO userKafkaSyncDTO);

@@ -1,6 +1,7 @@
-package com.qrestor.auth.security.jwt;
+package com.qrestor.commons.security.jwt;
 
-import com.qrestor.auth.user.entity.SystemUserEntity;
+import com.qrestor.commons.security.QrestorPrincipal;
+import com.qrestor.commons.security.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class JwtService {
     private String jwtIssuer;
 
 
-    public String generateToken(SystemUserEntity userDetails) {
+    public String generateToken(QrestorPrincipal userDetails) {
         return JwtUtils.generateToken(userDetails, jwtSecret, jwtExpiration, jwtIssuer);
     }
 }

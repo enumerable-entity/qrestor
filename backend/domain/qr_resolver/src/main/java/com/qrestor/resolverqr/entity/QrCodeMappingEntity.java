@@ -1,5 +1,7 @@
 package com.qrestor.resolverqr.entity;
 
+import com.qrestor.commons.security.QrestorPrincipal;
+import com.qrestor.commons.security.SecurityUtils;
 import com.qrestor.resolverqr.user.enitity.SystemUser;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -37,7 +39,7 @@ public class QrCodeMappingEntity {
     private Boolean isActive;
 
     @Column(name = "user_id")
-    private Long userId;
+    private UUID userId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = SystemUser.class)
     @JoinColumn(name = "user_id", nullable = false, updatable = false, insertable = false)
@@ -46,7 +48,7 @@ public class QrCodeMappingEntity {
     @PrePersist
     public void prePersist() {
         if (userId == null) {
-            userId = ((SystemUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+            userId = SecurityUtils.getPrincipalUUID();
         }
     }
 }

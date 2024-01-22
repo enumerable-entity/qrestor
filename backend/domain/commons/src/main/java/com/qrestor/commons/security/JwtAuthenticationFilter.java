@@ -1,7 +1,7 @@
-package com.qrestor.auth.security.jwt;
+package com.qrestor.commons.security;
 
-import com.qrestor.auth.authority.SystemRoleEntity;
-import com.qrestor.commons.common.QrestorPrincipal;
+import com.qrestor.commons.security.QrestorPrincipal;
+import com.qrestor.commons.security.jwt.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -46,18 +47,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             final var username = JwtUtils.getUsername(jwt, jwtSecret);
             final var claims = JwtUtils.getRoles(jwt, jwtSecret);
             final var authorities = mapRolesToAuthorities(claims);
-            final var authentication = new UsernamePasswordAuthenticationToken(new QrestorPrincipal(username, uuid), null, authorities);
+            final var authentication = new UsernamePasswordAuthenticationToken(QrestorPrincipal.builder()
+                    .username(username)
+                    .uuid(uuid)
+                    .authorities(authorities)
+                    .build(), null, authorities);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
     }
 
-    private List<SystemRoleEntity> mapRolesToAuthorities(List<String> claims) {
+    private List<SimpleGrantedAuthority> mapRolesToAuthorities(List<String> claims) {
         return claims.stream()
-                .map(jwtClaim -> SystemRoleEntity.builder()
-                        .authority(jwtClaim)
-                        .build())
+                .map(SimpleGrantedAuthority::new)
                 .toList();
     }
 }

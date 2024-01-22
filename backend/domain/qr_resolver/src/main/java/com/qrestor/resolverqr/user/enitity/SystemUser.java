@@ -8,6 +8,7 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,12 +17,10 @@ import java.util.Objects;
         @Index(name = "system_users_uuid_idx", columnList = "uuid", unique = true)
 })
 public class SystemUser {
-    @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
 
+    @Id
     @Column(name = "uuid", nullable = false, updatable = false, unique = true)
-    private String uuid;
+    private UUID uuid;
 
     @Column(name = "username", nullable = false, updatable = false, unique = true)
     private String username;
@@ -37,7 +36,7 @@ public class SystemUser {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         SystemUser that = (SystemUser) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        return getUuid() != null && Objects.equals(getUuid(), that.getUuid());
     }
 
     @Override
@@ -48,7 +47,7 @@ public class SystemUser {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "uuid = " + uuid + ")";
+                "uuid = " + uuid + ", " +
+                "username = " + username + ")";
     }
 }

@@ -4,19 +4,19 @@ import com.qrestor.auth.api.dto.LoginRequestDTO;
 import com.qrestor.auth.api.dto.LoginResponseDTO;
 import com.qrestor.auth.api.dto.PasswordChangeDTO;
 import com.qrestor.auth.api.dto.PasswordResetDTO;
-import com.qrestor.auth.security.SecurityUtils;
-import com.qrestor.auth.security.jwt.JwtService;
+import com.qrestor.commons.security.SecurityUtils;
+import com.qrestor.commons.security.jwt.JwtService;
 import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.entity.TokenEntity;
 import com.qrestor.auth.token.service.TokenService;
 import com.qrestor.auth.user.dto.UserDescriptorDTO;
-import com.qrestor.auth.user.dto.UserInformationDTO;
 import com.qrestor.auth.user.entity.SystemUserEntity;
 import com.qrestor.auth.user.enums.UserEventType;
 import com.qrestor.auth.user.events.UserEvent;
 import com.qrestor.auth.user.mapper.UserDescriptorMapper;
 import com.qrestor.auth.user.repository.SystemUserRepository;
 import com.qrestor.auth.user.service.interfaces.UserAuthenticationService;
+import com.qrestor.commons.security.QrestorPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -90,8 +90,9 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     public LoginResponseDTO authenticate(LoginRequestDTO loginRequestDTO) {
         Authentication authenticate = authenticationManager.authenticate(mapLoginRequestToAuthentication(loginRequestDTO));
         return new LoginResponseDTO(
-                jwtService.generateToken((SystemUserEntity) authenticate.getPrincipal()),
-                jwtService.generateToken((SystemUserEntity) authenticate.getPrincipal()));//todo: implement refresh token
+                jwtService.generateToken((QrestorPrincipal) authenticate.getPrincipal()),
+                jwtService.generateToken((QrestorPrincipal) authenticate.getPrincipal()));
+        //todo: implement refresh token
     }
 
     @Override

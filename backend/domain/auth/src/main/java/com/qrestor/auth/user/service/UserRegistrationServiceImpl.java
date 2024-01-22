@@ -3,13 +3,12 @@ package com.qrestor.auth.user.service;
 import com.qrestor.auth.api.dto.RegistrationRequestDTO;
 import com.qrestor.auth.authority.RoleService;
 import com.qrestor.auth.authority.SystemRole;
-import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.entity.TokenEntity;
+import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.service.TokenService;
 import com.qrestor.auth.user.entity.SystemUserEntity;
 import com.qrestor.auth.user.enums.UserEventType;
 import com.qrestor.auth.user.events.UserEvent;
-import com.qrestor.auth.authority.RoleRepository;
 import com.qrestor.auth.user.repository.SystemUserRepository;
 import com.qrestor.auth.user.service.interfaces.UserRegistrationService;
 import com.qrestor.auth.user.validation.SystemUserValidator;
@@ -29,13 +28,11 @@ import java.util.Optional;
 public class UserRegistrationServiceImpl implements UserRegistrationService {
 
     private final SystemUserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final SystemUserValidator systemUserValidator;
     private final ApplicationEventPublisher eventPublisher;
     private final TokenService tokenService;
     private final RoleService roleService;
-
 
 
     @Override

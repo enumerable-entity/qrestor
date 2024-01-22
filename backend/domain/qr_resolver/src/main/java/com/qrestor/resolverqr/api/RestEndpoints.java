@@ -19,6 +19,7 @@ public interface RestEndpoints {
     };
 
     String[] PUBLIC_ENDPOINTS_LIST = {
-            QR + "/**"};
+            QR + "/**",
+            "/error/**"};
 
 }

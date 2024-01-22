@@ -12,7 +12,7 @@ scrape_configs:
       - targets: [ 'host.docker.internal:9121' ]
 
   - job_name: "qresolver-service"
-    metrics_path: /qresolver/api/v1/actuator/prometheus
+    metrics_path: /actuator/prometheus
     static_configs:
       - targets: ['host.docker.internal:8090']
 
