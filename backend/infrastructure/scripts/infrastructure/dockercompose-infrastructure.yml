@@ -150,6 +150,14 @@ services:
       - ../../certs/minio:/certs
     networks:
       - backend_net
+  jenkins:
+    image: jenkins/jenkins:slim-jdk21
+    container_name: jenkins_ci_cd_server
+    ports:
+      - "9090:8080"
+    volumes:
+      - ../../data/jenkins-data:/var/jenkins_home
+    user: "1000" # host user id
 
 networks:
   backend_net:

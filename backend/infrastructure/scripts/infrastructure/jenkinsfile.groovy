@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials-id')
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                script {
+                    git 'https://github.com/your-username/your-microservice-repo.git'
+                }
+            }
+        }
+
+        stage('Build and Test') {
+            steps {
+                script {
+                    sh './mvnw clean package'  // or use 'gradlew' for Gradle projects
+                }
+            }
+        }
+
+        stage('Dockerize and Push to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS) {
+                        def imageName = "your-docker-hub-username/your-microservice-name:${env.BUILD_NUMBER}"
+                        docker.build(imageName, '.')
+                        docker.image(imageName).push()
+                    }
+                }
+            }
+        }
+
+        stage('Update Docker Compose') {
+            steps {
+                script {
+                    sh 'docker-compose down'
+                    sh 'docker-compose pull'
+                    sh 'docker-compose up -d'
+                }
+            }
+        }
+    }
+}
