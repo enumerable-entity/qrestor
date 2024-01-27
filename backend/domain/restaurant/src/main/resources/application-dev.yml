@@ -1,4 +1,8 @@
-#PostgreSQL
+app:
+  domain: https://wanted-talented-peacock.ngrok-free.app
+  auth:
+    jwt:
+      secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
 spring:
   datasource:
     url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
@@ -23,19 +27,25 @@ spring:
     change-log: classpath:db/changelog/changelog-master.xml
   data:
     redis:
+      repositories:
+        enabled: false
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:${spring.application.name}}
-      database: ${REDIS_DB:0}
+      password: ${REDIS_PASSWORD:qrestor123}
+      database: ${REDIS_DB:2}
       timeout: 10000
-
+  threads:
+    virtual:
+      enabled: true
 logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
   level:
     org:
+      springframework:
+        security: TRACE
       hibernate:
-        SQL: DEBUG
-        cache: DEBUG
-        stat: DEBUG
+        cache: TRACE
 eureka:
   client:
     register-with-eureka: true

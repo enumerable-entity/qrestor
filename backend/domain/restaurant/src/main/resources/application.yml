@@ -1,10 +1,25 @@
 server:
   port: 8098
-  servlet:
-    context-path: /${spring.application.name}/api/v1
 spring:
   application:
     name: restaurant
+  kafka:
+    admin:
+      properties:
+        bootstrap.servers: localhost:9092
+      fail-fast: true
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: ${spring.application.name}-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 3
 eureka:
   client:
     register-with-eureka: true
