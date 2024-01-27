@@ -20,5 +20,7 @@ backend/domain/restaurant/target
 backend/infrastructure/data
 backend/infrastructure/eureka/target
 backend/infrastructure/gateway/target
+backend/infrastructure/cri-dockerd-0.3.9.arm64.tgz
 .jpb/jpb-settings.xml
 *.iml
+lib/**

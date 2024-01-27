@@ -47,16 +47,16 @@ scrape_configs:
       - targets: [ 'host.docker.internal:8092' ]
 
   - job_name: "menu-service"
-    metrics_path: /menu/api/v1/actuator/prometheus
+    metrics_path: /actuator/prometheus
     static_configs:
       - targets: [ 'host.docker.internal:8096' ]
 
   - job_name: "orders-service"
-    metrics_path: /orders/api/v1/actuator/prometheus
+    metrics_path: /actuator/prometheus
     static_configs:
       - targets: [ 'host.docker.internal:8091' ]
 
   - job_name: "restaurant-service"
-    metrics_path: /restaurant/api/v1/actuator/prometheus
+    metrics_path: /actuator/prometheus
     static_configs:
       - targets: [ 'host.docker.internal:8098' ]
