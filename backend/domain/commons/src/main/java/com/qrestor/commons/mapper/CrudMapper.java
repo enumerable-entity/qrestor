@@ -1,14 +1,14 @@
 package com.qrestor.commons.mapper;
 
 
-import com.qrestor.commons.dto.AbstractDTO;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.MappingTarget;
+import com.qrestor.commons.dto.AbstractPublicDTO;
+import com.qrestor.commons.entity.PublicEntity;
+import org.mapstruct.*;
 
 import java.util.List;
 
 
-public interface CrudMapper<DTO extends AbstractDTO, ENTITY> {
+public interface CrudMapper<DTO extends AbstractPublicDTO, ENTITY extends PublicEntity> {
 
     DTO toDto(ENTITY entity);
 

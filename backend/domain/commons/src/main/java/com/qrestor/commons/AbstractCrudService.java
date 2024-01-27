@@ -1,47 +1,64 @@
 package com.qrestor.commons;
 
-import com.qrestor.commons.CrudService;
-import com.qrestor.commons.dto.AbstractDTO;
+import com.qrestor.commons.dto.AbstractPublicDTO;
+import com.qrestor.commons.entity.PublicEntity;
 import com.qrestor.commons.mapper.CrudMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.qrestor.commons.security.SecurityUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
+import java.util.UUID;
+
+@RequiredArgsConstructor
+public abstract class AbstractCrudService<D extends AbstractPublicDTO, E extends PublicEntity> implements CrudService<D> {
 
 
-public abstract class AbstractCrudService<D extends AbstractDTO, E> implements CrudService<D> {
-
-    @Autowired
-    private CrudMapper<D, E> mapper;
-    @Autowired
-    private JpaRepository<E, Long> repository;
+    private final CrudMapper<D, E> mapper;
+    private final PublicRepository<E, Long> repository;
 
     @Override
     public D create(D dto) {
+        dto.setPublicId(generateQrCode());
         return mapper.toDto(repository.save(mapper.toEntity(dto)));
     }
 
     @Override
-    public D update(Long id, D dto) {
-        return repository.findById(id).map(entity -> {
-            E updatedEntity = mapper.toEntity(dto);
+    public D update(UUID id, D dto) {
+        return repository.findByUuidSecure(id, SecurityUtils.getPrincipalUUID()).map(entity -> {
+            E updatedEntity = mapper.partialUpdate(dto, entity);
             return mapper.toDto(repository.save(updatedEntity));
-        }).orElse(null);
+        }).orElseThrow(() -> new RuntimeException("Entity not found"));
     }
 
     @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
+    public void delete(UUID id) {
+        repository.findByUuidSecure(id, SecurityUtils.getPrincipalUUID()).ifPresent(repository::delete);
     }
 
     @Override
-    public D findById(Long id) {
-        return repository.findById(id).map(mapper::toDto).orElse(null);
+    public D findById(UUID id) {
+        return repository.findByUuidSecure(id, SecurityUtils.getPrincipalUUID())
+                .map(mapper::toDto)
+                .orElseThrow(() -> new RuntimeException("Entity not found"));
+    }
+
+    @Override
+    public D findByIdPublic(UUID id) {
+        return repository.findByUuid(id).map(mapper::toDto)
+                .orElseThrow(() -> new RuntimeException("Entity not found"));
     }
 
     @Override
     public List<D> findAll(Pageable pageable) {
-        return mapper.toDto(repository.findAll(pageable));
+        Specification<E> spec = Specification.where(
+                (root, query, criteriaBuilder) ->
+                        criteriaBuilder.equal(root.get(AbstractPublicDTO.Fields.userId), SecurityUtils.getPrincipalUUID()));
+        return mapper.toDto(repository.findAll(spec, pageable));
+    }
+
+    private UUID generateQrCode() {
+        return UUID.randomUUID();
     }
 }

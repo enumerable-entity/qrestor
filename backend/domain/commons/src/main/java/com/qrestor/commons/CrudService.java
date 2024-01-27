@@ -1,19 +1,22 @@
 package com.qrestor.commons;
 
-import com.qrestor.commons.dto.AbstractDTO;
+import com.qrestor.commons.dto.AbstractPublicDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface CrudService<D extends AbstractDTO> {
+public interface CrudService<D extends AbstractPublicDTO> {
 
     D create(D dto);
 
-    D update(Long id, D dto);
+    D update(UUID id, D dto);
 
-    void delete(Long id);
+    void delete(UUID id);
 
-    D findById(Long id);
+    D findById(UUID id);
+
+    public D findByIdPublic(UUID id);
 
     List<D> findAll(Pageable pageable);
 }

@@ -1,7 +1,7 @@
-package com.qrestor.commons.security.jwt;
+package com.qrestor.auth.security;
 
 import com.qrestor.commons.security.QrestorPrincipal;
-import com.qrestor.commons.security.jwt.JwtUtils;
+import com.qrestor.commons.security.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

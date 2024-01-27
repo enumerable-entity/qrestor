@@ -1,4 +1,4 @@
-package com.qrestor.commons.security.jwt;
+package com.qrestor.commons.security;
 
 import com.qrestor.commons.security.QrestorPrincipal;
 import io.jsonwebtoken.Claims;

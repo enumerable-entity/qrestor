@@ -1,7 +1,5 @@
 package com.qrestor.commons.security;
 
-import com.qrestor.commons.security.QrestorPrincipal;
-import com.qrestor.commons.security.jwt.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

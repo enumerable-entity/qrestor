@@ -5,7 +5,7 @@ import com.qrestor.auth.api.dto.LoginResponseDTO;
 import com.qrestor.auth.api.dto.PasswordChangeDTO;
 import com.qrestor.auth.api.dto.PasswordResetDTO;
 import com.qrestor.commons.security.SecurityUtils;
-import com.qrestor.commons.security.jwt.JwtService;
+import com.qrestor.auth.security.JwtService;
 import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.entity.TokenEntity;
 import com.qrestor.auth.token.service.TokenService;

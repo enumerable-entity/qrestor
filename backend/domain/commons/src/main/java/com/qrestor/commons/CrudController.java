@@ -1,6 +1,6 @@
 package com.qrestor.commons;
 
-import com.qrestor.commons.dto.AbstractDTO;
+import com.qrestor.commons.dto.AbstractPublicDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -9,9 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
-public abstract class CrudController<D extends AbstractDTO> {
+public abstract class CrudController<D extends AbstractPublicDTO> {
 
     private final CrudService<D> crudService;
 
@@ -21,7 +22,7 @@ public abstract class CrudController<D extends AbstractDTO> {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<D> findById(@PathVariable Long id) {
+    public ResponseEntity<D> findById(@PathVariable UUID id) {
         return ResponseEntity.ok(crudService.findById(id));
     }
 
@@ -31,13 +32,13 @@ public abstract class CrudController<D extends AbstractDTO> {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<D> update(@PathVariable Long id, @RequestBody D dto) {
-        dto.setId(id);
+    public ResponseEntity<D> update(@PathVariable UUID id, @RequestBody D dto) {
+        dto.setPublicId(id);
         return ResponseEntity.ok(crudService.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
         crudService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
