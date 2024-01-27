@@ -1,4 +1,4 @@
-package com.qrestor.resolverqr.user.enitity;
+package com.qrestor.resolverqr.systemuser.enitity;
 
 import com.qrestor.resolverqr.entity.QrCodeMappingEntity;
 import jakarta.persistence.*;
@@ -13,10 +13,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "system_users", schema = "qresolver", indexes = {
+@Table(name = "sync_users", schema = "qresolver", indexes = {
         @Index(name = "system_users_uuid_idx", columnList = "uuid", unique = true)
 })
-public class SystemUser {
+public class SyncUser {
 
     @Id
     @Column(name = "uuid", nullable = false, updatable = false, unique = true)
@@ -35,7 +35,7 @@ public class SystemUser {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        SystemUser that = (SystemUser) o;
+        SyncUser that = (SyncUser) o;
         return getUuid() != null && Objects.equals(getUuid(), that.getUuid());
     }
 

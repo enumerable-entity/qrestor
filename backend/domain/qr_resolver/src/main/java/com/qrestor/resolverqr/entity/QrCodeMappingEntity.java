@@ -1,12 +1,11 @@
 package com.qrestor.resolverqr.entity;
 
-import com.qrestor.commons.security.QrestorPrincipal;
-import com.qrestor.commons.security.SecurityUtils;
-import com.qrestor.resolverqr.user.enitity.SystemUser;
+import com.qrestor.commons.entity.OwnedEntity;
+import com.qrestor.commons.entity.PublicEntity;
+import com.qrestor.resolverqr.systemuser.enitity.SyncUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.UUID;
 
@@ -16,15 +15,15 @@ import java.util.UUID;
 @Table(name = "qr_codes", schema = "qresolver", indexes = {
         @Index(name = "IDX_QR_CODE_URL", columnList = "qr_code", unique = true)
 })
-public class QrCodeMappingEntity {
+public class QrCodeMappingEntity extends OwnedEntity implements PublicEntity {
     @Id
     @SequenceGenerator(name = "qr_codes_id_seq", sequenceName = "qr_codes_id_seq", allocationSize = 1, schema = "qresolver", initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "qr_codes_id_seq")
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "qr_code", nullable = false, unique = true, updatable = false, length = 200)
-    private String qrCode;
+    @Column(name = "public_id", nullable = false, unique = true, updatable = false, length = 200)
+    private UUID publicId;
 
     @Column(name = "table_id")
     private Integer tableId;
@@ -41,14 +40,17 @@ public class QrCodeMappingEntity {
     @Column(name = "user_id")
     private UUID userId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = SystemUser.class)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = SyncUser.class)
     @JoinColumn(name = "user_id", nullable = false, updatable = false, insertable = false)
-    private SystemUser user;
+    private SyncUser user;
 
-    @PrePersist
-    public void prePersist() {
-        if (userId == null) {
-            userId = SecurityUtils.getPrincipalUUID();
-        }
+    @Override
+    public UUID getPublicId() {
+        return this.publicId;
+    }
+
+    @Override
+    public void setPublicId(UUID publicId) {
+        this.publicId = publicId;
     }
 }

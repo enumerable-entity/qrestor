@@ -11,13 +11,13 @@ import org.mapstruct.MappingTarget;
 @Mapper
 public interface QrCodesManagementMapper extends CrudMapper<QrCodeMappingDTO, QrCodeMappingEntity> {
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "userId", ignore = true)
     @Mapping(target = "user", ignore = true)
     QrCodeMappingEntity toEntity(QrCodeMappingDTO qrCodeMappingDTO);
 
-    QrCodeMappingDTO toDto(QrCodeMappingEntity qrCodeMappingEntity);
 
-
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "userId", ignore = true)
     @Mapping(target = "user", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE)

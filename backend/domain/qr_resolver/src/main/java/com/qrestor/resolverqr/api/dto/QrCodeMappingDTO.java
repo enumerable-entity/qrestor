@@ -1,7 +1,6 @@
 package com.qrestor.resolverqr.api.dto;
 
-import com.qrestor.commons.dto.AbstractDTO;
-import jakarta.validation.constraints.NotBlank;
+import com.qrestor.commons.dto.AbstractPublicDTO;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
@@ -12,18 +11,15 @@ import java.util.UUID;
 /**
  * DTO for {@link com.qrestor.resolverqr.entity.QrCodeMappingEntity}
  */
-@Data
+@Data()
 @EqualsAndHashCode(callSuper = true)
-public class QrCodeMappingDTO extends AbstractDTO {
-    @NotNull
-    @NotBlank
-    String qrCode;
+public class QrCodeMappingDTO extends AbstractPublicDTO {
     @PositiveOrZero
-    Integer tableId;
+    private Integer tableId;
     @NotNull
-    UUID restaurantId;
+    private UUID restaurantId;
     @NotNull
-    UUID menuId;
+    private UUID menuId;
     @NotNull
-    Boolean isActive;
+    private Boolean isActive;
 }

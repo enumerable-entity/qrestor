@@ -6,6 +6,8 @@ import com.qrestor.resolverqr.repository.QrRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class ResolverService {
@@ -13,8 +15,8 @@ public class ResolverService {
     private final QrRepository qrRepository;
     private final QrMapper qrMapper;
 
-    public ResolvingResponseDTO resolve(String qrCode) {
-        return qrRepository.findByQrCode(qrCode)
+    public ResolvingResponseDTO resolve(UUID publicId) {
+        return qrRepository.findByPublicId(publicId)
                 .map(qrMapper::toDto)
                 .orElseThrow(() -> new RuntimeException("Qr code not found"));
     }

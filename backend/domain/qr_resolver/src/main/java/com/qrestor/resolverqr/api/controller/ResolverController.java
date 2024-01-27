@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 import static com.qrestor.resolverqr.api.RestEndpoints.QR;
 
 @RequestMapping(QR)
@@ -16,8 +18,8 @@ import static com.qrestor.resolverqr.api.RestEndpoints.QR;
 public class ResolverController {
     private final ResolverService resolverService;
 
-    @GetMapping("/{qrCode}")
-    public ResolvingResponseDTO resolve(@PathVariable String qrCode) {
-        return resolverService.resolve(qrCode);
+    @GetMapping("/{publicId}")
+    public ResolvingResponseDTO resolve(@PathVariable UUID publicId) {
+        return resolverService.resolve(publicId);
     }
 }
