@@ -1,7 +1,7 @@
 package com.qrestor.restaurant.kafka;
 
 import com.qrestor.commons.kafka.dto.UserKafkaSyncDTO;
-import com.qrestor.commons.systemuser.service.SyncUserService;
+import com.qrestor.restaurant.systemuser.service.SyncUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
