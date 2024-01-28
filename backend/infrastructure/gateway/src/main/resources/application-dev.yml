@@ -34,6 +34,12 @@ spring:
             - Path=/restaurant/**
           filters:
             - RewritePath=/restaurant/(?<segment>.*), /${segment}
+        - id: menu
+          uri: lb://menu
+          predicates:
+            - Path=/menu/**
+          filters:
+            - RewritePath=/menu/(?<segment>.*), /${segment}
         - id: auth
           uri: http://auth:8097
           predicates:
