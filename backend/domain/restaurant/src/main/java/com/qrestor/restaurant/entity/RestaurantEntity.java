@@ -44,7 +44,7 @@ public class RestaurantEntity extends OwnedEntity implements PublicEntity {
     @OneToOne(mappedBy = "restaurant", cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
     private RestaurantSettingsEntity settings;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", updatable = false)
     private UUID userId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = SyncUser.class)

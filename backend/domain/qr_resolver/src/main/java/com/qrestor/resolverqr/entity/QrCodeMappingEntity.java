@@ -37,7 +37,7 @@ public class QrCodeMappingEntity extends OwnedEntity implements PublicEntity {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", updatable = false)
     private UUID userId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = SyncUser.class)
