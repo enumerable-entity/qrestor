@@ -7,25 +7,28 @@
 
 
     <changeSet id="2024012812331234-0" author="Artur Babii">
-        <insert tableName="item_categories">
-            <column name="id" valueSequenceNext="item_categories_seq"/>
-            <column name="is_active">true</column>
-            <column name="is_default">true</column>
-            <column name="name">[DRINKS]</column>
+        <insert tableName="menu_item_categories">
+            <column name="id" valueSequenceNext="menu_item_categories_seq"/>
+            <column name="display_order">1</column>
+            <column name="icon_code">#code23</column>
+            <column name="is_enabled">true</column>
+            <column name="nls_key">[DRINKS]</column>
             <column name="public_id" valueComputed="uuid_generate_v4()"/>
         </insert>
-        <insert tableName="item_categories">
-            <column name="id" valueSequenceNext="item_categories_seq"/>
-            <column name="is_active">true</column>
-            <column name="is_default">true</column>
-            <column name="name">[CAFE]</column>
+        <insert tableName="menu_item_categories">
+            <column name="id" valueSequenceNext="menu_item_categories_seq"/>
+            <column name="display_order">2</column>
+            <column name="icon_code">#code4</column>
+            <column name="is_enabled">true</column>
+            <column name="nls_key">[CAFE]</column>
             <column name="public_id" valueComputed="uuid_generate_v4()"/>
         </insert>
-        <insert tableName="item_categories">
-            <column name="id" valueSequenceNext="item_categories_seq"/>
-            <column name="is_active">true</column>
-            <column name="is_default">true</column>
-            <column name="name">[SNACKS]</column>
+        <insert tableName="menu_item_categories">
+            <column name="id" valueSequenceNext="menu_item_categories_seq"/>
+            <column name="display_order">3</column>
+            <column name="icon_code">#code5</column>
+            <column name="is_enabled">true</column>
+            <column name="nls_key">[SNACKS]</column>
             <column name="public_id" valueComputed="uuid_generate_v4()"/>
         </insert>
     </changeSet>

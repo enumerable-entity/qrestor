@@ -1,11 +1,15 @@
 package com.qrestor.menu.api;
 
 public interface RestEndpoints {
-
+    String MANAGEMENT = "/management";
     String MENU = "/menu";
-    String RESTAURANT_COMBO = "/restaurantCombo";
+    String CATEGORY = "/category";
+    String INGREDIENTS = "/ingredients";
+    String CATEGORY_COMBO = "/categoryCombo";
+    String INGREDIENTS_COMBO = "/ingredientsCombo";
     String DICTIONARY = "/dictionary";
-    String MANAGEMENT =  "/management" + MENU;
+    String MENU_MANAGEMENT = MANAGEMENT + MENU;
+    String INGREDIENTS_MANAGEMENT = MANAGEMENT + INGREDIENTS;
 
     String ACTUATOR = "/actuator/**";
     String SWAGGER = "/swagger-ui/**";
@@ -21,6 +25,7 @@ public interface RestEndpoints {
     };
 
     String[] PUBLIC_ENDPOINTS_LIST = {
+            CATEGORY,
             MENU + "/{id}",
             "/error/**"};
 

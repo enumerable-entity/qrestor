@@ -1,14 +1,11 @@
 package com.qrestor.menu.systemuser.enitity;
 
-import com.qrestor.menu.entity.ItemCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -25,9 +22,6 @@ public class SyncUser {
 
     @Column(name = "username", nullable = false, updatable = false, unique = true)
     private String username;
-
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private Set<ItemCategory> itemCategories = new LinkedHashSet<>();
 
     @Override
     public final boolean equals(Object o) {

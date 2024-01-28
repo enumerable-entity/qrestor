@@ -2,7 +2,7 @@ package com.qrestor.menu.api.controller;
 
 import com.qrestor.commons.dto.DictionaryDTO;
 import com.qrestor.menu.api.RestEndpoints;
-import com.qrestor.menu.service.ComboServiceImpl;
+import com.qrestor.menu.service.DictionaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 
-import static com.qrestor.menu.api.RestEndpoints.RESTAURANT_COMBO;
+import static com.qrestor.menu.api.RestEndpoints.CATEGORY_COMBO;
+import static com.qrestor.menu.api.RestEndpoints.INGREDIENTS_COMBO;
 
 @RestController
 @RequestMapping(RestEndpoints.DICTIONARY)
@@ -19,10 +20,15 @@ import static com.qrestor.menu.api.RestEndpoints.RESTAURANT_COMBO;
 @PreAuthorize("hasRole('ROLE_RESTAURANT')")
 public class DictionaryController {
 
-    private final ComboServiceImpl comboServiceImpl;
+    private final DictionaryService dictionaryService;
 
-    @RequestMapping(RESTAURANT_COMBO)
-    public ResponseEntity<Collection<DictionaryDTO<String>>> restaurantCombo() {
-        return ResponseEntity.ok(comboServiceImpl.getRestaurantCombo());
+    @RequestMapping(CATEGORY_COMBO)
+    public ResponseEntity<Collection<DictionaryDTO<String>>> getCategoryCombo() {
+        return ResponseEntity.ok(dictionaryService.getCategoryCombo());
+    }
+
+    @RequestMapping(INGREDIENTS_COMBO)
+    public ResponseEntity<Collection<DictionaryDTO<String>>> getIngredientCombo() {
+        return ResponseEntity.ok(dictionaryService.getIngredientCombo());
     }
 }
