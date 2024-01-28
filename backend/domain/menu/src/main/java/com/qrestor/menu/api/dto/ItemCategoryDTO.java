@@ -12,7 +12,6 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class ItemCategoryDTO extends AbstractPublicDTO {
-    UUID publicId;
     String nlsKey;
     String iconCode;
 }

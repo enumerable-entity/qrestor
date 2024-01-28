@@ -2,15 +2,24 @@ package com.qrestor.restaurant.service;
 
 import com.qrestor.commons.AbstractCrudService;
 import com.qrestor.commons.CrudService;
-import com.qrestor.commons.mapper.CrudMapper;
+import com.qrestor.commons.dto.PermissionCheckResponse;
+import com.qrestor.commons.security.SecurityUtils;
 import com.qrestor.restaurant.api.dto.RestaurantDTO;
 import com.qrestor.restaurant.entity.RestaurantEntity;
+import com.qrestor.restaurant.mapper.RestaurantMapper;
 import com.qrestor.restaurant.repository.RestaurantRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class RestaurantService extends AbstractCrudService<RestaurantDTO, RestaurantEntity> implements CrudService<RestaurantDTO> {
-    public RestaurantService(CrudMapper<RestaurantDTO, RestaurantEntity> mapper, RestaurantRepository repository) {
+    public RestaurantService(RestaurantMapper mapper, RestaurantRepository repository) {
         super(mapper, repository);
+    }
+
+    public PermissionCheckResponse checkOwnership(UUID restaurantId) {
+        boolean exist = ((RestaurantRepository) repository).existsByPublicIdAndUserId(restaurantId, SecurityUtils.getPrincipalUUID());
+        return new PermissionCheckResponse(exist);
     }
 }

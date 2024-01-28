@@ -1,5 +1,6 @@
 package com.qrestor.menu.entity;
 
+import com.qrestor.commons.entity.OwnedEntity;
 import com.qrestor.commons.entity.PublicEntity;
 import com.qrestor.menu.systemuser.enitity.SyncUser;
 import jakarta.persistence.*;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "menu", schema = "menu")
-public class MenuEntity implements PublicEntity {
+public class MenuEntity extends OwnedEntity implements PublicEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
@@ -37,7 +38,7 @@ public class MenuEntity implements PublicEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", updatable = false)
     private UUID userId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = SyncUser.class)
@@ -52,8 +53,10 @@ public class MenuEntity implements PublicEntity {
     public final boolean equals(Object o) {
         if (this == o) return true;
         if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy hibernateProxy ? hibernateProxy.getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy hibernateProxy ? hibernateProxy.getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        Class<?> oEffectiveClass = o instanceof HibernateProxy hibernateProxy ?
+                hibernateProxy.getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy hibernateProxy ?
+                hibernateProxy.getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         MenuEntity that = (MenuEntity) o;
         return getId() != null && Objects.equals(getId(), that.getId());
@@ -61,6 +64,7 @@ public class MenuEntity implements PublicEntity {
 
     @Override
     public final int hashCode() {
-        return this instanceof HibernateProxy hibernateProxy ? hibernateProxy.getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+        return this instanceof HibernateProxy hibernateProxy ?
+                hibernateProxy.getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }

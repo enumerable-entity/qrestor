@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@PreAuthorize("hasRole('ROLE_RESTAURATEUR')")
+@PreAuthorize("hasRole('RESTAURATEUR')")
 @RequestMapping(RestEndpoints.INGREDIENTS_MANAGEMENT)
-public class IngredientController extends CrudController<IngredientDTO> {
-    public IngredientController(IngredientService crudService) {
+public class IngredientManagementController extends CrudController<IngredientDTO> {
+    public IngredientManagementController(IngredientService crudService) {
         super(crudService);
     }
 }

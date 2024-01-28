@@ -8,6 +8,9 @@ import com.qrestor.menu.repository.CategoryRepository;
 import com.qrestor.menu.service.CategoryService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 /**
  * Service for {@link com.qrestor.menu.entity.ItemCategoryEntity}
  * Categories are predefined and cannot be created by the user
@@ -17,4 +20,9 @@ public class CategoryServiceImpl extends AbstractCrudService<ItemCategoryDTO, It
     public CategoryServiceImpl(CategoryMapper mapper, CategoryRepository repository) {
         super(mapper, repository);
     }
+
+    public Optional<ItemCategoryEntity> findByPublicId(UUID publicId) {
+        return repository.findByUuid(publicId);
+    }
+
 }

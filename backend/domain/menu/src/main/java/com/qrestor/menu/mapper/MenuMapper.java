@@ -7,5 +7,4 @@ import org.mapstruct.Mapper;
 
 @Mapper
 public interface MenuMapper extends CrudMapper<MenuDTO, MenuEntity> {
-    MenuDTO toDto(MenuEntity entity);
 }

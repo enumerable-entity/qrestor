@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface IngredientRepository extends PublicRepository<IngredientEntity, Long> {
@@ -16,4 +18,6 @@ public interface IngredientRepository extends PublicRepository<IngredientEntity,
             where r.isEnabled = true
             """)
     Collection<DictionaryDTO<String>> getIngredientsCombo();
+
+    List<IngredientEntity> findByUserIdAndPublicIdIn(UUID userId, List<UUID> publicIds);
 }

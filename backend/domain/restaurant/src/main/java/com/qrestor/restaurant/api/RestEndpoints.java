@@ -3,6 +3,7 @@ package com.qrestor.restaurant.api;
 public interface RestEndpoints {
 
     String RESTAURANT = "/restaurant";
+    String INTEGRATION = "/integration";
     String RESTAURANT_COMBO = "/restaurantCombo";
     String DICTIONARY = "/dictionary";
     String MANAGEMENT =  "/management" + RESTAURANT;

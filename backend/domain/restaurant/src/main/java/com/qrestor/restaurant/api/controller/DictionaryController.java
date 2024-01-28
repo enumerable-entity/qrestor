@@ -16,7 +16,7 @@ import static com.qrestor.restaurant.api.RestEndpoints.RESTAURANT_COMBO;
 @RestController
 @RequestMapping(RestEndpoints.DICTIONARY)
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ROLE_RESTAURANT')")
+@PreAuthorize("hasRole('RESTAURATEUR')")
 public class DictionaryController {
 
     private final ComboServiceImpl comboServiceImpl;

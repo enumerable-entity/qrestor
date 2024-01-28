@@ -1,19 +1,24 @@
 package com.qrestor.menu.entity;
 
+import com.qrestor.commons.entity.OwnedEntity;
 import com.qrestor.commons.entity.PublicEntity;
+import com.qrestor.menu.systemuser.enitity.SyncUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "menu_items", schema = "menu")
-public class MenuItemEntity implements PublicEntity {
+@Table(name = "menu_items", schema = "menu", indexes = {
+        @Index(name = "menu_items_public_id_idx", columnList = "public_id", unique = true)
+})
+public class MenuItemEntity extends OwnedEntity implements PublicEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
@@ -31,22 +36,31 @@ public class MenuItemEntity implements PublicEntity {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
-    @Column(name = "is_active", nullable = false)
-    private Boolean isActive;
+    @Column(name = "is_enabled", nullable = false)
+    private boolean isEnabled;
 
     @Column(name = "image_url", length = 500)
     private String imageUrl;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, targetEntity = ItemCategoryEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "item_category_id", nullable = false)
-    private ItemCategory itemCategory;
+    private ItemCategoryEntity itemCategory;
 
-    @Column(name = "ingredients")
-    @ElementCollection
-    private List<String> ingredients;
+    @Column(name = "user_id", updatable = false)
+    private UUID userId;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = SyncUser.class)
+    @JoinColumn(name = "user_id", nullable = false, updatable = false, insertable = false)
+    private SyncUser user;
+
+    @ManyToMany
+    @JoinTable(name = "menu_items_to_ingredients",
+            joinColumns = @JoinColumn(name = "menu_item_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
+    private Set<IngredientEntity> ingredients = new LinkedHashSet<>();
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "menu_id", nullable = false)
+    @JoinColumn(name = "menu_id")
     private MenuEntity menu;
 
     @Column(name = "is_vegetarian")

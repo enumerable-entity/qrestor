@@ -26,4 +26,6 @@ public interface RestaurantRepository extends PublicRepository<RestaurantEntity,
             where r.userId = :principalUUID
             """)
     Collection<DictionaryDTO<String>> getRestaurantCombo(UUID principalUUID);
+
+    boolean existsByPublicIdAndUserId(UUID publicId, UUID userId);
 }
