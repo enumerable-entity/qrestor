@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+
+    <changeSet id="2024012812331234-0" author="Artur Babii">
+        <insert tableName="item_categories">
+            <column name="id" valueSequenceNext="item_categories_seq"/>
+            <column name="is_active">true</column>
+            <column name="is_default">true</column>
+            <column name="name">[DRINKS]</column>
+            <column name="public_id" valueComputed="uuid_generate_v4()"/>
+        </insert>
+        <insert tableName="item_categories">
+            <column name="id" valueSequenceNext="item_categories_seq"/>
+            <column name="is_active">true</column>
+            <column name="is_default">true</column>
+            <column name="name">[CAFE]</column>
+            <column name="public_id" valueComputed="uuid_generate_v4()"/>
+        </insert>
+        <insert tableName="item_categories">
+            <column name="id" valueSequenceNext="item_categories_seq"/>
+            <column name="is_active">true</column>
+            <column name="is_default">true</column>
+            <column name="name">[SNACKS]</column>
+            <column name="public_id" valueComputed="uuid_generate_v4()"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
