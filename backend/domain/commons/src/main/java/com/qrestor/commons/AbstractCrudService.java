@@ -15,8 +15,8 @@ import java.util.UUID;
 public abstract class AbstractCrudService<D extends AbstractPublicDTO, E extends PublicEntity> implements CrudService<D> {
 
 
-    private final CrudMapper<D, E> mapper;
-    private final PublicRepository<E, Long> repository;
+    protected final CrudMapper<D, E> mapper;
+    protected final PublicRepository<E, Long> repository;
 
     @Override
     public D create(D dto) {
