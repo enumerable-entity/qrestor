@@ -15,6 +15,8 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.qrestor.commons.common.Constants.USER_PROPERTY;
+
 public class ExtendedRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implements PublicRepository<T, ID> {
 
     private final EntityManager entityManager;
@@ -52,7 +54,7 @@ public class ExtendedRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> im
         CriteriaDelete<T> criteriaDelete = builder.createCriteriaDelete(getDomainClass());
         Root<T> root = criteriaDelete.from(getDomainClass());
         criteriaDelete.where(builder.equal(root.get(AbstractPublicDTO.Fields.publicId), uuid),
-                builder.equal(root.get(AbstractPublicDTO.Fields.userId), userId));
+                builder.equal(root.get(USER_PROPERTY), userId));
         entityManager.createQuery(criteriaDelete).executeUpdate();
     }
 

@@ -19,4 +19,5 @@ public interface CrudService<D extends AbstractPublicDTO> {
     public D findByIdPublic(UUID id);
 
     List<D> findAll(Pageable pageable);
+    public List<D> findTotallyAll();
 }

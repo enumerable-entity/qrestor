@@ -11,6 +11,8 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.List;
 import java.util.UUID;
 
+import static com.qrestor.commons.common.Constants.USER_PROPERTY;
+
 @RequiredArgsConstructor
 public abstract class AbstractCrudService<D extends AbstractPublicDTO, E extends PublicEntity> implements CrudService<D> {
 
@@ -54,8 +56,17 @@ public abstract class AbstractCrudService<D extends AbstractPublicDTO, E extends
     public List<D> findAll(Pageable pageable) {
         Specification<E> spec = Specification.where(
                 (root, query, criteriaBuilder) ->
-                        criteriaBuilder.equal(root.get(AbstractPublicDTO.Fields.userId), SecurityUtils.getPrincipalUUID()));
+                        criteriaBuilder.equal(root.get(USER_PROPERTY), SecurityUtils.getPrincipalUUID()));
         return mapper.toDto(repository.findAll(spec, pageable));
+    }
+
+    /**
+     * Find all entities without security check and pagination.
+     * WARNING: Use this method only for small public available datasets.
+     */
+    @Override
+    public List<D> findTotallyAll() {
+        return mapper.toDto(repository.findAll());
     }
 
     private UUID generateQrCode() {

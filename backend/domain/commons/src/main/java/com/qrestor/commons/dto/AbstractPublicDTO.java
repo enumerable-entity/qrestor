@@ -17,7 +17,4 @@ public abstract class AbstractPublicDTO extends BasicDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID publicId;
-
-    @JsonIgnore
-    private UUID userId;
 }

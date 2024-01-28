@@ -1,4 +1,4 @@
-package com.qrestor.auth.authority;
+package com.qrestor.commons.security;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

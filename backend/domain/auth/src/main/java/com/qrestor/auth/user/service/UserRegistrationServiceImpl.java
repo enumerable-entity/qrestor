@@ -2,7 +2,7 @@ package com.qrestor.auth.user.service;
 
 import com.qrestor.auth.api.dto.RegistrationRequestDTO;
 import com.qrestor.auth.authority.RoleService;
-import com.qrestor.auth.authority.SystemRole;
+import com.qrestor.commons.security.SystemRole;
 import com.qrestor.auth.token.entity.TokenEntity;
 import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.service.TokenService;
