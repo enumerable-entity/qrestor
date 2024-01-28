@@ -30,6 +30,9 @@ public class RestaurantSettingsEntity {
     @Column(name = "logo_url", length = 500)
     private String logoUrl;
 
+    @Column(name = "top_header_url", length = 500)
+    private String topHeaderUrl;
+
     @OneToOne(optional = false, orphanRemoval = true)
     @JoinColumn(name = "restaurant_id", nullable = false, unique = true)
     private RestaurantEntity restaurant;

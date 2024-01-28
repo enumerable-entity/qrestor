@@ -15,4 +15,5 @@ public class RestaurantSettingsDTO extends BasicDTO {
     String primaryColor;
     String secondaryColor;
     String logoUrl;
+    String topHeaderUrl;
 }
