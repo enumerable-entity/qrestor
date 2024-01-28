@@ -10,7 +10,7 @@ public interface CrudService<D extends AbstractPublicDTO> {
 
     D create(D dto);
 
-    D update(UUID id, D dto);
+    D update(D dto);
 
     void delete(UUID id);
 

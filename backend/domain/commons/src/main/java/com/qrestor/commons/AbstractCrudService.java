@@ -7,6 +7,7 @@ import com.qrestor.commons.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,14 +22,16 @@ public abstract class AbstractCrudService<D extends AbstractPublicDTO, E extends
     protected final PublicRepository<E, Long> repository;
 
     @Override
+    @Transactional
     public D create(D dto) {
         dto.setPublicId(generateQrCode());
         return mapper.toDto(repository.save(mapper.toEntity(dto)));
     }
 
     @Override
-    public D update(UUID id, D dto) {
-        return repository.findByUuidSecure(id, SecurityUtils.getPrincipalUUID()).map(entity -> {
+    @Transactional
+    public D update(D dto) {
+        return repository.findByUuidSecure(dto.getPublicId(), SecurityUtils.getPrincipalUUID()).map(entity -> {
             E updatedEntity = mapper.partialUpdate(dto, entity);
             return mapper.toDto(repository.save(updatedEntity));
         }).orElseThrow(() -> new RuntimeException("Entity not found"));
@@ -40,6 +43,7 @@ public abstract class AbstractCrudService<D extends AbstractPublicDTO, E extends
     }
 
     @Override
+    @Transactional(readOnly = true)
     public D findById(UUID id) {
         return repository.findByUuidSecure(id, SecurityUtils.getPrincipalUUID())
                 .map(mapper::toDto)
@@ -47,12 +51,14 @@ public abstract class AbstractCrudService<D extends AbstractPublicDTO, E extends
     }
 
     @Override
+    @Transactional(readOnly = true)
     public D findByIdPublic(UUID id) {
         return repository.findByUuid(id).map(mapper::toDto)
                 .orElseThrow(() -> new RuntimeException("Entity not found"));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<D> findAll(Pageable pageable) {
         Specification<E> spec = Specification.where(
                 (root, query, criteriaBuilder) ->
@@ -65,11 +71,12 @@ public abstract class AbstractCrudService<D extends AbstractPublicDTO, E extends
      * WARNING: Use this method only for small public available datasets.
      */
     @Override
+    @Transactional(readOnly = true)
     public List<D> findTotallyAll() {
         return mapper.toDto(repository.findAll());
     }
 
-    private UUID generateQrCode() {
+    protected UUID generateQrCode() {
         return UUID.randomUUID();
     }
 }

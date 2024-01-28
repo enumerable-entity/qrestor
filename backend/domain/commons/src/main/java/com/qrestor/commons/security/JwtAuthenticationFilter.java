@@ -17,11 +17,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+import static com.qrestor.commons.security.SecurityConstants.BEARER_PREFIX;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_PREFIX = "Bearer ";
+
 
     @Value("${app.auth.jwt.secret}")
     private String jwtSecret;
@@ -31,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-        final String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        final String bearerToken = request.getHeader(AUTHORIZATION);
         final String jwt;
 
         if (bearerToken == null || !bearerToken.startsWith(BEARER_PREFIX)) {
@@ -58,6 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private List<SimpleGrantedAuthority> mapRolesToAuthorities(List<String> claims) {
         return claims.stream()
+                .map(string-> "ROLE_" + string)
                 .map(SimpleGrantedAuthority::new)
                 .toList();
     }

@@ -34,7 +34,7 @@ public abstract class CrudController<D extends AbstractPublicDTO> {
     @PutMapping("/{id}")
     public ResponseEntity<D> update(@PathVariable UUID id, @RequestBody D dto) {
         dto.setPublicId(id);
-        return ResponseEntity.ok(crudService.update(id, dto));
+        return ResponseEntity.ok(crudService.update(dto));
     }
 
     @DeleteMapping("/{id}")
