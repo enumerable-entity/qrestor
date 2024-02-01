@@ -14,7 +14,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public abstract class CrudController<D extends AbstractPublicDTO> {
 
-    private final CrudService<D> crudService;
+    protected final CrudService<D> crudService;
 
     @GetMapping
     public ResponseEntity<List<D>> findAll(@PageableDefault(size = 30) Pageable pageable) {

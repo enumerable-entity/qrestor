@@ -21,6 +21,9 @@ public abstract class AbstractCrudService<D extends AbstractPublicDTO, E extends
     protected final CrudMapper<D, E> mapper;
     protected final PublicRepository<E, Long> repository;
 
+    protected final Specification<E> OWNER_SPEC = (root, query, criteriaBuilder) ->
+            criteriaBuilder.equal(root.get(USER_PROPERTY), SecurityUtils.getPrincipalUUID());
+
     @Override
     @Transactional
     public D create(D dto) {
@@ -60,9 +63,7 @@ public abstract class AbstractCrudService<D extends AbstractPublicDTO, E extends
     @Override
     @Transactional(readOnly = true)
     public List<D> findAll(Pageable pageable) {
-        Specification<E> spec = Specification.where(
-                (root, query, criteriaBuilder) ->
-                        criteriaBuilder.equal(root.get(USER_PROPERTY), SecurityUtils.getPrincipalUUID()));
+        Specification<E> spec = Specification.where(OWNER_SPEC);
         return mapper.toDto(repository.findAll(spec, pageable));
     }
 
