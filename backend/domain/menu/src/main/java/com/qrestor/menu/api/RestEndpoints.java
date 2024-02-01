@@ -34,6 +34,7 @@ public interface RestEndpoints {
 
     String[] PUBLIC_ENDPOINTS_LIST = {
             CATEGORY,
+            MENU + "/{id}/{itemId}",
             MENU + "/{id}",
             "/error/**"};
 

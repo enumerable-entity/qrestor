@@ -33,6 +33,6 @@ public class ItemOptionsManController extends CrudController<MenuItemOptionDTO> 
     @GetMapping("/all")
     public ResponseEntity<List<MenuItemOptionDTO>> findAllByMenuItemId(@PageableDefault(size = 30) Pageable pageable,
                                                                        @RequestParam(required = false) UUID menuItemId) {
-        return ResponseEntity.ok(menuItemsService.findAllByMenuItemId(pageable, menuItemId));
+        return ResponseEntity.ok(menuItemsService.findAllByMenuItemId(pageable, menuItemId, false));
     }
 }

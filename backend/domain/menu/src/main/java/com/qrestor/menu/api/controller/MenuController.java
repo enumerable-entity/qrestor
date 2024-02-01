@@ -1,5 +1,6 @@
 package com.qrestor.menu.api.controller;
 
+import com.qrestor.commons.menu.dto.MenuItemOptionDTO;
 import com.qrestor.menu.api.RestEndpoints;
 import com.qrestor.menu.api.dto.list.MenuListDTO;
 import com.qrestor.menu.service.MenuPublicService;
@@ -23,6 +24,11 @@ public class MenuController {
     @RequestMapping("/{restId}")
     public ResponseEntity<List<MenuListDTO>> getActiveMenuForRestaurant(@PathVariable UUID restId) {
         return new ResponseEntity<>(menuPublicService.getActiveMenu(restId), HttpStatus.OK);
+    }
+
+    @RequestMapping("/{menuId}/{menuItemId}")
+    public ResponseEntity<List<MenuItemOptionDTO>> getMenuItemOptions(@PathVariable UUID menuId, @PathVariable UUID menuItemId) {
+        return new ResponseEntity<>(menuPublicService.getMenuItemOptions(menuId, menuItemId), HttpStatus.OK);
     }
 
 }

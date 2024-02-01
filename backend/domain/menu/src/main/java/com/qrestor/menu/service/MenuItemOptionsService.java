@@ -12,5 +12,5 @@ import java.util.UUID;
 public interface MenuItemOptionsService extends CrudService<MenuItemOptionDTO> {
     Optional<MenuItemOptionEntity> findEntityByUuidIn(UUID uuid);
 
-    List<MenuItemOptionDTO> findAllByMenuItemId(Pageable pageable, UUID menuItemId);
+    List<MenuItemOptionDTO> findAllByMenuItemId(Pageable pageable, UUID menuItemId, boolean publicRequest);
 }

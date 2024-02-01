@@ -35,12 +35,14 @@ public class MenuItemOptionsServiceImpl extends AbstractCrudService<MenuItemOpti
 
     @Override
     @Transactional(readOnly = true)
-    public List<MenuItemOptionDTO> findAllByMenuItemId(Pageable pageable, UUID menuItemId) {
-        Specification<MenuItemOptionEntity> spec = Specification.where(OWNER_SPEC);
-        if (menuItemId != null)
-            spec.and((root, query, criteriaBuilder) ->
+    public List<MenuItemOptionDTO> findAllByMenuItemId(Pageable pageable, UUID menuItemId, boolean publicRequest) {
+        Specification<MenuItemOptionEntity> spec;
+        if (menuItemId != null) {
+            spec = Specification.where((root, query, criteriaBuilder) ->
                             criteriaBuilder.equal(root.get(MenuItemOptionEntity.Fields.menuItem)
                                     .get(MenuItemEntity.Fields.publicId), menuItemId));
+        } else spec = Specification.where(null);
+        if(!publicRequest) spec.and(OWNER_SPEC);
         return mapper.toDto(repository.findAll(spec, pageable));
     }
 
