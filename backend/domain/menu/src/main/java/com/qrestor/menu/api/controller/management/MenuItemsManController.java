@@ -1,4 +1,4 @@
-package com.qrestor.menu.api.controller;
+package com.qrestor.menu.api.controller.management;
 
 import com.qrestor.commons.CrudController;
 import com.qrestor.menu.api.RestEndpoints;
@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(RestEndpoints.MENU_ITEMS_MANAGEMENT)
 @PreAuthorize("hasRole('RESTAURATEUR')")
-public class MenuItemsManagementController extends CrudController<MenuItemDTO> {
-    public MenuItemsManagementController(MenuItemsService crudService) {
+public class MenuItemsManController extends CrudController<MenuItemDTO> {
+
+    public MenuItemsManController(MenuItemsService crudService) {
         super(crudService);
     }
+
+
 }

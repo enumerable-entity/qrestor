@@ -16,8 +16,9 @@ public interface IngredientRepository extends PublicRepository<IngredientEntity,
             select new com.qrestor.commons.dto.DictionaryDTO(r.publicId, r.name)
             from IngredientEntity r
             where r.isEnabled = true
+            and r.userId = :userId
             """)
-    Collection<DictionaryDTO<String>> getIngredientsCombo();
+    Collection<DictionaryDTO<String>> getIngredientsCombo(UUID userId);
 
     List<IngredientEntity> findByUserIdAndPublicIdIn(UUID userId, List<UUID> publicIds);
 }

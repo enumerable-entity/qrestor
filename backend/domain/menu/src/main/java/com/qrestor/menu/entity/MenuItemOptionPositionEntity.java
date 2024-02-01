@@ -6,20 +6,19 @@ import com.qrestor.menu.systemuser.enitity.SyncUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.FieldNameConstants;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@FieldNameConstants
-@Table(name = "menu_items", schema = "menu", indexes = {
-        @Index(name = "menu_items_public_id_idx", columnList = "public_id", unique = true)
+@Table(name = "menu_items_options_positions", schema = "menu", indexes = {
+        @Index(name = "menu_items_options_position_public_id_idx", columnList = "public_id", unique = true)
 })
-public class MenuItemEntity extends OwnedEntity implements PublicEntity {
+public class MenuItemOptionPositionEntity extends OwnedEntity implements PublicEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
@@ -31,21 +30,11 @@ public class MenuItemEntity extends OwnedEntity implements PublicEntity {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description")
-    private String description;
-
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
     @Column(name = "is_enabled", nullable = false)
     private boolean isEnabled;
-
-    @Column(name = "image_url", length = 500)
-    private String imageUrl;
-
-    @ManyToOne(optional = false, targetEntity = ItemCategoryEntity.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_category_id", nullable = false)
-    private ItemCategoryEntity itemCategory;
 
     @Column(name = "user_id", updatable = false)
     private UUID userId;
@@ -54,54 +43,9 @@ public class MenuItemEntity extends OwnedEntity implements PublicEntity {
     @JoinColumn(name = "user_id", nullable = false, updatable = false, insertable = false)
     private SyncUser user;
 
-    @ManyToMany
-    @JoinTable(name = "menu_items_to_ingredients",
-            joinColumns = @JoinColumn(name = "menu_item_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
-    private Set<IngredientEntity> ingredients = new LinkedHashSet<>();
-
     @ManyToOne(optional = false)
-    @JoinColumn(name = "menu_id")
-    private MenuEntity menu;
-
-    @Column(name = "is_vegetarian")
-    private Boolean isVegetarian;
-
-    @Column(name = "is_vegan")
-    private Boolean isVegan;
-
-    @Column(name = "is_gluten_free")
-    private Boolean isGlutenFree;
-
-    @Column(name = "is_spicy")
-    private Boolean isSpicy;
-
-    @Column(name = "is_halal")
-    private Boolean isHalal;
-
-    @Column(name = "is_kosher")
-    private Boolean isKosher;
-
-    @Column(name = "is_nuts")
-    private Boolean isNuts;
-
-    @Column(name = "is_dairy")
-    private Boolean isDairy;
-
-    @Column(name = "is_eggs")
-    private Boolean isEggs;
-
-    @Column(name = "is_fish")
-    private Boolean isFish;
-
-    @Column(name = "is_shellfish")
-    private Boolean isShellfish;
-
-    @Column(name = "is_soy")
-    private Boolean isSoy;
-
-    @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MenuItemOptionEntity> menuItemOptions = new ArrayList<>();
+    @JoinColumn(name = "menu_item_option_id", nullable = false)
+    private MenuItemOptionEntity menuItemOption;
 
     @Override
     public final boolean equals(Object o) {
@@ -112,7 +56,7 @@ public class MenuItemEntity extends OwnedEntity implements PublicEntity {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy hibernateProxy ?
                 hibernateProxy.getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        MenuItemEntity that = (MenuItemEntity) o;
+        MenuItemOptionPositionEntity that = (MenuItemOptionPositionEntity) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

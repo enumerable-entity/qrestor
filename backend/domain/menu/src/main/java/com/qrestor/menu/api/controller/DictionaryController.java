@@ -7,12 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.UUID;
 
-import static com.qrestor.menu.api.RestEndpoints.CATEGORY_COMBO;
-import static com.qrestor.menu.api.RestEndpoints.INGREDIENTS_COMBO;
+import static com.qrestor.menu.api.RestEndpoints.*;
 
 @RestController
 @RequestMapping(RestEndpoints.DICTIONARY)
@@ -30,5 +31,17 @@ public class DictionaryController {
     @RequestMapping(INGREDIENTS_COMBO)
     public ResponseEntity<Collection<DictionaryDTO<String>>> getIngredientCombo() {
         return ResponseEntity.ok(dictionaryService.getIngredientCombo());
+    }
+
+    @RequestMapping(ITEM_OPTIONS_COMBO)
+    public ResponseEntity<Collection<DictionaryDTO<String>>> getMenuItemOptionsCombo(
+            @RequestParam(required = false) UUID menuItemId) {
+        return ResponseEntity.ok(dictionaryService.getMenuItemOptionsCombo(menuItemId));
+    }
+
+    @RequestMapping(ITEM_OPTION_POSITIONS_COMBO)
+    public ResponseEntity<Collection<DictionaryDTO<String>>> getMenuItemOptionsPositionsCombo(
+            @RequestParam(required = false) UUID menuItemOptionId) {
+        return ResponseEntity.ok(dictionaryService.getMenuItemOptionsPositionsCombo(menuItemOptionId));
     }
 }

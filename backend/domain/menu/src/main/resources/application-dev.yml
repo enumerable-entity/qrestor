@@ -4,8 +4,6 @@ app:
     jwt:
       secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
 spring:
-  config:
-    import: optional:file:.env[.properties]
   datasource:
     url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
     username: ${AUTH_SERVICE_DB_USER:${spring.application.name}}

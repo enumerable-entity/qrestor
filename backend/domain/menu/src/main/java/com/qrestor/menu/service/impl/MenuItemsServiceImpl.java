@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class MenuItemsServiceImpl extends AbstractCrudService<MenuItemDTO, MenuItemEntity> implements MenuItemsService {
@@ -67,5 +68,10 @@ public class MenuItemsServiceImpl extends AbstractCrudService<MenuItemDTO, MenuI
         updatedEntity.getIngredients().clear();
         updatedEntity.getIngredients().addAll(ingredientEntities);
         return mapper.toDto(repository.save(updatedEntity));
+    }
+
+    @Override
+    public Optional<MenuItemEntity> findEntityByUuidIn(UUID menuItemId) {
+        return repository.findByUuidSecure(menuItemId, SecurityUtils.getPrincipalUUID());
     }
 }
