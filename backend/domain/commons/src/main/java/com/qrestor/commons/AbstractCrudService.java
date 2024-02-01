@@ -27,7 +27,7 @@ public abstract class AbstractCrudService<D extends AbstractPublicDTO, E extends
     @Override
     @Transactional
     public D create(D dto) {
-        dto.setPublicId(generateQrCode());
+        dto.setPublicId(Utils.generatePublicId());
         return mapper.toDto(repository.save(mapper.toEntity(dto)));
     }
 
@@ -77,7 +77,4 @@ public abstract class AbstractCrudService<D extends AbstractPublicDTO, E extends
         return mapper.toDto(repository.findAll());
     }
 
-    protected UUID generateQrCode() {
-        return UUID.randomUUID();
-    }
 }

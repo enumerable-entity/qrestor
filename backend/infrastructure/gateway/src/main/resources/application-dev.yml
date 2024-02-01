@@ -40,6 +40,18 @@ spring:
             - Path=/menu/**
           filters:
             - RewritePath=/menu/(?<segment>.*), /${segment}
+        - id: orders
+          uri: lb://orders
+          predicates:
+            - Path=/orders/**
+          filters:
+            - RewritePath=/orders/(?<segment>.*), /${segment}
+        - id: feedback
+          uri: lb://feedback
+          predicates:
+            - Path=/feedback/**
+          filters:
+            - RewritePath=/feedback/(?<segment>.*), /${segment}
         - id: auth
           uri: http://auth:8097
           predicates:
