@@ -16,6 +16,7 @@ backend/domain/menu/target
 backend/domain/orders/target
 backend/domain/qr_resolver/target
 backend/domain/restaurant/target
+backend/domain/security-commons/target
 
 backend/infrastructure/data
 backend/infrastructure/eureka/target
