@@ -52,6 +52,12 @@ spring:
             - Path=/feedback/**
           filters:
             - RewritePath=/feedback/(?<segment>.*), /${segment}
+        - id: importer
+          uri: lb://importer
+          predicates:
+            - Path=/importer/**
+          filters:
+            - RewritePath=/importer/(?<segment>.*), /${segment}
         - id: auth
           uri: http://auth:8097
           predicates:
