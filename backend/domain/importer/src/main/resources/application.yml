@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: importer
+  jackson:
+    mapper:
+      ACCEPT_CASE_INSENSITIVE_ENUMS: true
 eureka:
   client:
     register-with-eureka: true

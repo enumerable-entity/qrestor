@@ -1,0 +1,64 @@
+{
+  "menus": [
+    {
+      "restaurantId": "1c67bbb9-f693-4619-a457-48afd7cb1e05",
+      "isActive": false,
+      "name": "name_9770242cfaf9",
+      "description": "description_51cf5e4f660c",
+      "menuItems": [
+        {
+          "title": "title_8d86a2662c21",
+          "description": "description_9627cdf40e18",
+          "price": 0.00,
+          "isEnabled": false,
+          "imageUrl": "imageUrl_04eb03779fc1",
+          "itemCategory": {
+            "nlsKey": "nlsKey_f78128b9d8be",
+            "iconCode": "iconCode_45cef0d44493",
+            "publicId": "597b7619-e1af-46b3-9aa8-3e929e57c375"
+          },
+          "ingredients": [
+            {
+              "name": "name_9250be37b5b6",
+              "isEnabled": false,
+              "publicId": "fd7dbd38-b8d3-4fbd-9986-d4d383497d21"
+            }
+          ],
+          "isVegetarian": false,
+          "isVegan": false,
+          "isGlutenFree": false,
+          "isSpicy": false,
+          "isHalal": false,
+          "isKosher": false,
+          "isNuts": false,
+          "isDairy": false,
+          "isEggs": false,
+          "isFish": false,
+          "isShellfish": false,
+          "isSoy": false,
+          "options": [
+            {
+              "title": "title_3ed7bc15fe33",
+              "isMultiSelect": false,
+              "isRequired": false,
+              "menuItemOptionPositions": [
+                {
+                  "title": "title_d1526725cb6a",
+                  "price": 0.00,
+                  "isEnabled": false,
+                  "itemOptionId": "471d7f37-d4ee-4171-870b-2f025df5ad1f",
+                  "publicId": "0436d3db-028d-4e62-a513-2783a136c4cc"
+                }
+              ],
+              "isEnabled": false,
+              "menuItemId": "c8ff2b4f-310f-4f93-90cd-3cee01c5e32a",
+              "publicId": "8e4f8cec-780f-4aa3-aeb3-c30d74ba6651"
+            }
+          ],
+          "publicId": "6d693012-b22b-4b99-82ae-e95105d10eb8"
+        }
+      ],
+      "publicId": "d0a512d6-f6c4-4767-803c-7102c82c502d"
+    }
+  ]
+}
