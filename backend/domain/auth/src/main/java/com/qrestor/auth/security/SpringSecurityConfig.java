@@ -1,7 +1,7 @@
 package com.qrestor.auth.security;
 
 import com.qrestor.auth.api.RestEndpoints;
-import com.qrestor.commons.security.JwtAuthenticationFilter;
+import com.qrestor.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

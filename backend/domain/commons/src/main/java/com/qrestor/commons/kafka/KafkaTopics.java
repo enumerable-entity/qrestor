@@ -1,8 +1,8 @@
 package com.qrestor.commons.kafka;
 
 
-import com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO;
-import com.qrestor.commons.kafka.dto.UserKafkaSyncDTO;
+import com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO;
+import com.qrestor.models.dto.kafka.UserKafkaSyncDTO;
 import lombok.Getter;
 
 import java.util.Map;
@@ -17,5 +17,6 @@ public class KafkaTopics {
             KafkaEmailSendRequestDTO.class, MAILER_TOPIC
     );
 
-    private KafkaTopics() {}
+    private KafkaTopics() {
+    }
 }

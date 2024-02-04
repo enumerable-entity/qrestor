@@ -1,9 +1,10 @@
 package com.qrestor.commons.mapper;
 
 
-import com.qrestor.commons.dto.AbstractPublicDTO;
 import com.qrestor.commons.entity.PublicEntity;
-import org.mapstruct.*;
+import com.qrestor.models.dto.AbstractPublicDTO;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 

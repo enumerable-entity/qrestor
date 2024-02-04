@@ -1,6 +1,6 @@
 package com.qrestor.commons.entity;
 
-import com.qrestor.commons.security.SecurityUtils;
+import com.qrestor.security.SecurityUtils;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import lombok.Getter;
@@ -13,8 +13,9 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class OwnedEntity {
 
-    public abstract void setUserId(UUID userId);
     public abstract UUID getUserId();
+
+    public abstract void setUserId(UUID userId);
 
     @PrePersist
     public void prePersist() {

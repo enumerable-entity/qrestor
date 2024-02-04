@@ -1,7 +1,7 @@
 package com.qrestor.restaurant.service;
 
-import com.qrestor.commons.dto.DictionaryDTO;
-import com.qrestor.commons.security.SecurityUtils;
+import com.qrestor.models.dto.DictionaryDTO;
+import com.qrestor.security.SecurityUtils;
 import com.qrestor.restaurant.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

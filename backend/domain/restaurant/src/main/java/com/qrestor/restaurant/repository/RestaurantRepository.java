@@ -1,7 +1,7 @@
 package com.qrestor.restaurant.repository;
 
 import com.qrestor.commons.PublicRepository;
-import com.qrestor.commons.dto.DictionaryDTO;
+import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.restaurant.entity.RestaurantEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +21,7 @@ public interface RestaurantRepository extends PublicRepository<RestaurantEntity,
     Page<RestaurantEntity> findAll(Specification<RestaurantEntity> specification, Pageable pageable);
 
     @Query("""
-            select new com.qrestor.commons.dto.DictionaryDTO(r.publicId, r.name)
+            select new com.qrestor.models.dto.DictionaryDTO(r.publicId, r.name)
             from RestaurantEntity r
             where r.userId = :principalUUID
             """)

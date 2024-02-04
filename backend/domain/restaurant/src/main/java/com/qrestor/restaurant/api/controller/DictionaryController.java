@@ -1,6 +1,6 @@
 package com.qrestor.restaurant.api.controller;
 
-import com.qrestor.commons.dto.DictionaryDTO;
+import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.restaurant.api.RestEndpoints;
 import com.qrestor.restaurant.service.ComboServiceImpl;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.qrestor.commons;
 
-import com.qrestor.commons.dto.AbstractPublicDTO;
+import com.qrestor.models.dto.AbstractPublicDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

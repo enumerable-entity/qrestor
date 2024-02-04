@@ -1,6 +1,6 @@
 package com.qrestor.commons.mapper;
 
-import com.qrestor.commons.dto.BasicDTO;
+import com.qrestor.models.dto.BasicDTO;
 import org.mapstruct.BeanMapping;
 
 import java.util.List;

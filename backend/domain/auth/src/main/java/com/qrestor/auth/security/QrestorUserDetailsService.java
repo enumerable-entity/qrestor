@@ -2,7 +2,7 @@ package com.qrestor.auth.security;
 
 import com.qrestor.auth.user.mapper.UserDetailsMapper;
 import com.qrestor.auth.user.service.SystemUserService;
-import com.qrestor.commons.security.QrestorPrincipal;
+import com.qrestor.security.QrestorPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

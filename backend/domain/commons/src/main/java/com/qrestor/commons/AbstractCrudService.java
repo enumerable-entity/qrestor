@@ -1,9 +1,9 @@
 package com.qrestor.commons;
 
-import com.qrestor.commons.dto.AbstractPublicDTO;
 import com.qrestor.commons.entity.PublicEntity;
 import com.qrestor.commons.mapper.CrudMapper;
-import com.qrestor.commons.security.SecurityUtils;
+import com.qrestor.models.dto.AbstractPublicDTO;
+import com.qrestor.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

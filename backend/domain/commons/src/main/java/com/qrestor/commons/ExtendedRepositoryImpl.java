@@ -1,6 +1,6 @@
 package com.qrestor.commons;
 
-import com.qrestor.commons.dto.AbstractPublicDTO;
+import com.qrestor.models.dto.AbstractPublicDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;

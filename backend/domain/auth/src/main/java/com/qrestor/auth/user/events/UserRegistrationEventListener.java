@@ -4,8 +4,8 @@ package com.qrestor.auth.user.events;
 import com.qrestor.auth.kafka.producers.KafkaProducer;
 import com.qrestor.auth.token.entity.TokenEntity;
 import com.qrestor.auth.user.entity.SystemUserEntity;
-import com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO;
-import com.qrestor.commons.kafka.dto.UserKafkaSyncDTO;
+import com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO;
+import com.qrestor.models.dto.kafka.UserKafkaSyncDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 import static com.qrestor.auth.api.RestEndpoints.*;
-import static com.qrestor.commons.common.EmailRequestType.EMAIL_VERIFICATION;
-import static com.qrestor.commons.common.EmailRequestType.PASSWORD_RESET;
-import static com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO.URL_PARAM;
-import static com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO.USER_NAME_PARAM;
+import static com.qrestor.models.EmailRequestType.EMAIL_VERIFICATION;
+import static com.qrestor.models.EmailRequestType.PASSWORD_RESET;
+import static com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO.URL_PARAM;
+import static com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO.USER_NAME_PARAM;
 
 @Component
 @Slf4j

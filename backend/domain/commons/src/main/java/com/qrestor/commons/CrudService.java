@@ -1,6 +1,6 @@
 package com.qrestor.commons;
 
-import com.qrestor.commons.dto.AbstractPublicDTO;
+import com.qrestor.models.dto.AbstractPublicDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -19,5 +19,6 @@ public interface CrudService<D extends AbstractPublicDTO> {
     public D findByIdPublic(UUID id);
 
     List<D> findAll(Pageable pageable);
+
     public List<D> findTotallyAll();
 }

@@ -2,7 +2,6 @@ package com.qrestor.auth.user.service;
 
 import com.qrestor.auth.api.dto.RegistrationRequestDTO;
 import com.qrestor.auth.authority.RoleService;
-import com.qrestor.commons.security.SystemRole;
 import com.qrestor.auth.token.entity.TokenEntity;
 import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.service.TokenService;
@@ -12,6 +11,7 @@ import com.qrestor.auth.user.events.UserEvent;
 import com.qrestor.auth.user.repository.SystemUserRepository;
 import com.qrestor.auth.user.service.interfaces.UserRegistrationService;
 import com.qrestor.auth.user.validation.SystemUserValidator;
+import com.qrestor.security.SystemRole;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

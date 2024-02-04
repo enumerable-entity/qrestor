@@ -25,3 +25,6 @@ backend/infrastructure/cri-dockerd-0.3.9.arm64.tgz
 .jpb/jpb-settings.xml
 *.iml
 lib/**
+frontend/qrestor/.idea
+frontend/qrestor/.vscode
+frontend/qrestor/node_modules
