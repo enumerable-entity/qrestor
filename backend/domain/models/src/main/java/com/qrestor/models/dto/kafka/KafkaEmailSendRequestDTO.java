@@ -1,7 +1,7 @@
-package com.qrestor.commons.kafka.dto;
+package com.qrestor.models.dto.kafka;
 
 
-import com.qrestor.commons.common.EmailRequestType;
+import com.qrestor.models.EmailRequestType;
 
 import java.util.Map;
 

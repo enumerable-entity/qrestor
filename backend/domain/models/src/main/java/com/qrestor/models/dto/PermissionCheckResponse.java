@@ -1,4 +1,4 @@
-package com.qrestor.commons.dto;
+package com.qrestor.models.dto;
 
 public record PermissionCheckResponse(boolean hasPermission) {
 }

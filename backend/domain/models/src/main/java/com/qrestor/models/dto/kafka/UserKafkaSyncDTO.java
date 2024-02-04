@@ -1,4 +1,4 @@
-package com.qrestor.commons.kafka.dto;
+package com.qrestor.models.dto.kafka;
 
 import java.util.UUID;
 

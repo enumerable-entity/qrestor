@@ -1,7 +1,6 @@
-package com.qrestor.commons.menu.dto;
+package com.qrestor.models.dto.menu;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.qrestor.commons.dto.AbstractPublicDTO;
+import com.qrestor.models.dto.AbstractPublicDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
@@ -15,7 +14,6 @@ import java.util.UUID;
 public class MenuItemOptionPositionDTO extends AbstractPublicDTO {
     String title;
     BigDecimal price;
-    @JsonProperty("isEnabled")
     boolean isEnabled;
     private UUID itemOptionId;
 }
