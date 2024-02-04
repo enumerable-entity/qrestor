@@ -1,4 +1,8 @@
-#PostgreSQL
+app:
+  domain: https://wanted-talented-peacock.ngrok-free.app
+  auth:
+    jwt:
+      secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
 spring:
   datasource:
     url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
@@ -10,10 +14,8 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         show_sql: true
-        use_sql_comments: true
         jdbc:
           lob:
             non_contextual_creation: true
@@ -21,15 +23,17 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/changelog-master.xml
-
+  threads:
+    virtual:
+      enabled: true
 
 logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
   level:
     org:
-      hibernate:
-        SQL: DEBUG
-        cache: DEBUG
-        stat: DEBUG
+      springframework:
+        security: INFO
 eureka:
   client:
     register-with-eureka: true
@@ -52,3 +56,14 @@ management:
   zipkin:
     tracing:
       endpoint: http://localhost:9411/api/v2/spans
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: rate-limit-buckets
+      url: /feedback
+      rate-limits:
+        - bandwidths:
+            - capacity: 3
+              time: 1
+              unit: minutes
+              refill-speed: interval
