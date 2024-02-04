@@ -1,7 +1,7 @@
 package com.qrestor.menu.service.impl;
 
 import com.qrestor.commons.AbstractCrudService;
-import com.qrestor.commons.security.SecurityUtils;
+import com.qrestor.commons.Utils;
 import com.qrestor.menu.api.dto.IngredientDTO;
 import com.qrestor.menu.api.dto.MenuItemDTO;
 import com.qrestor.menu.entity.IngredientEntity;
@@ -13,6 +13,7 @@ import com.qrestor.menu.service.CategoryService;
 import com.qrestor.menu.service.IngredientService;
 import com.qrestor.menu.service.MenuItemsService;
 import com.qrestor.menu.service.MenuService;
+import com.qrestor.security.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +39,7 @@ public class MenuItemsServiceImpl extends AbstractCrudService<MenuItemDTO, MenuI
     @Override
     @Transactional
     public MenuItemDTO create(MenuItemDTO dto) {
-        dto.setPublicId(generateQrCode());
+        dto.setPublicId(Utils.generatePublicId());
         MenuItemEntity entity = mapper.toEntity(dto);
         Optional<ItemCategoryEntity> category = categoryService.findByPublicId(dto.getItemCategory().getPublicId());
         entity.setItemCategory(category.orElseThrow(() -> new RuntimeException("Category not found")));

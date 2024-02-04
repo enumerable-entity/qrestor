@@ -54,13 +54,13 @@ public class MenuItemEntity extends OwnedEntity implements PublicEntity {
     @JoinColumn(name = "user_id", nullable = false, updatable = false, insertable = false)
     private SyncUser user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "menu_items_to_ingredients",
             joinColumns = @JoinColumn(name = "menu_item_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
     private Set<IngredientEntity> ingredients = new LinkedHashSet<>();
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, targetEntity = MenuEntity.class)
     @JoinColumn(name = "menu_id")
     private MenuEntity menu;
 
@@ -100,7 +100,7 @@ public class MenuItemEntity extends OwnedEntity implements PublicEntity {
     @Column(name = "is_soy")
     private Boolean isSoy;
 
-    @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<MenuItemOptionEntity> menuItemOptions = new ArrayList<>();
 
     @Override

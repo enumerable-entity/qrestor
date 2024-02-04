@@ -1,8 +1,9 @@
 package com.qrestor.menu.service.impl;
 
 import com.qrestor.commons.AbstractCrudService;
-import com.qrestor.commons.menu.dto.MenuItemOptionDTO;
-import com.qrestor.commons.security.SecurityUtils;
+import com.qrestor.commons.Utils;
+import com.qrestor.models.dto.menu.MenuItemOptionDTO;
+import com.qrestor.security.SecurityUtils;
 import com.qrestor.menu.entity.MenuItemEntity;
 import com.qrestor.menu.entity.MenuItemOptionEntity;
 import com.qrestor.menu.mapper.MenuItemOptionMapper;
@@ -48,7 +49,7 @@ public class MenuItemOptionsServiceImpl extends AbstractCrudService<MenuItemOpti
 
     @Override
     public MenuItemOptionDTO create(MenuItemOptionDTO dto) {
-        dto.setPublicId(generateQrCode());
+        dto.setPublicId(Utils.generatePublicId());
         MenuItemOptionEntity entity = mapper.toEntity(dto);
         Optional<MenuItemEntity> menuOption = menuItemsService.findEntityByUuidIn(dto.getMenuItemId());
         entity.setMenuItem(menuOption.orElseThrow(() -> new RuntimeException("Menu option not found")));

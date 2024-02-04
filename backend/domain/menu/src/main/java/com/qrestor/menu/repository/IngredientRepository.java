@@ -1,7 +1,7 @@
 package com.qrestor.menu.repository;
 
 import com.qrestor.commons.PublicRepository;
-import com.qrestor.commons.dto.DictionaryDTO;
+import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.menu.entity.IngredientEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Repository
 public interface IngredientRepository extends PublicRepository<IngredientEntity, Long> {
     @Query("""
-            select new com.qrestor.commons.dto.DictionaryDTO(r.publicId, r.name)
+            select new com.qrestor.models.dto.DictionaryDTO(r.publicId, r.name)
             from IngredientEntity r
             where r.isEnabled = true
             and r.userId = :userId

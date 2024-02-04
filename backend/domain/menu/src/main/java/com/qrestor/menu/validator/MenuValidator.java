@@ -1,8 +1,8 @@
 package com.qrestor.menu.validator;
 
-import com.qrestor.commons.dto.PermissionCheckResponse;
 import com.qrestor.menu.api.dto.MenuDTO;
 import com.qrestor.menu.client.RestaurantHttpClient;
+import com.qrestor.models.dto.PermissionCheckResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

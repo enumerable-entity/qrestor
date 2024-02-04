@@ -1,8 +1,8 @@
 package com.qrestor.menu.api.controller;
 
-import com.qrestor.commons.dto.DictionaryDTO;
 import com.qrestor.menu.api.RestEndpoints;
 import com.qrestor.menu.service.DictionaryService;
+import com.qrestor.models.dto.DictionaryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

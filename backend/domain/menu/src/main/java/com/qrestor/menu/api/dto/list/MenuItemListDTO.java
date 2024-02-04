@@ -1,6 +1,6 @@
 package com.qrestor.menu.api.dto.list;
 
-import com.qrestor.commons.dto.BasicDTO;
+import com.qrestor.models.dto.BasicDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

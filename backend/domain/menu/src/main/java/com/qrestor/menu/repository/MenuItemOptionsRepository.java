@@ -1,7 +1,7 @@
 package com.qrestor.menu.repository;
 
 import com.qrestor.commons.PublicRepository;
-import com.qrestor.commons.dto.DictionaryDTO;
+import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.menu.entity.MenuItemOptionEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +12,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,7 +19,7 @@ import java.util.UUID;
 public interface MenuItemOptionsRepository extends PublicRepository<MenuItemOptionEntity, Long> {
 
     @Query("""
-            select new com.qrestor.commons.dto.DictionaryDTO(o.publicId, o.title)
+            select new com.qrestor.models.dto.DictionaryDTO(o.publicId, o.title)
             from MenuItemOptionEntity o
             where o.isEnabled = true
             and o.userId = :userId

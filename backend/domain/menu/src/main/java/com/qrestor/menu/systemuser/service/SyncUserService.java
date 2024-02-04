@@ -1,8 +1,8 @@
 package com.qrestor.menu.systemuser.service;
 
-import com.qrestor.commons.kafka.dto.UserKafkaSyncDTO;
 import com.qrestor.menu.systemuser.mapper.SyncUserMapper;
 import com.qrestor.menu.systemuser.repository.SyncUserRepository;
+import com.qrestor.models.dto.kafka.UserKafkaSyncDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

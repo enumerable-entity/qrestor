@@ -1,7 +1,7 @@
 package com.qrestor.menu.mapper;
 
 import com.qrestor.commons.mapper.CrudMapper;
-import com.qrestor.commons.menu.dto.MenuItemOptionDTO;
+import com.qrestor.models.dto.menu.MenuItemOptionDTO;
 import com.qrestor.menu.entity.MenuItemOptionEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

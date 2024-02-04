@@ -1,7 +1,7 @@
 package com.qrestor.menu.repository;
 
 import com.qrestor.commons.PublicRepository;
-import com.qrestor.commons.dto.DictionaryDTO;
+import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.menu.entity.MenuItemOptionPositionEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.Nullable;
@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface MenuItemOptionPositionsRepository extends PublicRepository<MenuItemOptionPositionEntity, Long> {
 
     @Query("""
-            select new com.qrestor.commons.dto.DictionaryDTO(o.publicId, o.title)
+            select new com.qrestor.models.dto.DictionaryDTO(o.publicId, o.title)
             from MenuItemOptionPositionEntity o
             where o.isEnabled = true
             and o.userId = :userId

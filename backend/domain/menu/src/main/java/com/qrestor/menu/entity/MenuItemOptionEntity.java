@@ -46,7 +46,7 @@ public class MenuItemOptionEntity extends OwnedEntity implements PublicEntity {
     @JoinColumn(name = "menu_item_id", nullable = false)
     private MenuItemEntity menuItem;
 
-    @OneToMany(mappedBy = "menuItemOption", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "menuItemOption", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<MenuItemOptionPositionEntity> menuItemOptionPositions = new ArrayList<>();
 
     @Column(name = "is_enabled", nullable = false)

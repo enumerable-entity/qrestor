@@ -1,6 +1,6 @@
 package com.qrestor.menu.service;
 
-import com.qrestor.commons.menu.dto.MenuItemOptionDTO;
+import com.qrestor.models.dto.menu.MenuItemOptionDTO;
 import com.qrestor.menu.api.dto.list.MenuListDTO;
 import org.springframework.web.bind.annotation.PathVariable;
 

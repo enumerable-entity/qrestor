@@ -1,10 +1,10 @@
 package com.qrestor.menu.api.controller.management;
 
 import com.qrestor.commons.CrudController;
-import com.qrestor.commons.menu.dto.MenuItemOptionDTO;
 import com.qrestor.menu.api.RestEndpoints;
 import com.qrestor.menu.service.MenuItemOptionsService;
 import com.qrestor.menu.service.impl.MenuItemOptionsServiceImpl;
+import com.qrestor.models.dto.menu.MenuItemOptionDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;

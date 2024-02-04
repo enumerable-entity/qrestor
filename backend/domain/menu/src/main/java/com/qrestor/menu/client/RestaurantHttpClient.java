@@ -1,6 +1,6 @@
 package com.qrestor.menu.client;
 
-import com.qrestor.commons.dto.PermissionCheckResponse;
+import com.qrestor.models.dto.PermissionCheckResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -46,7 +46,7 @@ public class MenuEntity extends OwnedEntity implements PublicEntity {
     private SyncUser user;
 
 
-    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<MenuItemEntity> menuItems = new LinkedHashSet<>();
 
     @Override

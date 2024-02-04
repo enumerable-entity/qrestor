@@ -1,9 +1,9 @@
 package com.qrestor.menu.api.controller;
 
-import com.qrestor.commons.menu.dto.MenuItemOptionDTO;
 import com.qrestor.menu.api.RestEndpoints;
 import com.qrestor.menu.api.dto.list.MenuListDTO;
 import com.qrestor.menu.service.MenuPublicService;
+import com.qrestor.models.dto.menu.MenuItemOptionDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

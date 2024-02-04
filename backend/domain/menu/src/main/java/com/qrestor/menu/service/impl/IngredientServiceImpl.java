@@ -1,7 +1,7 @@
 package com.qrestor.menu.service.impl;
 
 import com.qrestor.commons.AbstractCrudService;
-import com.qrestor.commons.security.SecurityUtils;
+import com.qrestor.security.SecurityUtils;
 import com.qrestor.menu.api.dto.IngredientDTO;
 import com.qrestor.menu.entity.IngredientEntity;
 import com.qrestor.menu.mapper.IngredientMapper;

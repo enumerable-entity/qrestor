@@ -1,7 +1,7 @@
 package com.qrestor.menu.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.qrestor.commons.dto.AbstractPublicDTO;
+import com.qrestor.models.dto.AbstractPublicDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

@@ -1,9 +1,9 @@
 package com.qrestor.menu.service.impl;
 
-import com.qrestor.commons.dto.DictionaryDTO;
-import com.qrestor.commons.security.SecurityUtils;
 import com.qrestor.menu.repository.*;
 import com.qrestor.menu.service.DictionaryService;
+import com.qrestor.models.dto.DictionaryDTO;
+import com.qrestor.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

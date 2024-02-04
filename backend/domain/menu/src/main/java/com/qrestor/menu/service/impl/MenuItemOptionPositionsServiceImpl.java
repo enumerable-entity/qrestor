@@ -1,13 +1,14 @@
 package com.qrestor.menu.service.impl;
 
 import com.qrestor.commons.AbstractCrudService;
-import com.qrestor.commons.menu.dto.MenuItemOptionPositionDTO;
+import com.qrestor.commons.Utils;
 import com.qrestor.menu.entity.MenuItemOptionEntity;
 import com.qrestor.menu.entity.MenuItemOptionPositionEntity;
 import com.qrestor.menu.mapper.MenuItemOptionPositionMapper;
 import com.qrestor.menu.repository.MenuItemOptionPositionsRepository;
 import com.qrestor.menu.service.MenuItemOptionPositionsService;
 import com.qrestor.menu.service.MenuItemOptionsService;
+import com.qrestor.models.dto.menu.MenuItemOptionPositionDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class MenuItemOptionPositionsServiceImpl extends
 
     @Override
     public MenuItemOptionPositionDTO create(MenuItemOptionPositionDTO dto) {
-        dto.setPublicId(generateQrCode());
+        dto.setPublicId(Utils.generatePublicId());
         MenuItemOptionPositionEntity entity = mapper.toEntity(dto);
         Optional<MenuItemOptionEntity> menuOption = menuItemOptionsService.findEntityByUuidIn(dto.getItemOptionId());
         entity.setMenuItemOption(menuOption.orElseThrow(() -> new RuntimeException("Menu option not found")));

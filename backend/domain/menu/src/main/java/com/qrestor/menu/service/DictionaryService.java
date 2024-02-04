@@ -1,6 +1,7 @@
 package com.qrestor.menu.service;
 
-import com.qrestor.commons.dto.DictionaryDTO;
+
+import com.qrestor.models.dto.DictionaryDTO;
 
 import java.util.Collection;
 import java.util.UUID;
