@@ -2,6 +2,7 @@ package com.qrestor.menu.api;
 
 public interface RestEndpoints {
     String MANAGEMENT = "/management";
+    String INTEGRATION = "/integration";
     String MENU_ITEMS = "/menu-items";
     String MENU_ITEM_OPTIONS = "/item-options";
     String MENU_ITEM_OPTION_POSTIONS = "/options-positions";
