@@ -1,4 +1,4 @@
-package com.qrestor.orders.enums;
+package com.qrestor.commons.enums;
 
 public enum OrderStatus {
     PENDING,

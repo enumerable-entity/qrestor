@@ -2,6 +2,7 @@ package com.qrestor.kitchenboard;
 
 public interface RestEndpoints {
     String SSE_SUBSCRIBE = "/sse";
+    String WAITER_REQUEST = "/waiter-request";
 
     String ACTUATOR = "/actuator/**";
     String SWAGGER = "/swagger-ui/**";
@@ -17,6 +18,7 @@ public interface RestEndpoints {
     };
 
     String[] PUBLIC_ENDPOINTS_LIST = {
+            WAITER_REQUEST,
             "/error/**"};
 
 }

@@ -30,4 +30,6 @@ public class UserRegistrationController {
         return ResponseEntity.ok().build();
     }
 
+    //todo: waiter registration
+
 }
