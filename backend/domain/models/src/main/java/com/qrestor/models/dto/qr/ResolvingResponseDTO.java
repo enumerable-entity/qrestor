@@ -1,4 +1,4 @@
-package com.qrestor.resolverqr.api.dto;
+package com.qrestor.models.dto.qr;
 
 import java.util.UUID;
 

@@ -1,6 +1,6 @@
 package com.qrestor.orders.api.controller;
 
-import com.qrestor.orders.api.dto.OrderDTO;
+import com.qrestor.models.dto.order.OrderDTO;
 import com.qrestor.orders.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

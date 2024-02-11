@@ -1,6 +1,6 @@
 package com.qrestor.orders.security;
 
-import com.qrestor.commons.security.JwtAuthenticationFilter;
+import com.qrestor.security.JwtAuthenticationFilter;
 import com.qrestor.orders.api.RestEndpoints;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SpringSecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final AuthenticationConfiguration configuration;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {

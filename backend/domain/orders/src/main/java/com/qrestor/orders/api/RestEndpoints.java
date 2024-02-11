@@ -2,7 +2,7 @@ package com.qrestor.orders.api;
 
 public interface RestEndpoints {
     String ORDERS = "/orders";
-
+    String INTEGRATION = "/integration";
 
     String ACTUATOR = "/actuator/**";
     String SWAGGER = "/swagger-ui/**";

@@ -1,8 +1,8 @@
 package com.qrestor.orders.entity;
 
 import com.qrestor.commons.entity.PublicEntity;
-import com.qrestor.orders.api.dto.ItemOrderDetails;
-import com.qrestor.orders.enums.OrderStatus;
+import com.qrestor.models.dto.order.ItemOrderDetails;
+import com.qrestor.commons.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

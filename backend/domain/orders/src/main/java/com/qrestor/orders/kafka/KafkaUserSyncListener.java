@@ -1,6 +1,6 @@
 package com.qrestor.orders.kafka;
 
-import com.qrestor.commons.kafka.dto.UserKafkaSyncDTO;
+import com.qrestor.models.dto.kafka.UserKafkaSyncDTO;
 import com.qrestor.orders.systemuser.service.SyncUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
