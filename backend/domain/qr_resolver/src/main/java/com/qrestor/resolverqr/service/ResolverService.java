@@ -1,6 +1,6 @@
 package com.qrestor.resolverqr.service;
 
-import com.qrestor.resolverqr.api.dto.ResolvingResponseDTO;
+import com.qrestor.models.dto.qr.ResolvingResponseDTO;
 import com.qrestor.resolverqr.mapper.QrMapper;
 import com.qrestor.resolverqr.repository.QrRepository;
 import lombok.RequiredArgsConstructor;

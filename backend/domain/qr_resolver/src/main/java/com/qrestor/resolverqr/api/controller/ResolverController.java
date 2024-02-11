@@ -1,6 +1,6 @@
 package com.qrestor.resolverqr.api.controller;
 
-import com.qrestor.resolverqr.api.dto.ResolvingResponseDTO;
+import com.qrestor.models.dto.qr.ResolvingResponseDTO;
 import com.qrestor.resolverqr.service.ResolverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

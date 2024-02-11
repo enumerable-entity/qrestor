@@ -1,7 +1,7 @@
 package com.qrestor.resolverqr.api;
 
 public interface RestEndpoints {
-
+    String INTEGRATION = "/integration";
     String QR = "/qr";
     String MANAGEMENT = "/management" + QR;
 

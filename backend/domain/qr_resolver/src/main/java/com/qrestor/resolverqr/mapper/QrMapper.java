@@ -1,6 +1,6 @@
 package com.qrestor.resolverqr.mapper;
 
-import com.qrestor.resolverqr.api.dto.ResolvingResponseDTO;
+import com.qrestor.models.dto.qr.ResolvingResponseDTO;
 import com.qrestor.resolverqr.entity.QrCodeMappingEntity;
 import org.mapstruct.Mapper;
 

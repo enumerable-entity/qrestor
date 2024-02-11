@@ -1,6 +1,6 @@
 package com.qrestor.restaurant.api.dto;
 
-import com.qrestor.commons.dto.BasicDTO;
+import com.qrestor.models.dto.BasicDTO;
 import com.qrestor.restaurant.entity.RestaurantSettingsEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

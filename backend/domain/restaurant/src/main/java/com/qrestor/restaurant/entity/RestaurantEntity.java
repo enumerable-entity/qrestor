@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -50,6 +52,9 @@ public class RestaurantEntity extends OwnedEntity implements PublicEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = SyncUser.class)
     @JoinColumn(name = "user_id", nullable = false, updatable = false, insertable = false)
     private SyncUser user;
+
+    @OneToMany(mappedBy = "restaurant", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<SyncUser> restaurantWaiters = new LinkedHashSet<>();
 
     @Override
     public final boolean equals(Object o) {

@@ -1,6 +1,6 @@
 package com.qrestor.restaurant.integration;
 
-import com.qrestor.commons.dto.PermissionCheckResponse;
+import com.qrestor.models.dto.PermissionCheckResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,5 +23,11 @@ public class IntegrationController {
     @PreAuthorize("hasRole('RESTAURATEUR')")
     public ResponseEntity<PermissionCheckResponse> checkRestaurantOwnership(@RequestParam UUID restaurantId) {
         return integrationService.checkRestaurantOwnership(restaurantId);
+    }
+
+    @GetMapping("/getWaiterRestaurantId")
+    @PreAuthorize("hasRole('WAITER')")
+    ResponseEntity<String> getWaiterRestaurantId(){
+        return integrationService.getWaiterRestaurantId();
     }
 }

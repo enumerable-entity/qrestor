@@ -1,6 +1,6 @@
 package com.qrestor.resolverqr.api.dto;
 
-import com.qrestor.commons.dto.AbstractPublicDTO;
+import com.qrestor.commons.enums.AbstractPublicDTO;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;

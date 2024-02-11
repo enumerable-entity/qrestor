@@ -27,7 +27,11 @@ public class SyncUser {
     private String username;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RestaurantEntity> restaurant = new LinkedHashSet<>();
+    private Set<RestaurantEntity> ownedRestaurants = new LinkedHashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "restaurant_waiters_id")
+    private RestaurantEntity restaurant;
 
     @Override
     public final boolean equals(Object o) {

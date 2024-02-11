@@ -1,7 +1,7 @@
 package com.qrestor.restaurant.security;
 
-import com.qrestor.commons.security.JwtAuthenticationFilter;
 import com.qrestor.restaurant.api.RestEndpoints;
+import com.qrestor.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
