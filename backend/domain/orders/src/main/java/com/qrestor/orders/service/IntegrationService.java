@@ -1,6 +1,6 @@
 package com.qrestor.orders.service;
 
-import com.qrestor.commons.enums.OrderStatus;
+import com.qrestor.models.dto.order.OrderStatus;
 import com.qrestor.models.dto.order.OrderDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

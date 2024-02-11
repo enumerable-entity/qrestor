@@ -15,5 +15,6 @@ public class OrderDTO extends AbstractPublicDTO {
     private UUID restaurantId;
     private int tableNumber;
     private List<ItemOrderDetails> items;
+    private OrderStatus status;
 
 }

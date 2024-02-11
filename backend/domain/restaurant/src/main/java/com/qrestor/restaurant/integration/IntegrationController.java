@@ -27,7 +27,7 @@ public class IntegrationController {
 
     @GetMapping("/getWaiterRestaurantId")
     @PreAuthorize("hasRole('WAITER')")
-    ResponseEntity<String> getWaiterRestaurantId(){
+    public UUID getWaiterRestaurantId(){
         return integrationService.getWaiterRestaurantId();
     }
 }

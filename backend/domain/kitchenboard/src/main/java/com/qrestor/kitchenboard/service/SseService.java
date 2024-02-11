@@ -16,8 +16,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.qrestor.commons.enums.OrderStatus.IN_PROGRESS;
-import static com.qrestor.commons.enums.OrderStatus.PENDING;
+import static com.qrestor.models.dto.order.OrderStatus.IN_PROGRESS;
+import static com.qrestor.models.dto.order.OrderStatus.PENDING;
 import static com.qrestor.kitchenboard.enums.SSEvent.*;
 
 @Service

@@ -1,6 +1,6 @@
 package com.qrestor.kitchenboard.client;
 
-import com.qrestor.commons.enums.OrderStatus;
+import com.qrestor.models.dto.order.OrderStatus;
 import com.qrestor.models.dto.order.OrderDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

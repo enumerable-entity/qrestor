@@ -21,8 +21,8 @@ public class IntegrationService {
         return ResponseEntity.ok(restaurantService.checkOwnership(restaurantId));
     }
 
-    public ResponseEntity<String> getWaiterRestaurantId() {
+    public UUID getWaiterRestaurantId() {
         UUID waiterId = SecurityUtils.getPrincipalUUID();
-        return ResponseEntity.ok(syncUserService.getRestaurantIdForWaiter(waiterId).toString());
+        return syncUserService.getRestaurantIdForWaiter(waiterId);
     }
 }
