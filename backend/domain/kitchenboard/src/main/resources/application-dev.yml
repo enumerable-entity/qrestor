@@ -1,4 +1,8 @@
-#PostgreSQL
+app:
+  domain: https://wanted-talented-peacock.ngrok-free.app
+  auth:
+    jwt:
+      secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
 spring:
   datasource:
     url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
@@ -15,7 +19,15 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-
+  data:
+    redis:
+      repositories:
+        enabled: false
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:qrestor123}
+      database: ${REDIS_DB:2}
+      timeout: 10000
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/changelog-master.xml
