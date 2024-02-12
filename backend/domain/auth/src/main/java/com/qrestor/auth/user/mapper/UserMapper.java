@@ -1,7 +1,7 @@
 package com.qrestor.auth.user.mapper;
 
 import com.qrestor.auth.authority.SystemRoleEntity;
-import com.qrestor.auth.user.dto.SystemUserDTO;
+import com.qrestor.models.dto.auth.SystemUserDTO;
 import com.qrestor.auth.user.entity.SystemUserEntity;
 import org.mapstruct.Mapper;
 

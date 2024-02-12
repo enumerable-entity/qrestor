@@ -4,7 +4,7 @@ import com.qrestor.auth.api.dto.LoginRequestDTO;
 import com.qrestor.auth.api.dto.LoginResponseDTO;
 import com.qrestor.auth.api.dto.PasswordChangeDTO;
 import com.qrestor.auth.api.dto.PasswordResetDTO;
-import com.qrestor.auth.user.dto.UserDescriptorDTO;
+import com.qrestor.models.dto.auth.UserDescriptorDTO;
 import com.qrestor.auth.user.service.interfaces.UserAuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

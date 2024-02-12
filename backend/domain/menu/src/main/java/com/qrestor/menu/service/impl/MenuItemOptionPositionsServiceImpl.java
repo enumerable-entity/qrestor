@@ -6,12 +6,15 @@ import com.qrestor.menu.entity.MenuItemOptionEntity;
 import com.qrestor.menu.entity.MenuItemOptionPositionEntity;
 import com.qrestor.menu.mapper.MenuItemOptionPositionMapper;
 import com.qrestor.menu.repository.MenuItemOptionPositionsRepository;
+import com.qrestor.menu.repository.projections.MenuItemProj;
 import com.qrestor.menu.service.MenuItemOptionPositionsService;
 import com.qrestor.menu.service.MenuItemOptionsService;
+import com.qrestor.models.Pair;
 import com.qrestor.models.dto.menu.MenuItemOptionPositionDTO;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuItemOptionPositionsServiceImpl extends
@@ -33,5 +36,13 @@ public class MenuItemOptionPositionsServiceImpl extends
         Optional<MenuItemOptionEntity> menuOption = menuItemOptionsService.findEntityByUuidIn(dto.getItemOptionId());
         entity.setMenuItemOption(menuOption.orElseThrow(() -> new RuntimeException("Menu option not found")));
         return mapper.toDto(repository.save(entity));
+    }
+
+
+    @Override
+    public Map<UUID, Pair<String, Long>> getMenuItemsOptionsPriceMap(Set<UUID> menuItemsUUIDs) {
+        List<MenuItemProj> byPublicIdIn = ((MenuItemOptionPositionsRepository) repository).findByPublicIdIn(menuItemsUUIDs);
+        return byPublicIdIn.stream().collect(Collectors.toMap(
+                MenuItemProj::getPublicId, menuItemProj -> new Pair<>(menuItemProj.getTitle(), menuItemProj.getPrice())));
     }
 }

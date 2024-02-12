@@ -31,7 +31,7 @@ public class MenuItemOptionPositionEntity extends OwnedEntity implements PublicE
     private String title;
 
     @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    private Long price;
 
     @Column(name = "is_enabled", nullable = false)
     private boolean isEnabled;

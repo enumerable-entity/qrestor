@@ -9,17 +9,18 @@ import com.qrestor.menu.entity.ItemCategoryEntity;
 import com.qrestor.menu.entity.MenuItemEntity;
 import com.qrestor.menu.mapper.MenuItemMapper;
 import com.qrestor.menu.repository.MenuItemsRepository;
+import com.qrestor.menu.repository.projections.MenuItemProj;
 import com.qrestor.menu.service.CategoryService;
 import com.qrestor.menu.service.IngredientService;
 import com.qrestor.menu.service.MenuItemsService;
 import com.qrestor.menu.service.MenuService;
+import com.qrestor.models.Pair;
 import com.qrestor.security.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuItemsServiceImpl extends AbstractCrudService<MenuItemDTO, MenuItemEntity> implements MenuItemsService {
@@ -74,5 +75,14 @@ public class MenuItemsServiceImpl extends AbstractCrudService<MenuItemDTO, MenuI
     @Override
     public Optional<MenuItemEntity> findEntityByUuidIn(UUID menuItemId) {
         return repository.findByUuidSecure(menuItemId, SecurityUtils.getPrincipalUUID());
+    }
+
+
+    @Override
+    public Map<UUID, Pair<String, Long>> getMenuItemsPriceMap(Set<UUID> menuItemIds) {
+        List<MenuItemProj> byPublicIdIn = ((MenuItemsRepository) repository).findByPublicIdIn(menuItemIds);
+        return byPublicIdIn.stream().collect(Collectors.toMap(
+                MenuItemProj::getPublicId, menuItemProj -> new Pair<>(menuItemProj.getTitle(), menuItemProj.getPrice())));
+
     }
 }

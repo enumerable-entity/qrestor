@@ -3,6 +3,8 @@ app:
   auth:
     jwt:
       secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
+  stripe:
+    secret: ${STRIPE_SECRET_KEY:sk_test_51Oinv1EmOyHSii1w1roVxEhjg5IHReAkRWwPIiJTsngJls4R3jDdclBEYGNaCsCfP8WyMBZGN41rwchOWbmLWcx200G1rG3zch}
 spring:
   datasource:
     url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}

@@ -40,7 +40,12 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO placeOrder(OrderDTO orderDTO) {
         orderDTO.setPublicId(Utils.generatePublicId());
         OrderEntity newOrder = orderMapper.toEntity(orderDTO);
-        newOrder.setStatus(OrderStatus.PENDING);
+        if(orderDTO.isPaymentSelected()){
+            newOrder.setStatus(OrderStatus.PAYMENT_IN_PROGRESS);
+        }else {
+            newOrder.setStatus(OrderStatus.PENDING);
+        }
+
         newOrder.setOrderDate(LocalDateTime.now());
         OrderEntity newSavedOrder = orderRepository.saveAndFlush(newOrder);
         eventPublisher.publishEvent(

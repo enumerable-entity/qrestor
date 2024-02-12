@@ -1,10 +1,7 @@
-package com.qrestor.auth.user.dto;
+package com.qrestor.models.dto.auth;
 
 import java.io.Serializable;
 
-/**
- * DTO for {@link com.qrestor.auth.user.entity.SystemUserSettings}
- */
 public record UserSettingsDTO(Long id,
                               String theme,
                               String language,

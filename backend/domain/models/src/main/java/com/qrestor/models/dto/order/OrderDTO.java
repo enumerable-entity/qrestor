@@ -16,5 +16,6 @@ public class OrderDTO extends AbstractPublicDTO {
     private int tableNumber;
     private List<ItemOrderDetails> items;
     private OrderStatus status;
+    private boolean paymentSelected;
 
 }

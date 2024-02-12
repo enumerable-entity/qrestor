@@ -35,7 +35,7 @@ public class MenuItemEntity extends OwnedEntity implements PublicEntity {
     private String description;
 
     @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    private Long price;
 
     @Column(name = "is_enabled", nullable = false)
     private boolean isEnabled;

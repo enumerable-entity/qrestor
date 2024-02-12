@@ -16,6 +16,6 @@ public class MenuItemListDTO extends BasicDTO {
     private final String title;
     private final String description;
     private final String imageUrl;
-    private final BigDecimal price;
+    private final Long price;
     private final List<String> ingredients;
 }

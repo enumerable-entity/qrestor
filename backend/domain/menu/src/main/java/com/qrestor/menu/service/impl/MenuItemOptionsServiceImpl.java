@@ -2,14 +2,14 @@ package com.qrestor.menu.service.impl;
 
 import com.qrestor.commons.AbstractCrudService;
 import com.qrestor.commons.Utils;
-import com.qrestor.models.dto.menu.MenuItemOptionDTO;
-import com.qrestor.security.SecurityUtils;
 import com.qrestor.menu.entity.MenuItemEntity;
 import com.qrestor.menu.entity.MenuItemOptionEntity;
 import com.qrestor.menu.mapper.MenuItemOptionMapper;
 import com.qrestor.menu.repository.MenuItemOptionsRepository;
 import com.qrestor.menu.service.MenuItemOptionsService;
 import com.qrestor.menu.service.MenuItemsService;
+import com.qrestor.models.dto.menu.MenuItemOptionDTO;
+import com.qrestor.security.SecurityUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -40,10 +40,10 @@ public class MenuItemOptionsServiceImpl extends AbstractCrudService<MenuItemOpti
         Specification<MenuItemOptionEntity> spec;
         if (menuItemId != null) {
             spec = Specification.where((root, query, criteriaBuilder) ->
-                            criteriaBuilder.equal(root.get(MenuItemOptionEntity.Fields.menuItem)
-                                    .get(MenuItemEntity.Fields.publicId), menuItemId));
+                    criteriaBuilder.equal(root.get(MenuItemOptionEntity.Fields.menuItem)
+                            .get(MenuItemEntity.Fields.publicId), menuItemId));
         } else spec = Specification.where(null);
-        if(!publicRequest) spec.and(OWNER_SPEC);
+        if (!publicRequest) spec.and(OWNER_SPEC);
         return mapper.toDto(repository.findAll(spec, pageable));
     }
 

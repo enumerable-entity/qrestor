@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.Locale;
 import java.util.Objects;
 
 @Getter
@@ -31,6 +32,9 @@ public class SystemUserInformationEntity {
     private String phone;
     @Column(name = "profile_picture_url", length = 400)
     private String profilePictureUrl;
+    @Column(name = "business_name", length = 100)
+    private String businessName;
+
 
     @Override
     public final boolean equals(Object o) {

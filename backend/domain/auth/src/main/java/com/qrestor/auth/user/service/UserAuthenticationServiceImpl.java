@@ -8,7 +8,7 @@ import com.qrestor.auth.security.JwtService;
 import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.entity.TokenEntity;
 import com.qrestor.auth.token.service.TokenService;
-import com.qrestor.auth.user.dto.UserDescriptorDTO;
+import com.qrestor.models.dto.auth.UserDescriptorDTO;
 import com.qrestor.auth.user.entity.SystemUserEntity;
 import com.qrestor.auth.user.enums.UserEventType;
 import com.qrestor.auth.user.events.UserEvent;
