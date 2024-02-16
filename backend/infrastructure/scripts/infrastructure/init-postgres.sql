@@ -7,6 +7,7 @@ create database mailer;
 create database menu;
 create database orders;
 create database restaurant;
+create database paymentor;
 
 
 create user qresolver with encrypted password 'qresolver';
@@ -18,6 +19,7 @@ create user mailer with encrypted password 'mailer';
 create user menu with encrypted password 'menu';
 create user orders with encrypted password 'orders';
 create user restaurant with encrypted password 'restaurant';
+create user paymentor with encrypted password 'paymentor';
 
 grant all privileges on database qresolver to qresolver;
 grant all privileges on database auth to auth;
@@ -28,6 +30,7 @@ grant all privileges on database mailer to mailer;
 grant all privileges on database menu to menu;
 grant all privileges on database orders to orders;
 grant all privileges on database restaurant to restaurant;
+grant all privileges on database paymentor to paymentor;
 
 
 \connect qresolver qresolver;
@@ -66,4 +69,6 @@ grant all privileges on schema orders to orders;
 create schema restaurant;
 grant all privileges on schema restaurant to restaurant;
 
-
+\connect paymentor paymentor;
+create schema paymentor;
+grant all privileges on schema paymentor to paymentor;
