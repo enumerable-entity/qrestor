@@ -23,6 +23,7 @@ public interface RestEndpoints {
 
     String[] PUBLIC_ENDPOINTS_LIST = {
             RESTAURANT + "/{id}",
+            "/integration/getRestaurantOwnerId",
             "/error/**"};
 
 }

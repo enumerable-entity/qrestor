@@ -10,5 +10,5 @@ import java.util.UUID;
 
 public interface MenuItemOptionPositionsService extends CrudService<MenuItemOptionPositionDTO> {
 
-    Map<UUID, Pair<String, Long>> getMenuItemsOptionsPriceMap(Set<UUID> menuItemsUUIDs);
+    Map<UUID, Pair<String, Long>> getMenuItemsOptionsPositionsPriceMap(Set<UUID> menuItemsOptionsPositionsUUIDs);
 }

@@ -22,4 +22,9 @@ public class RestaurantService extends AbstractCrudService<RestaurantDTO, Restau
         boolean exist = ((RestaurantRepository) repository).existsByPublicIdAndUserId(restaurantId, SecurityUtils.getPrincipalUUID());
         return new PermissionCheckResponse(exist);
     }
+
+    public UUID getRestaurantOwnerId(UUID restaurantId) {
+        return repository.findByUuid(restaurantId)
+                .map(RestaurantEntity::getUserId).orElseThrow(() -> new RuntimeException("Restaurant not found"));
+    }
 }

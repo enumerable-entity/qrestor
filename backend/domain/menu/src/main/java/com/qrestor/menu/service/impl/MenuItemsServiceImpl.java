@@ -80,9 +80,9 @@ public class MenuItemsServiceImpl extends AbstractCrudService<MenuItemDTO, MenuI
 
     @Override
     public Map<UUID, Pair<String, Long>> getMenuItemsPriceMap(Set<UUID> menuItemIds) {
-        List<MenuItemProj> byPublicIdIn = ((MenuItemsRepository) repository).findByPublicIdIn(menuItemIds);
+        List<MenuItemEntity> byPublicIdIn = ((MenuItemsRepository) repository).findByPublicIdIn(menuItemIds);
         return byPublicIdIn.stream().collect(Collectors.toMap(
-                MenuItemProj::getPublicId, menuItemProj -> new Pair<>(menuItemProj.getTitle(), menuItemProj.getPrice())));
+                MenuItemEntity::getPublicId, menuItemProj -> new Pair<>(menuItemProj.getTitle(), menuItemProj.getPrice())));
 
     }
 }

@@ -4,10 +4,7 @@ import com.qrestor.models.dto.PermissionCheckResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -29,5 +26,10 @@ public class IntegrationController {
     @PreAuthorize("hasRole('WAITER')")
     public UUID getWaiterRestaurantId(){
         return integrationService.getWaiterRestaurantId();
+    }
+
+    @PostMapping("/getRestaurantOwnerId")
+    public UUID getRestaurantOwnerId(@RequestBody UUID restaurantId){
+        return integrationService.getRestaurantOwnerId(restaurantId);
     }
 }

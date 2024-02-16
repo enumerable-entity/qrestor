@@ -1,7 +1,6 @@
 package com.qrestor.menu.api.controller;
 
 import com.qrestor.menu.service.MenuItemOptionPositionsService;
-import com.qrestor.menu.service.MenuItemOptionsService;
 import com.qrestor.menu.service.MenuItemsService;
 import com.qrestor.menu.service.MenuService;
 import com.qrestor.models.Pair;
@@ -37,8 +36,9 @@ public class IntegrationController {
         return ResponseEntity.ok(menuItemsService.getMenuItemsPriceMap(menuItemIds));
     }
 
-    @PostMapping("/integration/getMenuItemsPricesMap")
-    ResponseEntity<Map<UUID, Pair<String, Long>>> getMenuItemsOptionsPriceMap(@RequestBody Set<UUID> menuItemsUUIDs) {
-        return ResponseEntity.ok(menuItemOptionsService.getMenuItemsOptionsPriceMap(menuItemsUUIDs));
+    @PostMapping("/getMenuItemOptionsPositionsPricesMap")
+    ResponseEntity<Map<UUID, Pair<String, Long>>> getMenuItemsOptionsPositionsPriceMap(@RequestBody Set<UUID> menuItemOptionsPositionsIds) {
+        return ResponseEntity.ok(menuItemOptionsService.getMenuItemsOptionsPositionsPriceMap(menuItemOptionsPositionsIds));
     }
+
 }

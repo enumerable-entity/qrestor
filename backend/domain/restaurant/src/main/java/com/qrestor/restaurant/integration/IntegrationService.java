@@ -25,4 +25,8 @@ public class IntegrationService {
         UUID waiterId = SecurityUtils.getPrincipalUUID();
         return syncUserService.getRestaurantIdForWaiter(waiterId);
     }
+
+    public UUID getRestaurantOwnerId(UUID restaurantId) {
+        return restaurantService.getRestaurantOwnerId(restaurantId);
+    }
 }

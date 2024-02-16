@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface SyncUserRepository extends JpaRepository<SyncUser, Long> {
-    Optional<SyncUser> findByUuid(UUID uuid);
+    Optional<SyncUser> getByUuid(UUID uuid);
 }

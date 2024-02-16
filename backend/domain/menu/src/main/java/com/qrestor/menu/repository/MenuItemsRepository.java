@@ -22,10 +22,10 @@ public interface MenuItemsRepository extends PublicRepository<MenuItemEntity, Lo
     Page<MenuItemEntity> findAll(Specification<MenuItemEntity> spec, Pageable pageable);
 
     @Query("""
-            select r.publicId, r.title, r.price
+            select r
             from MenuItemEntity r
             where r.isEnabled = true
             and r.publicId in :publicIds
             """)
-    List<MenuItemProj> findByPublicIdIn(Set<UUID> publicIds);
+    List<MenuItemEntity> findByPublicIdIn(Set<UUID> publicIds);
 }

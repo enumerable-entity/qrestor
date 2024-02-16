@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "sync_users", schema = "orders", indexes = {
+@Table(name = "sync_users", schema = "paymentor", indexes = {
         @Index(name = "system_users_uuid_idx", columnList = "uuid", unique = true)
 })
 public class SyncUser {

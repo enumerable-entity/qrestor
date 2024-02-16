@@ -70,6 +70,12 @@ spring:
             - Path=/kitchenboard/**
           filters:
             - RewritePath=/kitchenboard/(?<segment>.*), /${segment}
+        - id: paymentor
+          uri: lb://paymentor
+          predicates:
+            - Path=/paymentor/**
+          filters:
+            - RewritePath=/paymentor/(?<segment>.*), /${segment}
 management:
   metrics:
     tags:

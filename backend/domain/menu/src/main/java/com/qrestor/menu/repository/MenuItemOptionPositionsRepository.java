@@ -26,10 +26,10 @@ public interface MenuItemOptionPositionsRepository extends PublicRepository<Menu
     Collection<DictionaryDTO<String>> getMenuItemOptionsPositionsCombo(UUID userId, @Nullable UUID menuItemOptionId);
 
     @Query("""
-            select r.publicId, r.title, r.price
+            select r
             from MenuItemOptionPositionEntity r
             where r.isEnabled = true
             and r.publicId in :publicIds
             """)
-    List<MenuItemProj> findByPublicIdIn(Set<UUID> publicIds);
+    List<MenuItemOptionPositionEntity> findByPublicIdIn(Set<UUID> publicIds);
 }

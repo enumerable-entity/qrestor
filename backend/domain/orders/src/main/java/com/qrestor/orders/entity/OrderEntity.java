@@ -45,6 +45,9 @@ public class OrderEntity implements PublicEntity {
     @Column(name = "cancelled_date")
     private LocalDateTime cancelledDate;
 
+    @Column(name = "online_payment")
+    private Boolean paymentSelected;
+
     @Column(columnDefinition = "jsonb", name = "items", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
     private List<ItemOrderDetails> items;

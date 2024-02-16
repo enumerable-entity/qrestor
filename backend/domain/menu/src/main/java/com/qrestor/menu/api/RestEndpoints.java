@@ -37,6 +37,8 @@ public interface RestEndpoints {
             CATEGORY,
             MENU + "/{id}/{itemId}",
             MENU + "/{id}",
+            "/integration/getMenuItemsPricesMap",
+            "/integration/getMenuItemOptionsPositionsPricesMap",
             "/error/**"};
 
 }

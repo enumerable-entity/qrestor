@@ -23,23 +23,33 @@ VALUES (nextval('menu.menu_seq'), 'New description2', false, 'Main menu2', 'e197
 INSERT INTO menu.menu_items
 VALUES (nextval('menu.menu_items_seq'), 'Item(dish) description', 'htttp:/image.com', true, true, true, true, true,
         true, true, true, true, true, true, true, true, 33.33, 'd4e6bef9-4134-423c-a822-c9f440cde210', 'BigBurger',
-        '9cbbee7d-b026-469d-903f-3429fd0b4fc2', 51,
-        201);
+        '9cbbee7d-b026-469d-903f-3429fd0b4fc2', 1,
+        currval('menu.menu_seq'));
 
 INSERT INTO menu.menu_items
 VALUES (nextval('menu.menu_items_seq'), 'Item(dish) description2', 'htttp:/image.com', true, true, true, true, true,
         true, true, true, true, true, true, true, true, 33.33, '20609ca3-4ca6-41fd-98f0-d7f16098fbd6', 'BigBurger',
-        '9cbbee7d-b026-469d-903f-3429fd0b4fc2', 101,
-        201);
+        '9cbbee7d-b026-469d-903f-3429fd0b4fc2', 1,
+        currval('menu.menu_seq'));
 
 
 INSERT INTO menu.menu_items
 VALUES (nextval('menu.menu_items_seq'), 'Item(dish) description', 'htttp:/image.com', true, true, true, true, true,
         true, true, true, true, true, true, true, true, 33.33, '21325b63-b6a1-423a-8e39-aef84d396e8b', 'BigBurger',
-        '9cbbee7d-b026-469d-903f-3429fd0b4fc2', 101,
-        null);
+        '9cbbee7d-b026-469d-903f-3429fd0b4fc2', 1,
+        currval('menu.menu_seq'));
+INSERT INTO menu.menu_items_to_ingredients
+VALUES(101, 101);
+INSERT INTO menu.menu_items_to_ingredients
+VALUES(51, 51);
 
-INSERT INTO menu.menu_items_to_ingredients
-VALUES(151, 101);
-INSERT INTO menu.menu_items_to_ingredients
-VALUES(151, 51);
+
+INSERT iNTO menu.menu_items_options
+VALUES (nextval('menu.menu_items_options_seq'), true, true, true, '78429de1-71cd-4014-8d97-c32a00e2b89e', 'Size', '9cbbee7d-b026-469d-903f-3429fd0b4fc2', currval('menu.menu_items_seq'));
+INSERT iNTO menu.menu_items_options
+VALUES (nextval('menu.menu_items_options_seq'), true, true, true, '88bb0ec5-4cf8-4b6d-96d6-77acdf40debc', 'Color', '9cbbee7d-b026-469d-903f-3429fd0b4fc2', currval('menu.menu_items_seq'));
+
+INSERT INTO menu.menu_items_options_positions
+VALUES (nextval('menu.menu_items_options_positions_seq'), true, 33.33,'57afc93f-f2de-4595-92d4-4cc4c1930bd0','35 inch','9cbbee7d-b026-469d-903f-3429fd0b4fc2', currval('menu.menu_items_options_seq'));
+INSERT INTO menu.menu_items_options_positions
+VALUES (nextval('menu.menu_items_options_positions_seq'), true, 33.33,'b11cc723-cdb6-4704-bcd9-64d7414e66c8','15 inch','9cbbee7d-b026-469d-903f-3429fd0b4fc2', currval('menu.menu_items_options_seq'));

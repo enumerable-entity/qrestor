@@ -6,7 +6,6 @@ import com.qrestor.menu.entity.MenuItemOptionEntity;
 import com.qrestor.menu.entity.MenuItemOptionPositionEntity;
 import com.qrestor.menu.mapper.MenuItemOptionPositionMapper;
 import com.qrestor.menu.repository.MenuItemOptionPositionsRepository;
-import com.qrestor.menu.repository.projections.MenuItemProj;
 import com.qrestor.menu.service.MenuItemOptionPositionsService;
 import com.qrestor.menu.service.MenuItemOptionsService;
 import com.qrestor.models.Pair;
@@ -40,9 +39,9 @@ public class MenuItemOptionPositionsServiceImpl extends
 
 
     @Override
-    public Map<UUID, Pair<String, Long>> getMenuItemsOptionsPriceMap(Set<UUID> menuItemsUUIDs) {
-        List<MenuItemProj> byPublicIdIn = ((MenuItemOptionPositionsRepository) repository).findByPublicIdIn(menuItemsUUIDs);
+    public Map<UUID, Pair<String, Long>> getMenuItemsOptionsPositionsPriceMap(Set<UUID> menuItemOptionsIds) {
+        List<MenuItemOptionPositionEntity> byPublicIdIn = ((MenuItemOptionPositionsRepository) repository).findByPublicIdIn(menuItemOptionsIds);
         return byPublicIdIn.stream().collect(Collectors.toMap(
-                MenuItemProj::getPublicId, menuItemProj -> new Pair<>(menuItemProj.getTitle(), menuItemProj.getPrice())));
+                MenuItemOptionPositionEntity::getPublicId, menuItemProj -> new Pair<>(menuItemProj.getTitle(), menuItemProj.getPrice())));
     }
 }

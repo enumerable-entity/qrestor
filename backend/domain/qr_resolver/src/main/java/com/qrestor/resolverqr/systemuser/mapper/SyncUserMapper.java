@@ -1,6 +1,6 @@
 package com.qrestor.resolverqr.systemuser.mapper;
 
-import com.qrestor.commons.kafka.dto.UserKafkaSyncDTO;
+import com.qrestor.models.dto.kafka.UserKafkaSyncDTO;
 import com.qrestor.resolverqr.systemuser.enitity.SyncUser;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
