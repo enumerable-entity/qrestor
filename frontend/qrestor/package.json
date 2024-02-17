@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "vite --host",
+    "build": "set \"VITE_CJS_TRACE=true\" && vite build",
     "preview": "vite preview",
     "test:unit": "vitest",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
@@ -14,7 +14,10 @@
   "dependencies": {
     "pinia": "^2.1.7",
     "vue": "^3.4.15",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "primeflex": "^3.3.1",
+    "primeicons": "^6.0.1",
+    "primevue": "3.39.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.3.3",
@@ -25,7 +28,8 @@
     "eslint-plugin-vue": "^9.17.0",
     "jsdom": "^24.0.0",
     "prettier": "^3.0.3",
-    "vite": "^5.0.11",
+    "vite": "5.1.3",
+    "sass": "^1.55.0",
     "vitest": "^1.2.2"
   }
 }
