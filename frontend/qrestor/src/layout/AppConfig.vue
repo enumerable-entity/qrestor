@@ -46,6 +46,7 @@ const incrementScale = () => {
 const applyScale = () => {
     document.documentElement.style.fontSize = layoutConfig.scale.value + 'px';
 };
+
 </script>
 
 <template>
