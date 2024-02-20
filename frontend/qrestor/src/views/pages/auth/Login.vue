@@ -15,7 +15,7 @@ const logoUrl = computed(() => {
 
 
 function onSubmit() {
-    return authStore.login(email.value, password.value);
+    authStore.login(email.value, password.value);
 }
 </script>
 

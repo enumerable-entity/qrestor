@@ -53,7 +53,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  const publicPages = ['login', 'accessDenied', 'error', 'landing']
+  const publicPages = ['login', 'accessDenied', 'error', 'landing', 'qr']
   const authRequired = !publicPages.includes(to.name)
   const auth = useAuthStore()
   if (authRequired && !auth.user) {
