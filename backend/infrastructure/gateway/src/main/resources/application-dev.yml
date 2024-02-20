@@ -59,11 +59,11 @@ spring:
           filters:
             - RewritePath=/importer/(?<segment>.*), /${segment}
         - id: auth
-          uri: http://auth:8097
+          uri: lb://auth
           predicates:
             - Path=/auth/**
           filters:
-            - RewritePath=/auth/(?<segment>.*), /auth/api/v1/${segment}
+            - RewritePath=/auth/(?<segment>.*), /api/v1/${segment}
         - id: kitchenboard
           uri: lb://kitchenboard
           predicates:

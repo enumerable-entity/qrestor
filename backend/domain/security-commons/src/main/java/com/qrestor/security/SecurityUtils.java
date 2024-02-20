@@ -11,7 +11,7 @@ public class SecurityUtils {
     public String getPrincipalUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof QrestorPrincipal qrestorPrincipal) {
-            return qrestorPrincipal.getName();
+            return qrestorPrincipal.getUsername();
         }
         throw new RuntimeException("Principal is not QrestorPrincipal");
     }
