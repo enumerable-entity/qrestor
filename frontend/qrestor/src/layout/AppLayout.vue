@@ -5,6 +5,7 @@ import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
 import AppConfig from './AppConfig.vue';
 import { useLayout } from '@/layout/composables/layout';
+import { fetchWrapper } from '@/fetchWrapper'
 
 const { layoutConfig, layoutState, isSidebarActive } = useLayout();
 
@@ -55,6 +56,7 @@ const isOutsideClicked = (event) => {
 
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
 };
+
 </script>
 
 <template>

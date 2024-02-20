@@ -52,16 +52,16 @@ const router = createRouter({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   const publicPages = ['login', 'accessDenied', 'error', 'landing']
-//   const authRequired = !publicPages.includes(to.name)
-//   const auth = useAuthStore()
-//   if (authRequired && !auth.user) {
-//     auth.returnUrl = to.fullPath
-//     next({ name: 'login' })
-//   } else if (authRequired && auth.user) {
-//     next(to)
-//   }
-// })
+router.beforeEach((to, from) => {
+  const publicPages = ['login', 'accessDenied', 'error', 'landing']
+  const authRequired = !publicPages.includes(to.name)
+  const auth = useAuthStore()
+  if (authRequired && !auth.user) {
+    auth.returnUrl = to.fullPath
+    return '/auth/login'
+  } else if (to.name === 'login' && auth.user && from.name === 'landing') {
+    return 'management'
+  }
+})
 
 export default router

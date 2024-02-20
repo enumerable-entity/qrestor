@@ -26,10 +26,10 @@ function request(method) {
 function authHeader(url) {
   // return auth header with jwt if user is logged in and request is to the api url
   const { user } = useAuthStore()
-  const isLoggedIn = !!user?.token
-  const isApiUrl = url.startsWith(import.meta.env.VITE_API_URL)
+  const isLoggedIn = !!user?.accessToken
+  const isApiUrl = url.startsWith('/api')
   if (isLoggedIn && isApiUrl) {
-    return { Authorization: `Bearer ${user.token}` }
+    return { Authorization: `Bearer ${user.accessToken}` }
   } else {
     return {}
   }
@@ -42,7 +42,7 @@ function handleResponse(response) {
     if (!response.ok) {
       const { user, logout } = useAuthStore()
       if ([401].includes(response.status) && user) {
-        // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
+        // auto logout if 401 Unauthorized  response returned from api
         logout()
       }
 
