@@ -120,7 +120,7 @@ app.directive('badge', BadgeDirective)
 app.directive('ripple', Ripple)
 app.directive('styleclass', StyleClass)
 
-app.mount('#app')
+
 
 app.component('BlockViewer', BlockViewer)
 
@@ -212,3 +212,5 @@ app.component('TreeSelect', TreeSelect)
 app.component('TreeTable', TreeTable)
 app.component('TriStateCheckbox', TriStateCheckbox)
 app.component('VirtualScroller', VirtualScroller)
+
+app.mount('#app')

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AppLayout from '@/layout/AppLayout.vue'
+import { useAuthStore } from '@/store'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,5 +51,17 @@ const router = createRouter({
     }
   ]
 })
+
+// router.beforeEach((to, from, next) => {
+//   const publicPages = ['login', 'accessDenied', 'error', 'landing']
+//   const authRequired = !publicPages.includes(to.name)
+//   const auth = useAuthStore()
+//   if (authRequired && !auth.user) {
+//     auth.returnUrl = to.fullPath
+//     next({ name: 'login' })
+//   } else if (authRequired && auth.user) {
+//     next(to)
+//   }
+// })
 
 export default router
