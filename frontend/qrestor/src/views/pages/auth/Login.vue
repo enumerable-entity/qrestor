@@ -45,7 +45,7 @@ function onSubmit() {
           <div>
             <label
               for="email1"
-              class="block text-900 text-xl font-medium mb-2 flex justify-content-center"
+              class="block text-900 font-medium mb-2 flex "
               >Email</label
             >
             <InputText
@@ -59,7 +59,7 @@ function onSubmit() {
 
             <label
               for="password1"
-              class="block text-900 font-medium text-xl mb-2 flex justify-content-center"
+              class="block text-900 font-medium  mb-2 flex "
               >Password</label
             >
             <Password
@@ -72,7 +72,7 @@ function onSubmit() {
               :inputStyle="{ padding: '1rem' }"
             ></Password>
 
-            <div class="flex align-items-center justify-content-between mb-5 gap-5">
+            <div class="flex align-items-center justify-content-between mb-5 gap-1">
               <div class="flex align-items-center">
                 <Checkbox v-model="checked" id="rememberme1" binary class="mr-2"></Checkbox>
                 <label for="rememberme1">Remember me</label>
@@ -80,6 +80,7 @@ function onSubmit() {
               <a
                 class="font-medium no-underline ml-2 text-right cursor-pointer"
                 style="color: var(--primary-color)"
+                @click="$router.push('/auth/forgot-password')"
                 >Forgot password?</a
               >
             </div>

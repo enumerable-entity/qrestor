@@ -55,6 +55,16 @@ const router = createRouter({
       component: () => import('@/views/pages/auth/EmailVerification.vue')
     },
     {
+      path: '/auth/forgot-password',
+      name: 'forgot-password',
+      component: () => import('@/views/pages/auth/ForgotPassword.vue')
+    },
+    {
+      path: '/auth/reset-password-send',
+      name: 'forgot-password-success',
+      component: () => import('@/views/pages/auth/ForgotPasswordSuccess.vue')
+    },
+    {
       path: '/auth/access',
       name: 'accessDenied',
       component: () => import('@/views/pages/auth/Access.vue')
@@ -71,7 +81,9 @@ router.beforeEach((to, from) => {
   const publicPages = [
     'login',
     'register',
+    'forgot-password',
     'email-verification-send',
+    'forgot-password-success',
     'email-verification',
     'accessDenied',
     'error',
