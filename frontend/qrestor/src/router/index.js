@@ -11,9 +11,9 @@ const router = createRouter({
       component: AppLayout,
       children: [
         {
-          path: '/pages/crud',
+          path: '/management/sellingPoints',
           name: 'crud',
-          component: () => import('@/views/pages/Crud.vue')
+          component: () => import('@/views/management/SellingPoints.vue')
         }
       ]
     },
