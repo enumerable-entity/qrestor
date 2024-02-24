@@ -23,10 +23,10 @@ export class EmailVerificationService {
 
 export class PassrowdResetService {
   constructor() {
-    this.url = '/api/auth/authentication/forgot-password'
+    this.url = '/api/auth/authentication/forgot-password/'
   }
 
-  async resetPasswordRequest(email) {
-    return await fetchWrapper.post(this.url, email)
+  async resetPasswordRequest(emaill) {
+    return await fetchWrapper.post(this.url, { email: emaill })
   }
 }

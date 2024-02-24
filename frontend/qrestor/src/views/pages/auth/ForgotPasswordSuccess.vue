@@ -39,8 +39,8 @@ function onSubmit() {
         "
       >
         <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px">
-          <div class="text-center mb-5">
-            <div class="text-900 text-3xl font-medium mb-3">Email with reset link was send</div>
+          <div class="text-center ">
+            <div class="text-900 text-3xl font-medium">Email with reset link was send</div>
           </div>
         </div>
       </div>
