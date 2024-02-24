@@ -8,6 +8,9 @@ import com.qrestor.auth.token.service.TokenService;
 import com.qrestor.auth.user.entity.SystemUserEntity;
 import com.qrestor.auth.user.enums.UserEventType;
 import com.qrestor.auth.user.events.UserEvent;
+import com.qrestor.auth.user.mapper.AddressMapper;
+import com.qrestor.auth.user.mapper.UserInformationMapper;
+import com.qrestor.auth.user.mapper.UserSettingsMapper;
 import com.qrestor.auth.user.repository.SystemUserRepository;
 import com.qrestor.auth.user.service.interfaces.UserRegistrationService;
 import com.qrestor.auth.user.validation.SystemUserValidator;
@@ -34,6 +37,10 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
     private final TokenService tokenService;
     private final RoleService roleService;
 
+    private final AddressMapper addressMapper;
+    private final UserInformationMapper userInformationMapper;
+    private final UserSettingsMapper userSettingsMapper;
+
 
     @Override
     @Transactional
@@ -48,6 +55,9 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
                 .credentialsNonExpired(true)
                 .enabled(false)
                 .authorities(roleService.findByAuthority(SystemRole.RESTAURATEUR.name()))
+                .information(userInformationMapper.toEntity(registrationRequest.information()))
+                .address(addressMapper.toEntity(registrationRequest.address()))
+                .settings(userSettingsMapper.toEntity(registrationRequest.settings()))
                 .build();
         userRepository.save(newSystemUser);
         userRepository.flush();

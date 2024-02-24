@@ -1,11 +1,12 @@
-export default class ProductService {
-  loginAttempt(email, password) {
-    return fetch('/api/auth/authentication/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    }).then((res) => res.json())
+import { fetchWrapper } from '@/fetchWrapper'
+
+export default class RegistrationService {
+  constructor() {
+    this.url = '/api/auth/registration'
+  }
+
+  async registerUser(userInfo) {
+    const userRegistrationResponse = await fetchWrapper.post(this.url, userInfo)
+    return userRegistrationResponse
   }
 }

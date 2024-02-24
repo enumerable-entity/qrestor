@@ -7,5 +7,6 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface AddressMapper {
     AddressDTO toDto(AddressEntity entity);
+    AddressEntity toEntity(AddressDTO dto);
 
 }

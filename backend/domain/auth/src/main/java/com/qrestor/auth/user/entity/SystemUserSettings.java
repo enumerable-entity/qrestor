@@ -17,32 +17,18 @@ public class SystemUserSettings {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "ui_theme", nullable = false)
+    @Column(name = "ui_theme")
     private String theme;
 
-    @Column(name = "language", nullable = false)
+    @Column(name = "language")
     private String language;
 
     @Column(name = "currency", nullable = false)
     private String currency;
 
-    @Column(name = "timezone", nullable = false)
+    @Column(name = "timezone")
     private String timezone;
 
-    @Column(name= "mfa_enabled", nullable = false)
-    private boolean mfaEnabled;
-
-    @Column(name = "mfa_type", nullable = false)
-    private String mfaType;
-
-    @Column(name = "mfa_secret", nullable = false)
-    private String mfaSecret;
-
-    @Column(name = "mfa_recovery_codes", nullable = false)
-    private String mfaRecoveryCodes;
-
-    @Column(name = "mfa_recovery_codes_used", nullable = false)
-    private String mfaRecoveryCodesUsed;
 
     @Override
     public final boolean equals(Object o) {
@@ -67,11 +53,6 @@ public class SystemUserSettings {
                 "theme = " + theme + ", " +
                 "language = " + language + ", " +
                 "currency = " + currency + ", " +
-                "timezone = " + timezone + ", " +
-                "mfaEnabled = " + mfaEnabled + ", " +
-                "mfaType = " + mfaType + ", " +
-                "mfaSecret = " + mfaSecret + ", " +
-                "mfaRecoveryCodes = " + mfaRecoveryCodes + ", " +
-                "mfaRecoveryCodesUsed = " + mfaRecoveryCodesUsed + ")";
+                "timezone = " + timezone;
     }
 }

@@ -40,6 +40,11 @@ const router = createRouter({
       component: () => import('@/views/pages/auth/Login.vue')
     },
     {
+      path: '/auth/register',
+      name: 'register',
+      component: () => import('@/views/pages/auth/Registration.vue')
+    },
+    {
       path: '/auth/access',
       name: 'accessDenied',
       component: () => import('@/views/pages/auth/Access.vue')
@@ -53,7 +58,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  const publicPages = ['login', 'accessDenied', 'error', 'landing', 'qr']
+  const publicPages = ['login', 'register', 'accessDenied', 'error', 'landing', 'qr']
   const authRequired = !publicPages.includes(to.name)
   const auth = useAuthStore()
   if (authRequired && !auth.user) {

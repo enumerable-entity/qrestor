@@ -8,4 +8,6 @@ import org.mapstruct.Mapper;
 public interface UserSettingsMapper {
     UserSettingsDTO toDto(SystemUserSettings entity);
 
+    SystemUserSettings toEntity(UserSettingsDTO dto);
+
 }

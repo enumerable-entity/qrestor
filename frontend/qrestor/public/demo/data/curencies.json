@@ -1,0 +1,7 @@
+{
+    "data": [
+      { "name": "USD", "code": "USD" },
+      { "name": "PLN", "code": "PLN" },
+      { "name": "EUR", "code": "EUR" }
+    ]
+}
