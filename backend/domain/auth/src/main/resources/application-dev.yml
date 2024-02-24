@@ -1,5 +1,5 @@
 app:
-  domain: https://wanted-talented-peacock.ngrok-free.app
+  domain: http://localhost:8080
   auth:
     jwt:
       secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}

@@ -30,8 +30,6 @@ public class UserRegistrationEventListener implements ApplicationListener<UserEv
 
     @Value("${app.domain}")
     private String domain;
-    @Value("${server.servlet.context-path}")
-    private String api_prefix;
 
     @Override
     public void onApplicationEvent(UserEvent event) {

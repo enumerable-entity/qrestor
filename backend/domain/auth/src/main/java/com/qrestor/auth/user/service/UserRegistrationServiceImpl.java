@@ -68,20 +68,22 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
     }
 
     @Override
-    public void confirmNewUserEmail(String emailConfirmationToken) {
+    public boolean confirmNewUserEmail(String emailConfirmationToken) {
         Optional<TokenEntity> receivedToken = tokenService.getToken(emailConfirmationToken, TokenType.EMAIL_VERIFICATION);
-        receivedToken.ifPresentOrElse(token -> {
-            if (token.getUsedAt() != null) {
-                throw new RuntimeException("Email already confirmed");
+
+        if(receivedToken.isPresent()){
+            if (receivedToken.get().getUsedAt() != null) {
+                return false;
             }
-            token.setUsedAt(LocalDateTime.now());
-            token.getUser().setEnabled(true);
-            tokenService.save(token);
+            receivedToken.get().setUsedAt(LocalDateTime.now());
+            receivedToken.get().getUser().setEnabled(true);
+            tokenService.save(receivedToken.get());
 
             eventPublisher.publishEvent(
-                    new UserEvent(this, UserEventType.REGISTRATION_CONFIRMATION, token.getUser(), null));
-        }, () -> {
-            throw new RuntimeException("Invalid email confirmation token");
-        });
+                    new UserEvent(this, UserEventType.REGISTRATION_CONFIRMATION, receivedToken.get().getUser(), null));
+            return true;
+        }else {
+            return true;
+        }
     }
 }

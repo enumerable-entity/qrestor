@@ -50,6 +50,11 @@ const router = createRouter({
       component: () => import('@/views/pages/auth/EmailVerificationSend.vue')
     },
     {
+      path: '/registration/verifyEmail/:token',
+      name: 'email-verification',
+      component: () => import('@/views/pages/auth/EmailVerification.vue')
+    },
+    {
       path: '/auth/access',
       name: 'accessDenied',
       component: () => import('@/views/pages/auth/Access.vue')
@@ -67,6 +72,7 @@ router.beforeEach((to, from) => {
     'login',
     'register',
     'email-verification-send',
+    'email-verification',
     'accessDenied',
     'error',
     'landing',

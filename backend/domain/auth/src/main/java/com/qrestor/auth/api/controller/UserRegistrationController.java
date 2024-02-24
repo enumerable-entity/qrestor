@@ -26,7 +26,10 @@ public class UserRegistrationController {
 
     @GetMapping(VERIFY_EMAIL + "{emailConfirmationToken}")
     public ResponseEntity<Void> confirmEmail(@PathVariable String emailConfirmationToken) {
-        userRegistrationService.confirmNewUserEmail(emailConfirmationToken);
+        boolean tokenWasOk = userRegistrationService.confirmNewUserEmail(emailConfirmationToken);
+        if (!tokenWasOk) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok().build();
     }
 

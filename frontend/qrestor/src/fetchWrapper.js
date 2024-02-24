@@ -1,14 +1,14 @@
 import { useAuthStore } from '@/store'
 
 export const fetchWrapper = {
-  get: request('GET'),
-  post: request('POST'),
-  put: request('PUT'),
-  delete: request('DELETE')
+  get: await request('GET'),
+  post: await request('POST'),
+  put: await request('PUT'),
+  delete: await request('DELETE')
 }
 
-function request(method) {
-  return (url, body) => {
+async function request(method) {
+  return async (url, body) => {
     const requestOptions = {
       method,
       headers: authHeader(url)
@@ -17,7 +17,7 @@ function request(method) {
       requestOptions.headers['Content-Type'] = 'application/json'
       requestOptions.body = JSON.stringify(body)
     }
-    return fetch(url, requestOptions).then(handleResponse)
+    return await fetch(url, requestOptions).then(handleResponse)
   }
 }
 
@@ -35,7 +35,7 @@ function authHeader(url) {
   }
 }
 
-function handleResponse(response) {
+async function handleResponse(response) {
   return response.text().then((text) => {
     const data = text && JSON.parse(text)
 
@@ -45,11 +45,7 @@ function handleResponse(response) {
         // auto logout if 401 Unauthorized  response returned from api
         logout()
       }
-
-      const error = (data && data.message) || response.statusText
-      return Promise.reject(error)
     }
-
-    return data
+    return data, response.status
   })
 }

@@ -1,7 +1,7 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout'
 import { ref, computed, onMounted } from 'vue'
-import RegistrationService from '@/service/AuthService'
+import { RegistrationService } from '@/service/AuthService'
 import { CurrencyService, CountryService } from '@/service/DropBoxService'
 import router  from '@/router/index'
 

@@ -5,7 +5,7 @@ import com.qrestor.auth.api.dto.RegistrationRequestDTO;
 public interface UserRegistrationService {
     void registerNewUser(RegistrationRequestDTO registrationRequest);
 
-    void confirmNewUserEmail(String emailConfirmationToken);
+    boolean confirmNewUserEmail(String emailConfirmationToken);
 
 
 }
