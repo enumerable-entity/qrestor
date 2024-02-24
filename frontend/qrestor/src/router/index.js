@@ -65,6 +65,16 @@ const router = createRouter({
       component: () => import('@/views/pages/auth/ForgotPasswordSuccess.vue')
     },
     {
+      path: '/authentication/forgot-password/:token',
+      name: 'forgot-password-token',
+      component: () => import('@/views/pages/auth/ForgotPasswordToken.vue')
+    },
+    {
+      path: '/auth/reset-password-success',
+      name: 'reset-password-success',
+      component: () => import('@/views/pages/auth/ResetPasswordSuccess.vue')
+    },
+    {
       path: '/auth/access',
       name: 'accessDenied',
       component: () => import('@/views/pages/auth/Access.vue')
@@ -84,6 +94,8 @@ router.beforeEach((to, from) => {
     'forgot-password',
     'email-verification-send',
     'forgot-password-success',
+    'forgot-password-token',
+    'reset-password-success',
     'email-verification',
     'accessDenied',
     'error',

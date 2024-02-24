@@ -97,7 +97,7 @@ function onSubmit() {
     class="surface-ground grid align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
   >
     <div class="flex flex-column align-items-center md:w-9 sm:w-11 pl-4 pr-2">
-      <img :src="logoUrl" alt="Qrestor logo" class="mb-5 mt-8 w-6rem flex-shrink-0" />
+      <img :src="logoUrl" alt="Qrestor logo" class="mb-5 mt-8 w-6rem flex-shrink-0"  @click="$router.push('/')" />
       <div
         style="
           border-radius: 56px;
@@ -141,6 +141,15 @@ function onSubmit() {
                   <Password
                     id="pass"
                     v-model="registrationRequest.password"
+                    placeholder="Password"
+                    :toggleMask="true"
+                    class="w-full pb-0"
+                  ></Password>
+                </div>
+                <div class="field col-12 md:col-12 pt-0 pb-0">
+                  <label for="pass1">Repeat password</label>
+                  <Password
+                    id="pass1"
                     placeholder="Password"
                     :toggleMask="true"
                     class="w-full pb-0"

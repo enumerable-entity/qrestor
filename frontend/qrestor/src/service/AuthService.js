@@ -29,4 +29,8 @@ export class PassrowdResetService {
   async resetPasswordRequest(emaill) {
     return await fetchWrapper.post(this.url, { email: emaill })
   }
+
+  async resetPasswordToken(token, password, emaill) {
+    return await fetchWrapper.post(this.url, { password: password, token: token, email: emaill})
+  }
 }
