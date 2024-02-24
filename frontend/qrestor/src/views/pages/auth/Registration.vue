@@ -86,7 +86,7 @@ function onSubmit() {
   registrationRequest.value.settings.theme = darkMode.value ? 'DARK' : 'LIGHT'
   const result = registrationService.registerUser(registrationRequest.value)
   if (result) {
-    router.push('/management')
+    router.push('/auth/email-verification-send')
   }
 
 }

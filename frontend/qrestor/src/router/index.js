@@ -45,6 +45,11 @@ const router = createRouter({
       component: () => import('@/views/pages/auth/Registration.vue')
     },
     {
+      path: '/auth/email-verification-send',
+      name: 'email-verification-send',
+      component: () => import('@/views/pages/auth/EmailVerificationSend.vue')
+    },
+    {
       path: '/auth/access',
       name: 'accessDenied',
       component: () => import('@/views/pages/auth/Access.vue')
@@ -58,7 +63,15 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  const publicPages = ['login', 'register', 'accessDenied', 'error', 'landing', 'qr']
+  const publicPages = [
+    'login',
+    'register',
+    'email-verification-send',
+    'accessDenied',
+    'error',
+    'landing',
+    'qr'
+  ]
   const authRequired = !publicPages.includes(to.name)
   const auth = useAuthStore()
   if (authRequired && !auth.user) {
