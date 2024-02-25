@@ -16,6 +16,7 @@ function request(method) {
      
     const requestOptions = {
       method,
+      mode: 'cors',
       headers: authHeader(requestUrl)
     }
     if (body) {
