@@ -1,7 +1,7 @@
 <script setup>
 import { FilterMatchMode } from 'primevue/api'
 import { onBeforeMount, onMounted, ref } from 'vue'
-import SellingPointsService from '@/service/SellingPointsService.js'
+import MenuService from '@/service/MenuService.js'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
@@ -16,13 +16,13 @@ const dt = ref(null)
 const filters = ref({})
 const submitted = ref(false)
 
-const sellingPointService = new SellingPointsService()
+const menuService = new MenuService()
 
 onBeforeMount(() => {
   initFilters()
 })
 onMounted(async () => {
-  const { data } = await sellingPointService.getSellingPoints()
+  const { data } = await menuService.getMenus()
   points.value = data
 })
 
@@ -65,14 +65,14 @@ const savePoint = async () => {
   submitted.value = true
 
   if (point.value.publicId) {
-    const { data } = await sellingPointService.updateSellingPoint(point.value)
+    const { data } = await menuService.updateMenu(point.value)
     pointDialog.value = false
     const index = points.value.findIndex((el) => el.publicId === data.publicId)
     if (index !== -1) {
       points.value[index] = data
     }
   } else {
-    const { data } = await sellingPointService.addSellingPoint(point.value)
+    const { data } = await menuService.addMenu(point.value)
     toast.add({
       severity: 'success',
       summary: 'Successful',
@@ -95,7 +95,7 @@ const confirmDeletePoint = (editPoint) => {
 }
 
 const deletePoint = async () => {
-  const { status } = await sellingPointService.deleteSellingPoint(point.value.publicId)
+  const { status } = await menuService.deleteMenu(point.value.publicId)
   if (status === 204) {
     points.value = points.value.filter((val) => val.publicId !== point.value.publicId)
     deletePointDialog.value = false
