@@ -2,7 +2,7 @@ import { fetchWrapper } from '@/fetchWrapper'
 
 export class RegistrationService {
   constructor() {
-    this.url = '/api/auth/registration'
+    this.url = '/auth/registration'
   }
 
   async registerUser(userInfo) {
@@ -13,7 +13,7 @@ export class RegistrationService {
 
 export class EmailVerificationService {
   constructor() {
-    this.url = '/api/auth/registration/verifyEmail/'
+    this.url = '/auth/registration/verifyEmail/'
   }
 
   async verifyToken(token) {
@@ -23,7 +23,7 @@ export class EmailVerificationService {
 
 export class PassrowdResetService {
   constructor() {
-    this.url = '/api/auth/authentication/forgot-password/'
+    this.url = '/auth/authentication/forgot-password/'
   }
 
   async resetPasswordRequest(emaill) {

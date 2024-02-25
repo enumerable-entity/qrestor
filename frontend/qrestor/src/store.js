@@ -9,7 +9,7 @@ export const useUserStore = defineStore({
   }),
   actions: {
     async getLoggedUserInfo() {
-      const { data } = await fetchWrapper.get('/api/auth/authentication/me')
+      const { data } = await fetchWrapper.get('/auth/authentication/me')
 
       // update pinia state
       this.userInfo = await data
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore({
   }),
   actions: {
     async login(email, password) {
-      const { data } = await fetchWrapper.post(`/api/auth/authentication/login`, {
+      const { data } = await fetchWrapper.post(`/auth/authentication/login`, {
         email,
         password
       })

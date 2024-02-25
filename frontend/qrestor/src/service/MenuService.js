@@ -2,7 +2,7 @@ import { fetchWrapper } from '@/fetchWrapper.js'
 
 export default class MenuService {
     constructor() {
-        this.url = '/api/menu/menu/'
+        this.url = '/menu/menu/'
     }
 
     getMenus() {
