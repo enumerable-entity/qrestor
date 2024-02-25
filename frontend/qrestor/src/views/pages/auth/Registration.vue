@@ -79,7 +79,7 @@ const registrationRequest = ref({
   }
 })
 
-var registrationService = new RegistrationService()
+const registrationService = new RegistrationService()
 function onSubmit() {
   registrationRequest.value.address.country = selectedAutoValueCountry.value.code
   registrationRequest.value.settings.currency = selectedAutoValueCurrency.value.code

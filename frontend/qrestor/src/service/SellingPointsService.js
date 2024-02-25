@@ -19,4 +19,12 @@ export default class SellingPointsService {
     getSellingPoints() {
         return fetchWrapper.get(this.url)
     }
+
+    addSellingPoint(sellingPoint) {
+        return fetchWrapper.post(this.url, sellingPoint)
+    }
+
+    updateSellingPoint(sellingPoint) {
+        return fetchWrapper.put(this.url + '/' + sellingPoint.publicId, sellingPoint)
+    }
 }
