@@ -1,15 +1,47 @@
-{
-    "data": [
-        {"id": "1000","code": "f230fh0g3","name": "Bamboo Watch","description": "Product Description","image": "bamboo-watch.jpg","price": 65,"category": "Accessories","quantity": 24,"inventoryStatus": "INSTOCK","rating": 5},
-        {"id": "1001","code": "nvklal433","name": "Black Watch","description": "Product Description","image": "black-watch.jpg","price": 72,"category": "Accessories","quantity": 61,"inventoryStatus": "INSTOCK","rating": 4},
-        {"id": "1002","code": "zz21cz3c1","name": "Blue Band","description": "Product Description","image": "blue-band.jpg","price": 79,"category": "Fitness","quantity": 2,"inventoryStatus": "LOWSTOCK","rating": 3},
-        {"id": "1003","code": "244wgerg2","name": "Blue T-Shirt","description": "Product Description","image": "blue-t-shirt.jpg","price": 29,"category": "Clothing","quantity": 25,"inventoryStatus": "INSTOCK","rating": 5},
-        {"id": "1004","code": "h456wer53","name": "Bracelet","description": "Product Description","image": "bracelet.jpg","price": 15,"category": "Accessories","quantity": 73,"inventoryStatus": "INSTOCK","rating": 4},
-        {"id": "1005","code": "av2231fwg","name": "Brown Purse","description": "Product Description","image": "brown-purse.jpg","price": 120,"category": "Accessories","quantity": 0,"inventoryStatus": "OUTOFSTOCK","rating": 4},
-        {"id": "1006","code": "bib36pfvm","name": "Chakra Bracelet","description": "Product Description","image": "chakra-bracelet.jpg","price": 32,"category": "Accessories","quantity": 5,"inventoryStatus": "LOWSTOCK","rating": 3},
-        {"id": "1007","code": "mbvjkgip5","name": "Galaxy Earrings","description": "Product Description","image": "galaxy-earrings.jpg","price": 34,"category": "Accessories","quantity": 23,"inventoryStatus": "INSTOCK","rating": 5},
-        {"id": "1008","code": "vbb124btr","name": "Game Controller","description": "Product Description","image": "game-controller.jpg","price": 99,"category": "Electronics","quantity": 2,"inventoryStatus": "LOWSTOCK","rating": 4},
-        {"id": "1009","code": "cm230f032","name": "Gaming Set","description": "Product Description","image": "gaming-set.jpg","price": 299,"category": "Electronics","quantity": 63,"inventoryStatus": "INSTOCK","rating": 3}
-    ]
-}
-    
+[
+  {
+    "publicId": "94460333-be84-46dd-bd16-aebe6fc0d8d5",
+    "name": "name_7f3f9bb2-2eb7-4bb4-972e-16e9b9160387",
+    "title": "title_7c7b0405-d391-42ca-ba63-a3877da05286",
+    "description": "description_80de158b-476d-46f2-bf99-f5199fe919d1",
+    "address": "address_6fa84e4e-0dc9-4fec-a971-b3e10b4192af",
+    "phone": "2875043",
+    "settings": {
+      "backgroundImageUrl": "https://picsum.photos/200/300",
+      "primaryColor": "EC5FF1",
+      "secondaryColor": "CE1041",
+      "logoUrl": "https://picsum.photos/200/300",
+      "topHeaderUrl": null
+    }
+  },
+  {
+    "publicId": "1a192f98-3bb5-47ad-936e-afd19b638bc2",
+    "name": "name_3f78a669-9923-43a8-812a-5ecbfb19a6cc",
+    "title": "title_8bfe97d2-6132-4266-9e7f-c7b8dd2bcbce",
+    "description": "description_65246b19-c8b8-43b9-b66f-117d67d3e84b",
+    "address": "address_89214d8a-7598-4dba-b236-65c146e61962",
+    "phone": "6375564",
+    "settings": {
+      "backgroundImageUrl": "https://picsum.photos/200/300",
+      "primaryColor": "333D01",
+      "secondaryColor": "C2914B",
+      "logoUrl": "https://picsum.photos/200/300",
+      "topHeaderUrl": null
+    }
+  },
+  {
+    "publicId": "5f03fab9-a257-4e95-b80d-4b2ce48616b2",
+    "name": "name_12d9bc92-3958-41b0-a6c6-130e34db4082",
+    "title": "title_185d2f36-d5f8-4c73-8128-cca007d210b6",
+    "description": "description_742ce490-705d-4fd1-a410-24aa31a23c4b",
+    "address": "address_146f8092-5627-424a-880b-d2b31aa1ee54",
+    "phone": "6619879",
+    "settings": {
+      "backgroundImageUrl": "https://picsum.photos/200/300",
+      "primaryColor": "42C175",
+      "secondaryColor": "804A3A",
+      "logoUrl": "https://picsum.photos/200/300",
+      "topHeaderUrl": null
+    }
+  }
+]

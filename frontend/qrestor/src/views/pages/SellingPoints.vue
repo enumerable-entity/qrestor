@@ -15,19 +15,15 @@ const selectedPoints = ref(null);
 const dt = ref(null);
 const filters = ref({});
 const submitted = ref(false);
-const statuses = ref([
-    { label: 'INSTOCK', value: 'instock' },
-    { label: 'LOWSTOCK', value: 'lowstock' },
-    { label: 'OUTOFSTOCK', value: 'outofstock' }
-]);
 
 const sellingPointService = new SellingPointsService();
 
 onBeforeMount(() => {
     initFilters();
 });
-onMounted(() => {
-    sellingPointService.getSellingPoints().then((data) => (points.value = data));
+onMounted(async () => {
+    const {data} = await sellingPointService.getSellingPoints();
+    points.value = data;
 });
 const formatCurrency = (value) => {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
@@ -102,6 +98,10 @@ const createId = () => {
     return id;
 };
 
+const makeIdShorter = (id) => {
+    return id.substring(0, 8) + ' ...';
+};
+
 const exportCSV = () => {
     dt.value.exportCSV();
 };
@@ -166,10 +166,10 @@ const initFilters = () => {
                     </template>
 
                     <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                    <Column field="code" header="Code" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                    <Column field="publicId" header="Id" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
-                            <span class="p-column-title">Code</span>
-                            {{ slotProps.data.code }}
+                            <span class="p-column-title">Id</span>
+                            {{ makeIdShorter(slotProps.data.publicId) }}
                         </template>
                     </Column>
                     <Column field="name" header="Name" :sortable="true" headerStyle="width:14%; min-width:10rem;">
@@ -178,36 +178,36 @@ const initFilters = () => {
                             {{ slotProps.data.name }}
                         </template>
                     </Column>
-                    <Column header="Image" headerStyle="width:14%; min-width:10rem;">
+                    <Column field="title" header="Title" :sortable="true" headerStyle="width:14%; min-width:8rem;">
                         <template #body="slotProps">
-                            <span class="p-column-title">Image</span>
-                            <img :src="'/demo/images/product/' + slotProps.data.image" :alt="slotProps.data.image" class="shadow-2" width="100" />
+                            <span class="p-column-title">Title</span>
+                            {{ formatCurrency(slotProps.data.title) }}
                         </template>
                     </Column>
-                    <Column field="price" header="Price" :sortable="true" headerStyle="width:14%; min-width:8rem;">
+                    <Column field="description" header="Description" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
-                            <span class="p-column-title">Price</span>
-                            {{ formatCurrency(slotProps.data.price) }}
+                            <span class="p-column-title">Description</span>
+                            {{ slotProps.data.description }}
                         </template>
                     </Column>
-                    <Column field="category" header="Category" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">Category</span>
-                            {{ slotProps.data.category }}
-                        </template>
-                    </Column>
-                    <Column field="rating" header="Reviews" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">Rating</span>
-                            <Rating :modelValue="slotProps.data.rating" :readonly="true" :cancel="false" />
-                        </template>
-                    </Column>
-                    <Column field="inventoryStatus" header="Status" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">Status</span>
-                            <span :class="'product-badge status-' + (slotProps.data.inventoryStatus ? slotProps.data.inventoryStatus.toLowerCase() : '')">{{ slotProps.data.inventoryStatus }}</span>
-                        </template>
-                    </Column>
+                  <Column field="address" header="Address" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                    <template #body="slotProps">
+                      <span class="p-column-title">Address</span>
+                      {{ slotProps.data.address }}
+                    </template>
+                  </Column>
+                  <Column field="phone" header="Phone" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                    <template #body="slotProps">
+                      <span class="p-column-title">Phone</span>
+                      {{ slotProps.data.phone }}
+                    </template>
+                  </Column>
+<!--                  <Column header="Menu background" headerStyle="width:14%; min-width:10rem;">-->
+<!--                    <template #body="slotProps">-->
+<!--                      <span class="p-column-title">Menu background</span>-->
+<!--                      <img :src="slotProps.data.settings.backgroundImageUrl" :alt="slotProps.data.settings.backgroundImageUrl" class="shadow-2" width="100" />-->
+<!--                    </template>-->
+<!--                  </Column>-->
                     <Column headerStyle="min-width:10rem;">
                         <template #body="slotProps">
                             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editPoint(slotProps.data)" />
@@ -228,22 +228,22 @@ const initFilters = () => {
                         <Textarea id="description" v-model="point.description" required="true" rows="3" cols="20" />
                     </div>
 
-                    <div class="field">
-                        <label for="inventoryStatus" class="mb-3">Inventory Status</label>
-                        <Dropdown id="inventoryStatus" v-model="point.inventoryStatus" :options="statuses" optionLabel="label" placeholder="Select a Status">
-                            <template #value="slotProps">
-                                <div v-if="slotProps.value && slotProps.value.value">
-                                    <span :class="'point-badge status-' + slotProps.value.value">{{ slotProps.value.label }}</span>
-                                </div>
-                                <div v-else-if="slotProps.value && !slotProps.value.value">
-                                    <span :class="'point-badge status-' + slotProps.value.toLowerCase()">{{ slotProps.value }}</span>
-                                </div>
-                                <span v-else>
-                                    {{ slotProps.placeholder }}
-                                </span>
-                            </template>
-                        </Dropdown>
-                    </div>
+<!--                    <div class="field">-->
+<!--                        <label for="inventoryStatus" class="mb-3">Inventory Status</label>-->
+<!--                        <Dropdown id="inventoryStatus" v-model="point.inventoryStatus" :options="statuses" optionLabel="label" placeholder="Select a Status">-->
+<!--                            <template #value="slotProps">-->
+<!--                                <div v-if="slotProps.value && slotProps.value.value">-->
+<!--                                    <span :class="'point-badge status-' + slotProps.value.value">{{ slotProps.value.label }}</span>-->
+<!--                                </div>-->
+<!--                                <div v-else-if="slotProps.value && !slotProps.value.value">-->
+<!--                                    <span :class="'point-badge status-' + slotProps.value.toLowerCase()">{{ slotProps.value }}</span>-->
+<!--                                </div>-->
+<!--                                <span v-else>-->
+<!--                                    {{ slotProps.placeholder }}-->
+<!--                                </span>-->
+<!--                            </template>-->
+<!--                        </Dropdown>-->
+<!--                    </div>-->
 
                     <div class="field">
                         <label class="mb-3">Category</label>

@@ -1,13 +1,22 @@
+import { fetchWrapper } from '@/fetchWrapper.js'
+
 export default class SellingPointsService {
+    constructor() {
+        this.url = '/api/restaurant/management/restaurant'
+    }
     getProductsSmall() {
         return fetch('/demo/data/products-small.json')
+            .then((res) => res.json())
+            .then((d) => d);
+    }
+
+    getpoin() {
+        return fetch('/demo/data/products.json')
             .then((res) => res.json())
             .then((d) => d.data);
     }
 
     getSellingPoints() {
-        return fetch('/demo/data/products.json')
-            .then((res) => res.json())
-            .then((d) => d.data);
+        return fetchWrapper.get(this.url)
     }
 }
