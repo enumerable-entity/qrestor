@@ -2,7 +2,7 @@ import { fetchWrapper } from '@/fetchWrapper.js'
 
 export default class SellingPointsService {
     constructor() {
-        this.url = '/api/restaurant/management/restaurant'
+        this.url = '/restaurant/management/restaurant'
     }
     getProductsSmall() {
         return fetch('/demo/data/products-small.json')
