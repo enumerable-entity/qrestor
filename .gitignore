@@ -4,6 +4,7 @@
 frontend/.idea
 frontend/.vscode
 frontend/qresto_public/node_modules
+frontend/qrestor/dist
 
 #Backend
 backend/domain/auth/target
