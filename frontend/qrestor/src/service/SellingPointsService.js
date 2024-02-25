@@ -1,18 +1,12 @@
-export default class ProductService {
+export default class SellingPointsService {
     getProductsSmall() {
         return fetch('/demo/data/products-small.json')
             .then((res) => res.json())
             .then((d) => d.data);
     }
 
-    getProducts() {
+    getSellingPoints() {
         return fetch('/demo/data/products.json')
-            .then((res) => res.json())
-            .then((d) => d.data);
-    }
-
-    getProductsWithOrdersSmall() {
-        return fetch('/demo/data/products-orders-small.json')
             .then((res) => res.json())
             .then((d) => d.data);
     }
