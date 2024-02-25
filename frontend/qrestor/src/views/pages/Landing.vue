@@ -1,7 +1,10 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout'
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import AppConfig from '@/layout/AppConfig.vue'
+import { useAuthStore } from '@/store'
+
+const authStore = useAuthStore()
 
 const { layoutConfig } = useLayout()
 
@@ -10,6 +13,12 @@ const smoothScroll = (id) => {
     behavior: 'smooth'
   })
 }
+
+const loginLabel = ref('')
+
+onMounted(() => {
+  loginLabel.value = authStore.isAuthenticated() ? 'Dashboard' : 'Login'
+})
 
 const logoUrl = computed(() => {
   return `layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`
@@ -88,11 +97,12 @@ const logoUrl = computed(() => {
             class="flex justify-content-between lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 mt-3 lg:mt-0"
           >
             <Button
-              label="Login"
               class="p-button-text p-button-rounded border-none font-light line-height-2 text-blue-500"
               @click="$router.push('/auth/login')"
-            ></Button>
+              >{{ loginLabel }}</Button
+            >
             <Button
+              v-if="!authStore.isAuthenticated()"
               label="Register"
               class="p-button-rounded border-none ml-5 font-light text-white line-height-2 bg-blue-500"
               @click="$router.push('/auth/register')"

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { fetchWrapper } from '@/fetchWrapper'
-import router  from '@/router/index'
+import router from '@/router/index'
 
 export const useUserStore = defineStore({
   id: 'authUserInfo',
@@ -9,13 +9,13 @@ export const useUserStore = defineStore({
   }),
   actions: {
     async getLoggedUserInfo() {
-      const userInfo = await fetchWrapper.get('/api/auth/authentication/me')
+      const { data } = await fetchWrapper.get('/api/auth/authentication/me')
 
       // update pinia state
-      this.userInfo = userInfo
+      this.userInfo = await data
 
       // store user details and jwt in local storage to keep user logged in between page refreshes
-      localStorage.setItem('authUserInfo', JSON.stringify(userInfo))
+      localStorage.setItem('authUserInfo', JSON.stringify(data))
     }
   }
 })
@@ -24,18 +24,21 @@ export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
     // initialize state from local storage to enable user to stay logged in
-    user: JSON.parse(localStorage.getItem('user')),
+    tokens: JSON.parse(localStorage.getItem('tokens')),
     returnUrl: null
   }),
   actions: {
     async login(email, password) {
-      const user = await fetchWrapper.post(`/api/auth/authentication/login`, { email, password })
+      const { data } = await fetchWrapper.post(`/api/auth/authentication/login`, {
+        email,
+        password
+      })
 
       // update pinia state
-      this.user = user
+      this.tokens = data
 
       // store user details and jwt in local storage to keep user logged in between page refreshes
-      localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem('tokens', JSON.stringify(data))
       var useUserStor = useUserStore()
       useUserStor.getLoggedUserInfo()
 
@@ -43,10 +46,14 @@ export const useAuthStore = defineStore({
       router.push(this.returnUrl || '/management')
     },
     logout() {
-      this.user = null
-      localStorage.removeItem('user')
+      this.tokens = null
+      localStorage.removeItem('tokens')
       localStorage.removeItem('authUserInfo')
       router.push('/auth/login')
+    },
+    isAuthenticated() {
+      var isAuth = !!this.tokens?.accessToken
+      return isAuth
     }
   }
 })
