@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {AddressMapper.class})
 public interface RestaurantMapper extends CrudMapper<RestaurantDTO, RestaurantEntity> {
 
     @AfterMapping

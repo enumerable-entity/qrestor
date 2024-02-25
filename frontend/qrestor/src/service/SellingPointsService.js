@@ -27,4 +27,8 @@ export default class SellingPointsService {
     updateSellingPoint(sellingPoint) {
         return fetchWrapper.put(this.url + '/' + sellingPoint.publicId, sellingPoint)
     }
+
+    deleteSellingPoint(publicId) {
+        return fetchWrapper.delete(this.url + '/' + publicId)
+    }
 }

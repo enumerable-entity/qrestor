@@ -37,9 +37,6 @@ public class RestaurantEntity extends OwnedEntity implements PublicEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "address", nullable = false)
-    private String address;
-
     @Column(name = "phone")
     private String phone;
 
@@ -55,6 +52,10 @@ public class RestaurantEntity extends OwnedEntity implements PublicEntity {
 
     @OneToMany(mappedBy = "restaurant", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<SyncUser> restaurantWaiters = new LinkedHashSet<>();
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
+    @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ID")
+    private AddressEntity address;
 
     @Override
     public final boolean equals(Object o) {

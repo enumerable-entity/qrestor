@@ -16,7 +16,7 @@ import java.util.UUID;
 @Repository
 public interface RestaurantRepository extends PublicRepository<RestaurantEntity, Long> {
 
-    @EntityGraph(attributePaths = {"settings"})
+    @EntityGraph(attributePaths = {"settings", "address"})
     @Override
     Page<RestaurantEntity> findAll(Specification<RestaurantEntity> specification, Pageable pageable);
 

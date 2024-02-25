@@ -86,7 +86,6 @@ const savePoint = async () => {
 }
 const editPoint = (editPoint) => {
   point.value = { ...editPoint }
-  console.log(point)
   pointDialog.value = true
 }
 
@@ -95,16 +94,19 @@ const confirmDeletePoint = (editPoint) => {
   deletePointDialog.value = true
 }
 
-const deletePoint = () => {
-  points.value = points.value.filter((val) => val.id !== point.value.id)
-  deletePointDialog.value = false
-  point.value = {}
-  toast.add({
-    severity: 'success',
-    summary: 'Successful',
-    detail: 'Selling point deleted',
-    life: 3000
-  })
+const deletePoint = async () => {
+  const { status } = await sellingPointService.deleteSellingPoint(point.value.publicId)
+  if (status === 204) {
+    points.value = points.value.filter((val) => val.publicId !== point.value.publicId)
+    deletePointDialog.value = false
+    point.value = emptyPointModel
+    toast.add({
+      severity: 'success',
+      summary: 'Successful',
+      detail: 'Selling point deleted',
+      life: 3000
+    })
+  }
 }
 
 const makeIdShorter = (id) => {
