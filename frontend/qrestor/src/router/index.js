@@ -11,9 +11,14 @@ const router = createRouter({
       component: AppLayout,
       children: [
         {
-          path: '/management/sellingPoints',
+          path: '/pages/spoints',
           name: 'crud',
-          component: () => import('@/views/management/SellingPoints.vue')
+          component: () => import('@/views/pages/SellingPoints.vue')
+        },
+        {
+          path: '/pages/menus',
+          name: 'crud2',
+          component: () => import('@/views/pages/Menus.vue')
         }
       ]
     },
@@ -33,7 +38,6 @@ const router = createRouter({
       name: 'notfound',
       component: () => import('@/views/pages/NotFound.vue')
     },
-
     {
       path: '/auth/login',
       name: 'login',
@@ -104,10 +108,10 @@ router.beforeEach((to, from) => {
   ]
   const authRequired = !publicPages.includes(to.name)
   const auth = useAuthStore()
-  if (authRequired && !auth.user) {
+  if (authRequired && !auth.tokens) {
     auth.returnUrl = to.fullPath
     return '/auth/login'
-  } else if (to.name === 'login' && auth.user && from.name === 'landing') {
+  } else if (to.name === 'login' && auth.tokens && from.name === 'landing') {
     return 'management'
   }
 })
