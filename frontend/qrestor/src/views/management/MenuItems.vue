@@ -2,11 +2,13 @@
 import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import { onBeforeMount, ref } from 'vue'
 import MenuService from '@/service/MenuService.js'
+import MenuItemsService from '@/service/MenuItemsService.js'
 import SellingPointsService from '@/service/SellingPointsService.js'
 import { useToast } from 'primevue/usetoast'
-import router from '@/router/index.js'
+import { useRoute } from 'vue-router'
 
 const toast = useToast()
+const route = useRoute()
 
 const menus = ref(null)
 const menuDialog = ref(false)
@@ -20,6 +22,9 @@ const submitted = ref(false)
 const autoValueSellPoint = ref(null)
 const selectedAutoValueSellPoint = ref(null)
 const autoFilteredValueSellPoint = ref([])
+
+const menuContextId = ref(route.params.menuId)
+const menuContextName = ref(null)
 
 const searchSellingPoint = (event) => {
   setTimeout(() => {
@@ -56,21 +61,29 @@ const initFilters1 = () => {
   }
 }
 
+// SERVICES INSTANCES
 const menuService = new MenuService()
 const sellingPointService = new SellingPointsService()
+const menuItemsService = new MenuItemsService()
 
 onBeforeMount(async () => {
-  initFilters1();
-  const { data } = await menuService.getMenus()
-  const dictResponse = await sellingPointService.getSellingPointsDictionary()
-  autoValueSellPoint.value = dictResponse.data
-  menus.value = data
-  loading1.value = false;
+  initFilters1()
+  if (menuContextId.value) {
+    const { data } = await menuItemsService.getMenuItemsForMenuId(menuContextId.value)
+    menus.value = data
+    menuContextName.value = data.length > 0 ? data[0].menu.name : ''
+  } else {
+    const { data } = await menuItemsService.getAllMenuItems()
+    menus.value = data
+  }
+  // const dictResponse = await sellingPointService.getSellingPointsDictionary()
+  // autoValueSellPoint.value = dictResponse.data
+  loading1.value = false
 })
 
 const clearFilter1 = () => {
-  initFilters1();
-};
+  initFilters1()
+}
 
 const openNew = () => {
   menu.value = {}
@@ -155,11 +168,15 @@ const deleteSelectedMenus = () => {
 }
 
 // ROW SELECT
-const onRowSelect = (event) => {
-  router.push("/management/menus/" + event.data.publicId + "/menu-items")
+const onMenuRowSelect = (event) => {
+  toast.add({
+    severity: 'info',
+    summary: 'Menu Selected',
+    detail: event.data.name,
+    life: 3000
+  })
   selectedMenu.value = {}
 }
-
 </script>
 
 <template>
@@ -201,7 +218,7 @@ const onRowSelect = (event) => {
           :value="menus"
           v-model:selection="selectedMenu"
           selectionMode="single"
-          @rowSelect="onRowSelect"
+          @rowSelect="onMenuRowSelect"
           v-model:filters="filters1"
           dataKey="publicId"
           :paginator="true"
@@ -220,7 +237,7 @@ const onRowSelect = (event) => {
             <div
               class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
             >
-              <h5 class="m-0">Manage menus</h5>
+              <h5 class="m-0">Manage menu items <span v-if="menuContextId">for menu: </span> {{ menuContextName }}</h5>
               <Button
                 type="button"
                 icon="pi pi-filter-slash"
@@ -234,15 +251,11 @@ const onRowSelect = (event) => {
               </span>
             </div>
           </template>
-          <template #empty> No menus found. </template>
-          <template #loading> Loading menus data. Please wait. </template>
+          <template #empty> No menu items found.</template>
+          <template #loading> Loading menu items data. Please wait.</template>
 
           <Column headerStyle="width: 3rem"></Column>
-          <Column
-            field="publicId"
-            header="Id"
-            headerStyle="width:10%; min-width:10rem;"
-          >
+          <Column field="publicId" header="Id" headerStyle="width:10%; min-width:10rem;">
             <template #body="slotProps">
               <span class="p-column-title">Id</span>
               {{ makeIdShorter(slotProps.data.publicId) }}
@@ -361,15 +374,9 @@ const onRowSelect = (event) => {
           </div>
           <div class="field">
             <label for="name">Description(optional)</label>
-            <InputText
-              id="name"
-              v-model.trim="menu.description"
-              required="true"
-              autofocus
-            />
-
+            <InputText id="name" v-model.trim="menu.description" required="true" autofocus />
           </div>
-          <div class="field ">
+          <div class="field">
             <label for="currency">Select selling point for this menu</label>
             <AutoComplete
               class="w-full"
@@ -385,14 +392,21 @@ const onRowSelect = (event) => {
               @complete="searchSellingPoint($event)"
               field="name"
             />
-            <small class="p-invalid" v-if="submitted && !menu.restaurantId">Selling point is required.</small>
+            <small class="p-invalid" v-if="submitted && !menu.restaurantId"
+              >Selling point is required.</small
+            >
           </div>
-         
-              <div class="field-checkbox mb-0">
-                <Checkbox id="terms" name="option" value=true v-model="menu.isActive"  :binary="true" />
-                <label for="terms">Is Active</label>
-              </div>
-            
+
+          <div class="field-checkbox mb-0">
+            <Checkbox
+              id="terms"
+              name="option"
+              value="true"
+              v-model="menu.isActive"
+              :binary="true"
+            />
+            <label for="terms">Is Active</label>
+          </div>
 
           <template #footer>
             <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />

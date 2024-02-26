@@ -26,7 +26,7 @@ const model = ref([
           {
             label: 'Menu items',
             icon: 'pi pi-fw pi-pencil',
-            to: '/pages/menu2'
+            to: '/management/menus/menu-items',
           }
         ]
       }

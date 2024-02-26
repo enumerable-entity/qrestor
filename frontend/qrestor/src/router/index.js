@@ -17,8 +17,18 @@ const router = createRouter({
         },
         {
           path: '/management/menus',
-          name: 'crud2',
+          name: 'menus',
           component: () => import('@/views/management/Menus.vue')
+        },
+        {
+          path: '/management/menus/:menuId/menu-items',
+          name: 'menu-items',
+          component: () => import('@/views/management/MenuItems.vue')
+        },
+        {
+          path: '/management/menus/menu-items',
+          name: 'menu-items-all',
+          component: () => import('@/views/management/MenuItems.vue')
         }
       ]
     },
