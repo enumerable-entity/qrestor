@@ -16,8 +16,19 @@ const model = ref([
       },
       {
         label: 'Menus',
-        icon: 'pi pi-fw pi-user',
-        to: '/pages/menus'
+        icon: 'pi pi-fw pi-bars',
+        items: [
+          {
+            label: 'Menus',
+            icon: 'pi pi-fw pi-book',
+            to: '/management/menus',
+          },
+          {
+            label: 'Menu items',
+            icon: 'pi pi-fw pi-pencil',
+            to: '/pages/menu2'
+          }
+        ]
       }
     ]
   }

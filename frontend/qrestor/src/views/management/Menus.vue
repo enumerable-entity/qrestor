@@ -1,6 +1,6 @@
 <script setup>
-import { FilterMatchMode } from 'primevue/api'
-import { onBeforeMount, onMounted, ref } from 'vue'
+import { FilterMatchMode, FilterOperator } from 'primevue/api'
+import { onBeforeMount, ref } from 'vue'
 import MenuService from '@/service/MenuService.js'
 import { useToast } from 'primevue/usetoast'
 
@@ -13,22 +13,44 @@ const deletePointsDialog = ref(false)
 const point = ref({})
 const selectedPoints = ref(null)
 const dt = ref(null)
-const filters = ref({})
 const submitted = ref(false)
+
+const filters1 = ref(null)
+const loading1 = ref(null)
+
+const initFilters1 = () => {
+  filters1.value = {
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    name: {
+      operator: FilterOperator.AND,
+      constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
+    },
+    description: {
+      operator: FilterOperator.AND,
+      constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
+    },
+    restaurantId: {
+      operator: FilterOperator.AND,
+      constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
+    },
+
+    isActive: { value: null, matchMode: FilterMatchMode.EQUALS }
+  }
+}
 
 const menuService = new MenuService()
 
-onBeforeMount(() => {
-  initFilters()
-})
-onMounted(async () => {
+onBeforeMount(async () => {
+  initFilters1();
   const { data } = await menuService.getMenus()
   points.value = data
+  loading1.value = false;
 })
 
-const formatAddress = (address) => {
-  return `${address.zip}, \u00A0 ${address.city}, \u00A0 ${address.address}`
-}
+const clearFilter1 = () => {
+  initFilters1();
+};
+
 
 const emptyPointModel = {
   publicId: '',
@@ -132,11 +154,6 @@ const deleteSelectedPoints = () => {
   })
 }
 
-const initFilters = () => {
-  filters.value = {
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-  }
-}
 </script>
 
 <template>
@@ -185,10 +202,15 @@ const initFilters = () => {
           ref="dt"
           :value="points"
           v-model:selection="selectedPoints"
+          v-model:filters="filters1"
           dataKey="id"
           :paginator="true"
+          :loading="loading1"
+          :filters="filters1"
+          filterDisplay="menu"
+          :rowHover="true"
           :rows="10"
-          :filters="filters"
+          :globalFilterFields="['name', 'description', 'restaurantId']"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25]"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} selling points"
@@ -199,18 +221,26 @@ const initFilters = () => {
               class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
             >
               <h5 class="m-0">Manage Selling points</h5>
+              <Button
+                type="button"
+                icon="pi pi-filter-slash"
+                label="Clear"
+                class="p-button-outlined mb-2"
+                @click="clearFilter1()"
+              />
               <span class="block mt-2 md:mt-0 p-input-icon-left">
                 <i class="pi pi-search" />
-                <InputText v-model="filters['global'].value" placeholder="Search..." />
+                <InputText v-model="filters1['global'].value" placeholder="Search..." />
               </span>
             </div>
           </template>
+          <template #empty> No customers found. </template>
+          <template #loading> Loading customers data. Please wait. </template>
 
           <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
           <Column
             field="publicId"
             header="Id"
-            :sortable="true"
             headerStyle="width:10%; min-width:10rem;"
           >
             <template #body="slotProps">
@@ -228,16 +258,13 @@ const initFilters = () => {
               <span class="p-column-title">Name</span>
               {{ slotProps.data.name }}
             </template>
-          </Column>
-          <Column
-            field="title"
-            header="Title"
-            :sortable="true"
-            headerStyle="width:14%; min-width:8rem;"
-          >
-            <template #body="slotProps">
-              <span class="p-column-title">Title</span>
-              {{ slotProps.data.title }}
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search by name"
+              />
             </template>
           </Column>
           <Column
@@ -250,41 +277,55 @@ const initFilters = () => {
               <span class="p-column-title">Description</span>
               {{ slotProps.data.description }}
             </template>
-          </Column>
-          <Column
-            field="address"
-            header="Address"
-            :sortable="true"
-            headerStyle="width:19%; min-width:10rem;"
-          >
-            <template #body="slotProps">
-              <span class="p-column-title">Address</span>
-              {{ formatAddress(slotProps.data.address) }}
-            </template>
-          </Column>
-          <Column
-            field="phone"
-            header="Phone"
-            :sortable="true"
-            headerStyle="width:10%; min-width:10rem;"
-          >
-            <template #body="slotProps">
-              <span class="p-column-title">Phone</span>
-              {{ slotProps.data.phone }}
-            </template>
-          </Column>
-          <Column header="Menu background" headerStyle="width:10%; min-width:8rem;">
-            <template #body="slotProps">
-              <span class="p-column-title">Menu background</span>
-              <img
-                :src="slotProps.data.settings.backgroundImageUrl"
-                :alt="slotProps.data.settings.backgroundImageUrl"
-                class="shadow-2"
-                height="75"
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search by description"
               />
             </template>
           </Column>
-          <Column headerStyle="min-width:10rem;">
+          <Column
+            field="restaurantId"
+            header="Restaurant ID"
+            headerStyle="width:23%; min-width:10rem;"
+          >
+            <template #body="slotProps">
+              <span class="p-column-title">Restaurant ID</span>
+              {{ slotProps.data.restaurantId }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search by restaurant"
+              />
+            </template>
+          </Column>
+          <Column
+            field="isActive"
+            :sortable="true"
+            header="Is Active"
+            dataType="boolean"
+            bodyClass=""
+            style="min-width: 3rem"
+          >
+            <template #body="{ data }">
+              <i
+                class="pi"
+                :class="{
+                  'text-green-500 pi-check-circle': data.isActive,
+                  'text-pink-500 pi-times-circle': !data.isActive
+                }"
+              ></i>
+            </template>
+            <template #filter="{ filterModel }">
+              <TriStateCheckbox v-model="filterModel.value" />
+            </template>
+          </Column>
+          <Column headerStyle="min-width:10rem;" header="Actions">
             <template #body="slotProps">
               <Button
                 icon="pi pi-pencil"
@@ -377,7 +418,7 @@ const initFilters = () => {
                 :class="{ 'p-invalid': submitted && !point.address.address }"
               />
               <small class="p-invalid" v-if="submitted && !point.address.address"
-              >Address is required.</small
+                >Address is required.</small
               >
             </div>
             <div class="field col-12 md:col-12">
@@ -410,8 +451,8 @@ const initFilters = () => {
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
             <span v-if="point"
-            >Are you sure you want to delete <b>{{ point.name }}</b
-            >?</span
+              >Are you sure you want to delete <b>{{ point.name }}</b
+              >?</span
             >
           </div>
           <template #footer>

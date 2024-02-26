@@ -16,9 +16,9 @@ const router = createRouter({
           component: () => import('@/views/pages/SellingPoints.vue')
         },
         {
-          path: '/pages/menus',
+          path: '/management/menus',
           name: 'crud2',
-          component: () => import('@/views/pages/Menus.vue')
+          component: () => import('@/views/management/Menus.vue')
         }
       ]
     },

@@ -205,6 +205,8 @@ const initFilters = () => {
               </span>
             </div>
           </template>
+          <template #empty> No selling points found. </template>
+          <template #loading> Loading selling points data. Please wait. </template>
 
           <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
           <Column
