@@ -309,13 +309,6 @@ const initFilters = () => {
           :modal="true"
           class="p-fluid"
         >
-          <img
-            :src="'/demo/images/product/' + point.image"
-            :alt="point.image"
-            v-if="point.image"
-            width="150"
-            class="mt-0 mx-auto mb-5 block shadow-2"
-          />
           <div class="field">
             <label for="name">Name</label>
             <InputText

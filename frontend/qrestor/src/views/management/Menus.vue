@@ -2,18 +2,35 @@
 import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import { onBeforeMount, ref } from 'vue'
 import MenuService from '@/service/MenuService.js'
+import SellingPointsService from '@/service/SellingPointsService.js'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
 
-const points = ref(null)
-const pointDialog = ref(false)
-const deletePointDialog = ref(false)
-const deletePointsDialog = ref(false)
-const point = ref({})
-const selectedPoints = ref(null)
+const menus = ref(null)
+const menuDialog = ref(false)
+const deleteMenuDialog = ref(false)
+const deleteMenusDialog = ref(false)
+const menu = ref({})
+const selectedMenus = ref(null)
 const dt = ref(null)
 const submitted = ref(false)
+
+const autoValueSellPoint = ref(null)
+const selectedAutoValueSellPoint = ref(null)
+const autoFilteredValueSellPoint = ref([])
+
+const searchSellingPoint = (event) => {
+  setTimeout(() => {
+    if (!event.query.trim().length) {
+      autoFilteredValueSellPoint.value = [...autoValueSellPoint.value]
+    } else {
+      autoFilteredValueSellPoint.value = autoValueSellPoint.value.filter((restaurant) => {
+        return restaurant.name.toLowerCase().startsWith(event.query.toLowerCase())
+      })
+    }
+  }, 250)
+}
 
 const filters1 = ref(null)
 const loading1 = ref(null)
@@ -39,11 +56,14 @@ const initFilters1 = () => {
 }
 
 const menuService = new MenuService()
+const sellingPointService = new SellingPointsService()
 
 onBeforeMount(async () => {
   initFilters1();
   const { data } = await menuService.getMenus()
-  points.value = data
+  const dictResponse = await sellingPointService.getSellingPointsDictionary()
+  autoValueSellPoint.value = dictResponse.data
+  menus.value = data
   loading1.value = false;
 })
 
@@ -52,80 +72,71 @@ const clearFilter1 = () => {
 };
 
 
-const emptyPointModel = {
+const emptyMenuModel = {
   publicId: '',
+  restaurantId: '',
   name: '',
-  title: '',
   description: '',
-  address: {
-    address: '',
-    city: '',
-    zip: ''
-  },
-  phone: '',
-  settings: {
-    backgroundImageUrl: '',
-    primaryColor: '',
-    secondaryColor: '',
-    logoUrl: '',
-    topHeaderUrl: ''
-  }
+  isActive: false
 }
 
 const openNew = () => {
-  point.value = emptyPointModel
+  menu.value = {}
+  menu.value.isActive = false
   submitted.value = false
-  pointDialog.value = true
+  menuDialog.value = true
 }
 
 const hideDialog = () => {
-  pointDialog.value = false
+  menuDialog.value = false
   submitted.value = false
 }
 
-const savePoint = async () => {
+const saveMenu = async () => {
   submitted.value = true
+  menu.value.restaurantId = selectedAutoValueSellPoint.value.id
 
-  if (point.value.publicId) {
-    const { data } = await menuService.updateMenu(point.value)
-    pointDialog.value = false
-    const index = points.value.findIndex((el) => el.publicId === data.publicId)
+  if (menu.value.publicId) {
+    const { data } = await menuService.updateMenu(menu.value)
+    menuDialog.value = false
+    const index = menus.value.findIndex((el) => el.publicId === data.publicId)
     if (index !== -1) {
-      points.value[index] = data
+      menus.value[index] = data
     }
   } else {
-    const { data } = await menuService.addMenu(point.value)
+    const { data } = await menuService.addMenu(menu.value)
     toast.add({
       severity: 'success',
       summary: 'Successful',
-      detail: 'Selling point Created',
+      detail: 'Menu saved',
       life: 3000
     })
-    pointDialog.value = false
-    points.value.push(data)
+    menuDialog.value = false
+    menus.value.push(data)
   }
-  point.value = emptyPointModel
+  menu.value = {}
+  selectedAutoValueSellPoint.value = null
 }
-const editPoint = (editPoint) => {
-  point.value = { ...editPoint }
-  pointDialog.value = true
-}
-
-const confirmDeletePoint = (editPoint) => {
-  point.value = editPoint
-  deletePointDialog.value = true
+const editMenu = (editMenu) => {
+  menu.value = { ...editMenu }
+  menuDialog.value = true
 }
 
-const deletePoint = async () => {
-  const { status } = await menuService.deleteMenu(point.value.publicId)
+const confirmDeleteMenu = (editMenu) => {
+  menu.value = editMenu
+  deleteMenuDialog.value = true
+}
+
+const deleteMenu = async () => {
+  const { status } = await menuService.deleteMenu(menu.value.publicId)
   if (status === 204) {
-    points.value = points.value.filter((val) => val.publicId !== point.value.publicId)
-    deletePointDialog.value = false
-    point.value = emptyPointModel
+    menus.value = menus.value.filter((val) => val.publicId !== menu.value.publicId)
+    deleteMenuDialog.value = false
+    menu.value = {}
     toast.add({
       severity: 'success',
       summary: 'Successful',
-      detail: 'Selling point deleted',
+      detail: 'Menu deleted',
       life: 3000
     })
   }
@@ -140,16 +151,16 @@ const exportCSV = () => {
 }
 
 const confirmDeleteSelected = () => {
-  deletePointsDialog.value = true
+  deleteMenusDialog.value = true
 }
-const deleteSelectedPoints = () => {
-  points.value = points.value.filter((val) => !selectedPoints.value.includes(val))
-  deletePointsDialog.value = false
-  selectedPoints.value = null
+const deleteSelectedMenus = () => {
+  menus.value = menus.value.filter((val) => !selectedMenus.value.includes(val))
+  deleteMenusDialog.value = false
+  selectedMenus.value = null
   toast.add({
     severity: 'success',
     summary: 'Successful',
-    detail: 'Selling points deleted',
+    detail: 'Menus was deleted',
     life: 3000
   })
 }
@@ -175,7 +186,7 @@ const deleteSelectedPoints = () => {
                 icon="pi pi-trash"
                 class="p-button-danger"
                 @click="confirmDeleteSelected"
-                :disabled="!selectedPoints || !selectedPoints.length"
+                :disabled="!selectedMenus || !selectedMenus.length"
               />
             </div>
           </template>
@@ -200,8 +211,8 @@ const deleteSelectedPoints = () => {
 
         <DataTable
           ref="dt"
-          :value="points"
-          v-model:selection="selectedPoints"
+          :value="menus"
+          v-model:selection="selectedMenus"
           v-model:filters="filters1"
           dataKey="id"
           :paginator="true"
@@ -213,14 +224,14 @@ const deleteSelectedPoints = () => {
           :globalFilterFields="['name', 'description', 'restaurantId']"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25]"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} selling points"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} menus"
           responsiveLayout="scroll"
         >
           <template #header>
             <div
               class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
             >
-              <h5 class="m-0">Manage Selling points</h5>
+              <h5 class="m-0">Manage menus</h5>
               <Button
                 type="button"
                 icon="pi pi-filter-slash"
@@ -330,128 +341,86 @@ const deleteSelectedPoints = () => {
               <Button
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-success mr-2"
-                @click="editPoint(slotProps.data)"
+                @click="editMenu(slotProps.data)"
               />
               <Button
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-warning mt-2"
-                @click="confirmDeletePoint(slotProps.data)"
+                @click="confirmDeleteMenu(slotProps.data)"
               />
             </template>
           </Column>
         </DataTable>
 
         <Dialog
-          v-model:visible="pointDialog"
+          v-model:visible="menuDialog"
           :style="{ width: '450px' }"
-          header="Selling point details"
+          header="Menu details"
           :modal="true"
           class="p-fluid"
         >
-          <img
-            :src="'/demo/images/product/' + point.image"
-            :alt="point.image"
-            v-if="point.image"
-            width="150"
-            class="mt-0 mx-auto mb-5 block shadow-2"
-          />
-          <div class="field">
-            <label for="name">Name</label>
-            <InputText
-              id="name"
-              v-model.trim="point.name"
-              required="true"
-              autofocus
-              :class="{ 'p-invalid': submitted && !point.name }"
-            />
-            <small class="p-invalid" v-if="submitted && !point.name">Name is required.</small>
-          </div>
           <div class="field">
             <label for="name">Title</label>
             <InputText
               id="name"
-              v-model.trim="point.title"
+              v-model.trim="menu.name"
               required="true"
               autofocus
-              :class="{ 'p-invalid': submitted && !point.name }"
+              :class="{ 'p-invalid': submitted && !menu.name }"
             />
-            <small class="p-invalid" v-if="submitted && !point.name">Title is required.</small>
+            <small class="p-invalid" v-if="submitted && !menu.name">Name is required.</small>
           </div>
           <div class="field">
-            <label for="description">Description</label>
-            <Textarea
-              id="description"
-              v-model.trim="point.description"
-              required="false"
-              rows="2"
-              cols="20"
+            <label for="name">Description(optional)</label>
+            <InputText
+              id="name"
+              v-model.trim="menu.description"
+              required="true"
+              autofocus
             />
+
           </div>
-          <div class="formgrid grid">
-            <div class="field col">
-              <label for="zip">Zip</label>
-              <InputText
-                id="zip"
-                v-model.trim="point.address.zip"
-                required="true"
-                autofocus
-                :class="{ 'p-invalid': submitted && !point.address.zip }"
-              />
-            </div>
-            <div class="field col">
-              <label for="city">City</label>
-              <InputText
-                id="city"
-                v-model.trim="point.address.city"
-                required="true"
-                autofocus
-                :class="{ 'p-invalid': submitted && !point.address.city }"
-              />
-            </div>
-            <div class="field col-12 md:col-12">
-              <label for="address">Address</label>
-              <InputText
-                id="address"
-                v-model.trim="point.address.address"
-                required="true"
-                autofocus
-                :class="{ 'p-invalid': submitted && !point.address.address }"
-              />
-              <small class="p-invalid" v-if="submitted && !point.address.address"
-                >Address is required.</small
-              >
-            </div>
-            <div class="field col-12 md:col-12">
-              <label for="phone">Phone</label>
-              <InputText
-                id="phone"
-                v-model.trim="point.phone"
-                required="true"
-                autofocus
-                :class="{ 'p-invalid': submitted && !point.phone }"
-              />
-            </div>
-            <!--                      <div class="field col-12 md:col-12">-->
-            <!--                        <label for="file">Background image</label>-->
-            <!--                        <FileUpload id="file" mode="basic" name="demo[]" accept="image/*" url="localhost:8080/fileupload" :maxFileSize="1000000" @uploader="onUpload" customUpload />-->
-            <!--                      </div>-->
+          <div class="field ">
+            <label for="currency">Select selling point for this menu</label>
+            <AutoComplete
+              class="w-full"
+              :class="{ 'p-invalid': submitted && !menu.restaurantId }"
+              required="true"
+              autofocus
+              placeholder="Search"
+              id="currency"
+              :dropdown="true"
+              :multiple="false"
+              v-model="selectedAutoValueSellPoint"
+              :suggestions="autoFilteredValueSellPoint"
+              @complete="searchSellingPoint($event)"
+              field="name"
+            />
+            <small class="p-invalid" v-if="submitted && !menu.restaurantId">Selling point is required.</small>
           </div>
+         
+              <div class="field-checkbox mb-0">
+                <Checkbox id="terms" name="option" value=true v-model="menu.isActive"  :binary="true" />
+                <label for="terms">Is Active</label>
+              </div>
+            
+
           <template #footer>
             <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
-            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="savePoint" />
+            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveMenu" />
           </template>
         </Dialog>
 
         <Dialog
-          v-model:visible="deletePointDialog"
+          v-model:visible="deleteMenuDialog"
           :style="{ width: '450px' }"
           header="Confirm"
           :modal="true"
         >
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="point"
-              >Are you sure you want to delete <b>{{ point.name }}</b
+            <span v-if="menu"
+              >Are you sure you want to delete <b>{{ menu.name }}</b
               >?</span
             >
           </div>
@@ -460,34 +429,34 @@ const deleteSelectedPoints = () => {
               label="No"
               icon="pi pi-times"
               class="p-button-text"
-              @click="deletePointDialog = false"
+              @click="deleteMenuDialog = false"
             />
-            <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deletePoint" />
+            <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteMenu" />
           </template>
         </Dialog>
 
         <Dialog
-          v-model:visible="deletePointsDialog"
+          v-model:visible="deleteMenusDialog"
           :style="{ width: '450px' }"
           header="Confirm"
           :modal="true"
         >
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="point">Are you sure you want to delete the selected points?</span>
+            <span v-if="menu">Are you sure you want to delete the selected menus?</span>
           </div>
           <template #footer>
             <Button
               label="No"
               icon="pi pi-times"
               class="p-button-text"
-              @click="deletePointsDialog = false"
+              @click="deleteMenusDialog = false"
             />
             <Button
               label="Yes"
               icon="pi pi-check"
               class="p-button-text"
-              @click="deleteSelectedPoints"
+              @click="deleteSelectedMenus"
             />
           </template>
         </Dialog>
