@@ -278,7 +278,7 @@ const initFilters = () => {
           <Column header="Menu background" headerStyle="width:10%; min-width:8rem;">
             <template #body="slotProps">
               <span class="p-column-title">Menu background</span>
-              <img
+              <Image
                 :src="slotProps.data.settings.backgroundImageUrl"
                 :alt="slotProps.data.settings.backgroundImageUrl"
                 class="shadow-2"

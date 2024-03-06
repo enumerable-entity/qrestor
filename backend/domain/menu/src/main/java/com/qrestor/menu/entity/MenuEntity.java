@@ -6,6 +6,7 @@ import com.qrestor.menu.systemuser.enitity.SyncUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.LinkedHashSet;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@FieldNameConstants
 @Table(name = "menu", schema = "menu")
 public class MenuEntity extends OwnedEntity implements PublicEntity {
     @Id

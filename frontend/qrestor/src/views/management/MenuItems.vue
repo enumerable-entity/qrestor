@@ -132,6 +132,11 @@ const confirmDeleteMenu = (editMenu) => {
   deleteMenuDialog.value = true
 }
 
+const openDetailsDialog = (menuItem) => {
+  menu.value = menuItem
+  menuDialog.value = true
+}
+
 const deleteMenu = async () => {
   const { status } = await menuService.deleteMenu(menu.value.publicId)
   if (status === 204) {
@@ -177,6 +182,11 @@ const onMenuRowSelect = (event) => {
   })
   selectedMenu.value = {}
 }
+
+const formatCurrency = (value) => {
+  const price = value / 10
+  return price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+}
 </script>
 
 <template>
@@ -199,6 +209,7 @@ const onMenuRowSelect = (event) => {
             <FileUpload
               mode="basic"
               accept="image/*"
+              url="localhost:8080/menu/management/menu-items"
               :maxFileSize="1000000"
               label="Import"
               chooseLabel="Import"
@@ -237,7 +248,10 @@ const onMenuRowSelect = (event) => {
             <div
               class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
             >
-              <h5 class="m-0">Manage menu items <span v-if="menuContextId">for menu: </span> {{ menuContextName }}</h5>
+              <h5 class="m-0">
+                Manage menu items <span v-if="menuContextId">for menu: </span>
+                <Tag v-if="menuContextId" class="ml-2 text-lg"  severity="info" :value=menuContextName></Tag>
+              </h5>
               <Button
                 type="button"
                 icon="pi pi-filter-slash"
@@ -261,22 +275,23 @@ const onMenuRowSelect = (event) => {
               {{ makeIdShorter(slotProps.data.publicId) }}
             </template>
           </Column>
+
           <Column
-            field="name"
-            header="Name"
+            field="title"
+            header="Title"
             :sortable="true"
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Name</span>
-              {{ slotProps.data.name }}
+              <span class="p-column-title">Title</span>
+              {{ slotProps.data.title }}
             </template>
             <template #filter="{ filterModel }">
               <InputText
                 type="text"
                 v-model="filterModel.value"
                 class="p-column-filter"
-                placeholder="Search by name"
+                placeholder="Search by title"
               />
             </template>
           </Column>
@@ -300,20 +315,47 @@ const onMenuRowSelect = (event) => {
             </template>
           </Column>
           <Column
-            field="restaurantId"
-            header="Restaurant ID"
-            headerStyle="width:23%; min-width:10rem;"
+            field="itemCategory.nlsKey"
+            header="Category"
+            :sortable="true"
+            headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Restaurant ID</span>
-              {{ slotProps.data.restaurantId }}
+              <span class="p-column-title">Category</span>
+              <Tag class="mr-2" :value="slotProps.data.itemCategory.nlsKey" :rounded="false" severity="warning"></Tag>
             </template>
             <template #filter="{ filterModel }">
               <InputText
                 type="text"
                 v-model="filterModel.value"
                 class="p-column-filter"
-                placeholder="Search by restaurant"
+                placeholder="Search by category"
+              />
+            </template>
+          </Column>
+          <Column field="price" header="Price" headerStyle="width:7%; min-width:10rem;">
+            <template #body="slotProps">
+              <span class="p-column-title">Price</span>
+              {{ formatCurrency(slotProps.data.price) }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search by price"
+              />
+            </template>
+          </Column>
+          <Column header="Image" headerStyle="width:6%; min-width:8rem;">
+            <template #body="slotProps">
+              <span class="p-column-title">Image</span>
+              <Image
+                preview
+                :src="slotProps.data.imageUrl"
+                :alt="slotProps.data.imageUrl"
+                class="shadow-2"
+                height="75"
               />
             </template>
           </Column>
@@ -322,15 +364,15 @@ const onMenuRowSelect = (event) => {
             :sortable="true"
             header="Is Active"
             dataType="boolean"
-            bodyClass=""
+            headerStyle="width:10%;"
             style="min-width: 3rem"
           >
             <template #body="{ data }">
               <i
                 class="pi"
                 :class="{
-                  'text-green-500 pi-check-circle': data.isActive,
-                  'text-pink-500 pi-times-circle': !data.isActive
+                  'text-green-500 pi-check-circle': data.enabled,
+                  'text-pink-500 pi-times-circle': !data.enabled
                 }"
               ></i>
             </template>
@@ -338,7 +380,45 @@ const onMenuRowSelect = (event) => {
               <TriStateCheckbox v-model="filterModel.value" />
             </template>
           </Column>
-          <Column headerStyle="min-width:10rem;" header="Actions">
+          <Column
+            field="ingredients"
+            header="Ingredients"
+            :sortable="false"
+            headerStyle="width:14%; min-width:10rem;"
+          >
+            <template #body="slotProps">
+              <span class="p-column-title">Attributes</span>
+              <Tag
+                v-for="attr in slotProps.data.ingredients"
+                class="m-1"
+                v-bind:key="attr.publicId"
+                :value="attr.name"
+                :rounded="false"
+                severity="success"
+              ></Tag>
+            </template>
+          </Column>
+          <Column
+            v-if="!menuContextId"
+            field="title"
+            header="Menu"
+            :sortable="true"
+            headerStyle="width:14%; min-width:10rem;"
+          >
+            <template #body="slotProps">
+              <span class="p-column-title">Menu</span>
+              {{ slotProps.data.menu.name }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search by menu name"
+              />
+            </template>
+          </Column>
+          <Column headerStyle="min-width:12rem; width:25%;" header="Actions">
             <template #body="slotProps">
               <Button
                 icon="pi pi-pencil"
@@ -347,8 +427,13 @@ const onMenuRowSelect = (event) => {
               />
               <Button
                 icon="pi pi-trash"
-                class="p-button-rounded p-button-warning mt-2"
+                class="p-button-rounded p-button-warning mt-2 mr-2 "
                 @click="confirmDeleteMenu(slotProps.data)"
+              />
+              <Button
+                icon="pi pi-info-circle"
+                class="p-button-rounded p-button-warning mt-2 "
+                @click="openDetailsDialog(slotProps.data)"
               />
             </template>
           </Column>
