@@ -1,9 +1,9 @@
 <script setup>
 import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import { onBeforeMount, ref } from 'vue'
-import MenuService from '@/service/MenuService.js'
 import MenuItemsService from '@/service/MenuItemsService.js'
-import SellingPointsService from '@/service/SellingPointsService.js'
+import MenuService from '@/service/MenuService.js'
+import IngredientsService from '@/service/IngredientsService.js'
 import { useToast } from 'primevue/usetoast'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -12,34 +12,52 @@ const { t } = useI18n()
 const toast = useToast()
 const route = useRoute()
 
-const menus = ref(null)
+const menuItems = ref(null)
+const menuItem = ref({})
 const categories = ref(null)
 const menuDialog = ref(false)
 const deleteMenuDialog = ref(false)
-const deleteMenusDialog = ref(false)
-const menu = ref({})
 const selectedMenu = ref(null)
 const dt = ref(null)
 const submitted = ref(false)
 
-const autoValueSellPoint = ref(null)
-const selectedAutoValueSellPoint = ref(null)
-const autoFilteredValueSellPoint = ref([])
+const selectedCategoryId = ref(null)
 
-const menuContextId = ref(route.params.menuId)
-const menuContextName = ref(null)
+const autoValueMenu = ref(null)
+const selectedAutoValueSMenu = ref(null)
+const autoFilteredValueMenu = ref([])
 
-const searchSellingPoint = (event) => {
+const searchMenu = (event) => {
   setTimeout(() => {
     if (!event.query.trim().length) {
-      autoFilteredValueSellPoint.value = [...autoValueSellPoint.value]
+      autoFilteredValueMenu.value = [...autoValueMenu.value]
     } else {
-      autoFilteredValueSellPoint.value = autoValueSellPoint.value.filter((restaurant) => {
+      autoFilteredValueMenu.value = autoValueMenu.value.filter((restaurant) => {
         return restaurant.name.toLowerCase().startsWith(event.query.toLowerCase())
       })
     }
   }, 250)
 }
+
+const autoValueIngredient = ref(null)
+const selectedAutoValueIngredients = ref(null)
+const autoFilteredValueIngredient= ref([])
+
+const searchIngredients = (event) => {
+  setTimeout(() => {
+    if (!event.query.trim().length) {
+      autoFilteredValueIngredient.value = [...autoValueIngredient.value]
+    } else {
+      autoFilteredValueIngredient.value = autoValueIngredient.value.filter((restaurant) => {
+        return restaurant.name.toLowerCase().startsWith(event.query.toLowerCase())
+      })
+    }
+  }, 250)
+}
+
+
+const menuContextId = ref(route.params.menuId)
+const menuContextName = ref(null)
 
 const filters1 = ref(null)
 const loading1 = ref(null)
@@ -66,22 +84,31 @@ const initFilters1 = () => {
 
 // SERVICES INSTANCES
 const menuService = new MenuService()
-const sellingPointService = new SellingPointsService()
+const ingredientsService = new IngredientsService()
 const menuItemsService = new MenuItemsService()
 
 onBeforeMount(async () => {
   initFilters1()
-  categories.value = await menuItemsService.getAllCategories()
+  const { data } = await menuItemsService.getAllCategories()
+  // replace nlskey with the actual translation
+  data.forEach((el) => {
+    el.nlsKey = t(el.nlsKey)
+  })
+  categories.value = data
+
   if (menuContextId.value) {
     const { data } = await menuItemsService.getMenuItemsForMenuId(menuContextId.value)
-    menus.value = data
+    menuItems.value = data
     menuContextName.value = data.length > 0 ? data[0].menu.name : ''
   } else {
     const { data } = await menuItemsService.getAllMenuItems()
-    menus.value = data
+    const { data: menuData } = await menuService.getMenus()
+    menuItems.value = data
+    autoValueMenu.value = menuData
+
   }
-  // const dictResponse = await sellingPointService.getSellingPointsDictionary()
-  // autoValueSellPoint.value = dictResponse.data
+   const dictResponse = await ingredientsService.getIngredients()
+   autoValueIngredient.value = dictResponse.data
   loading1.value = false
 })
 
@@ -90,8 +117,15 @@ const clearFilter1 = () => {
 }
 
 const openNew = () => {
-  menu.value = {}
-  menu.value.isActive = false
+  menuItem.value = {
+    title: '',
+    menu: { publicId: menuContextId.value },
+    description: '',
+    itemCategory: { publicId: '' },
+    price: 0,
+    imageUrl: '',
+    enabled: false
+  }
   submitted.value = false
   menuDialog.value = true
 }
@@ -101,52 +135,53 @@ const hideDialog = () => {
   submitted.value = false
 }
 
-const saveMenu = async () => {
+const saveMenuItem = async () => {
   submitted.value = true
-  menu.value.restaurantId = selectedAutoValueSellPoint.value.id
+  menuItem.value.itemCategory.publicId = selectedCategoryId.value
+  menuItem.value.ingredients = selectedAutoValueIngredients.value
 
-  if (menu.value.publicId) {
-    const { data } = await menuService.updateMenu(menu.value)
+  if (menuItem.value.publicId) {
+    const { data } = await menuItemsService.updateMenuItem(menuItem.value)
     menuDialog.value = false
-    const index = menus.value.findIndex((el) => el.publicId === data.publicId)
+    const index = menuItems.value.findIndex((el) => el.publicId === data.publicId)
     if (index !== -1) {
-      menus.value[index] = data
+      menuItems.value[index] = data
     }
   } else {
-    const { data } = await menuService.addMenu(menu.value)
+    const { data } = await menuItemsService.addMenuItem(menuItem.value)
     toast.add({
       severity: 'success',
       summary: 'Successful',
-      detail: 'Menu saved',
+      detail: 'New Menu Item saved',
       life: 3000
     })
     menuDialog.value = false
-    menus.value.push(data)
+    menuItems.value.push(data)
   }
-  menu.value = {}
-  selectedAutoValueSellPoint.value = null
+  menuItem.value = {}
+  selectedAutoValueSMenu.value = null
 }
 const editMenu = (editMenu) => {
-  menu.value = { ...editMenu }
+  menuItem.value = { ...editMenu }
   menuDialog.value = true
 }
 
 const confirmDeleteMenu = (editMenu) => {
-  menu.value = editMenu
+  menuItem.value = editMenu
   deleteMenuDialog.value = true
 }
 
 const openDetailsDialog = (menuItem) => {
-  menu.value = menuItem
+  menuItem.value = menuItem
   menuDialog.value = true
 }
 
 const deleteMenu = async () => {
-  const { status } = await menuService.deleteMenu(menu.value.publicId)
+  const { status } = await menuItemsService.deleteMenuItem(menuItem.value.publicId)
   if (status === 204) {
-    menus.value = menus.value.filter((val) => val.publicId !== menu.value.publicId)
+    menuItems.value = menuItems.value.filter((val) => val.publicId !== menuItem.value.publicId)
     deleteMenuDialog.value = false
-    menu.value = {}
+    menuItem.value = {}
     toast.add({
       severity: 'success',
       summary: 'Successful',
@@ -162,18 +197,6 @@ const makeIdShorter = (id) => {
 
 const exportCSV = () => {
   dt.value.exportCSV()
-}
-
-const deleteSelectedMenus = () => {
-  menus.value = menus.value.filter((val) => !selectedMenu.value.includes(val))
-  deleteMenusDialog.value = false
-  selectedMenu.value = null
-  toast.add({
-    severity: 'success',
-    summary: 'Successful',
-    detail: 'Menus was deleted',
-    life: 3000
-  })
 }
 
 // ROW SELECT
@@ -230,7 +253,7 @@ const formatCurrency = (value) => {
 
         <DataTable
           ref="dt"
-          :value="menus"
+          :value="menuItems"
           v-model:selection="selectedMenu"
           selectionMode="single"
           @rowSelect="onMenuRowSelect"
@@ -254,7 +277,12 @@ const formatCurrency = (value) => {
             >
               <h5 class="m-0">
                 Manage menu items <span v-if="menuContextId">for menu: </span>
-                <Tag v-if="menuContextId" class="ml-2 text-lg"  severity="info" :value=menuContextName></Tag>
+                <Tag
+                  v-if="menuContextId"
+                  class="ml-2 text-lg"
+                  severity="info"
+                  :value="menuContextName"
+                ></Tag>
               </h5>
               <Button
                 type="button"
@@ -326,7 +354,12 @@ const formatCurrency = (value) => {
           >
             <template #body="slotProps">
               <span class="p-column-title">Category</span>
-              <Tag class="mr-2" :value="t(slotProps.data.itemCategory.nlsKey)" :rounded="false" severity="warning"></Tag>
+              <Tag
+                class="mr-2"
+                :value="t(slotProps.data.itemCategory.nlsKey)"
+                :rounded="false"
+                severity="warning"
+              ></Tag>
             </template>
             <template #filter="{ filterModel }">
               <InputText
@@ -431,12 +464,12 @@ const formatCurrency = (value) => {
               />
               <Button
                 icon="pi pi-trash"
-                class="p-button-rounded p-button-warning mt-2 mr-2 "
+                class="p-button-rounded p-button-warning mt-2 mr-2"
                 @click="confirmDeleteMenu(slotProps.data)"
               />
               <Button
                 icon="pi pi-info-circle"
-                class="p-button-rounded p-button-warning mt-2 "
+                class="p-button-rounded p-button-warning mt-2"
                 @click="openDetailsDialog(slotProps.data)"
               />
             </template>
@@ -446,7 +479,7 @@ const formatCurrency = (value) => {
         <Dialog
           v-model:visible="menuDialog"
           :style="{ width: '450px' }"
-          header="Menu details"
+          header="Menu item details"
           :modal="true"
           class="p-fluid"
         >
@@ -454,44 +487,81 @@ const formatCurrency = (value) => {
             <label for="name">Title</label>
             <InputText
               id="name"
-              v-model.trim="menu.name"
+              v-model.trim="menuItem.name"
               required="true"
               autofocus
-              :class="{ 'p-invalid': submitted && !menu.name }"
+              :class="{ 'p-invalid': submitted && !menuItem.name }"
             />
-            <small class="p-invalid" v-if="submitted && !menu.name">Name is required.</small>
+            <small class="p-invalid" v-if="submitted && !menuItem.name">Name is required.</small>
           </div>
           <div class="field">
             <label for="name">Description(optional)</label>
-            <InputText id="name" v-model.trim="menu.description" required="true" autofocus />
+            <InputText id="name" v-model.trim="menuItem.description" required="true" autofocus />
           </div>
+
+
           <div class="field">
-            <label for="currency">Select selling point for this menu</label>
+            <label for="categorySelect">Select category</label>
+            <Dropdown
+              id="categorySelect"
+              v-model="selectedCategoryId"
+              :options="categories"
+              optionLabel="nlsKey"
+              optionValue="publicId"
+              :class="{ 'p-invalid': submitted && !menuItem.itemCategory.publicId }"
+              required="true"
+              autofocus
+              placeholder="..."
+            />
+            <small class="p-invalid" v-if="submitted && !menuItem.itemCategory.publicId"
+              >Category is required.</small
+            >
+          </div>
+
+          <div class="field">
+            <label for="ingredientsSelect">Select a few ingredients</label>
+            <AutoComplete
+              id="ingredientsSelect"
+              v-model="selectedAutoValueIngredients"
+              :class="{ 'p-invalid': submitted && !menuItem.ingredients }"
+              optionLabel="name"
+              multiple
+              :suggestions="autoFilteredValueIngredient"
+              @complete="searchIngredients"
+            />
+            <small class="p-invalid" v-if="submitted && !menuItem.ingredients"
+            >Few ingredients are required.</small>
+          </div>
+
+
+          <div class="field" v-if="!menuContextId">
+            <label for="currency">Select Menu for this Menu Item</label>
             <AutoComplete
               class="w-full"
-              :class="{ 'p-invalid': submitted && !menu.restaurantId }"
+              :class="{ 'p-invalid': submitted && !menuItem.restaurantId }"
               required="true"
               autofocus
               placeholder="Search"
               id="currency"
               :dropdown="true"
               :multiple="false"
-              v-model="selectedAutoValueSellPoint"
-              :suggestions="autoFilteredValueSellPoint"
-              @complete="searchSellingPoint($event)"
+              v-model="selectedAutoValueSMenu"
+              :suggestions="autoFilteredValueMenu"
+              @complete="searchMenu($event)"
               field="name"
             />
-            <small class="p-invalid" v-if="submitted && !menu.restaurantId"
-              >Selling point is required.</small
-            >
+            <small class="p-invalid" v-if="submitted && !menuItem.restaurantId"
+              >Selling point is required.</small>
           </div>
+
+
 
           <div class="field-checkbox mb-0">
             <Checkbox
               id="terms"
               name="option"
               value="true"
-              v-model="menu.isActive"
+              v-model="menuItem.enabled"
               :binary="true"
             />
             <label for="terms">Is Active</label>
@@ -499,7 +569,7 @@ const formatCurrency = (value) => {
 
           <template #footer>
             <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
-            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveMenu" />
+            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveMenuItem" />
           </template>
         </Dialog>
 
@@ -511,8 +581,8 @@ const formatCurrency = (value) => {
         >
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="menu"
-              >Are you sure you want to delete <b>{{ menu.name }}</b
+            <span v-if="menuItem"
+              >Are you sure you want to delete <b>{{ menuItem.name }}</b
               >?</span
             >
           </div>
@@ -524,32 +594,6 @@ const formatCurrency = (value) => {
               @click="deleteMenuDialog = false"
             />
             <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteMenu" />
-          </template>
-        </Dialog>
-
-        <Dialog
-          v-model:visible="deleteMenusDialog"
-          :style="{ width: '450px' }"
-          header="Confirm"
-          :modal="true"
-        >
-          <div class="flex align-items-center justify-content-center">
-            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="menu">Are you sure you want to delete the selected menus?</span>
-          </div>
-          <template #footer>
-            <Button
-              label="No"
-              icon="pi pi-times"
-              class="p-button-text"
-              @click="deleteMenusDialog = false"
-            />
-            <Button
-              label="Yes"
-              icon="pi pi-check"
-              class="p-button-text"
-              @click="deleteSelectedMenus"
-            />
           </template>
         </Dialog>
       </div>

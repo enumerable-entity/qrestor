@@ -9,19 +9,19 @@ export default class MenuItemsService {
         return fetchWrapper.get(this.url)
     }
 
-    getMenuItemsForMenuId() {
-        return fetchWrapper.get(this.url)
+    getMenuItemsForMenuId(publicId) {
+        return fetchWrapper.get(this.url + '/menu/' + publicId)
     }
 
-    addMenu(menu) {
+    addMenuItem(menu) {
         return fetchWrapper.post(this.url, menu)
     }
 
-    updateMenu(menu) {
+    updateMenuItem(menu) {
         return fetchWrapper.put(this.url + '/' + menu.publicId, menu)
     }
 
-    deleteMenu(publicId) {
+    deleteMenuItem(publicId) {
         return fetchWrapper.delete(this.url + '/' + publicId)
     }
 
