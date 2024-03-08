@@ -19,6 +19,9 @@ export const useUserStore = defineStore({
     },
     getUserLocale() {
       return this.userInfo?.settings.language
+    },
+    getUserCurrency() {
+      return this.userInfo?.settings.currency
     }
   }
 })

@@ -7,6 +7,7 @@ import IngredientsService from '@/service/IngredientsService.js'
 import { useToast } from 'primevue/usetoast'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useUserStore } from '@/store.js'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -20,7 +21,7 @@ const deleteMenuDialog = ref(false)
 const selectedMenu = ref(null)
 const dt = ref(null)
 const submitted = ref(false)
-
+const selectedAdditionalItemProps = ref([])
 const selectedCategoryId = ref(null)
 
 const autoValueMenu = ref(null)
@@ -135,10 +136,32 @@ const hideDialog = () => {
   submitted.value = false
 }
 
+const fillAdditionalProps = () => {
+  const selected = selectedAdditionalItemProps.value.map(el => el.value)
+
+  menuItem.value.isVegetarian = selected.includes('isVegetarian')
+  menuItem.value.isVegan = selected.includes('isVegan')
+  menuItem.value.isGlutenFree = selected.includes('isGlutenFree')
+  menuItem.value.isSpicy = selected.includes('isSpicy')
+  menuItem.value.isHalal = selected.includes('isHalal')
+  menuItem.value.isKosher = selected.includes('isKosher')
+  menuItem.value.isPeanuts = selected.includes('isPeanuts')
+  menuItem.value.isTreeNuts = selected.includes('isTreeNuts')
+  menuItem.value.isDairy = selected.includes('isDairy')
+  menuItem.value.isEggs = selected.includes('isEggs')
+  menuItem.value.isShellfish = selected.includes('isShellfish')
+  menuItem.value.isSoy = selected.includes('isSoy')
+
+}
+
 const saveMenuItem = async () => {
   submitted.value = true
   menuItem.value.itemCategory.publicId = selectedCategoryId.value
   menuItem.value.ingredients = selectedAutoValueIngredients.value
+  menuItem.value.menu = selectedAutoValueSMenu.value || menuContextId.value
+  const price = menuItem.value.price
+  menuItem.value.price = formatCurrencyForAPI(price)
+  fillAdditionalProps()
 
   if (menuItem.value.publicId) {
     const { data } = await menuItemsService.updateMenuItem(menuItem.value)
@@ -160,13 +183,18 @@ const saveMenuItem = async () => {
   }
   menuItem.value = {}
   selectedAutoValueSMenu.value = null
+  selectedAutoValueIngredients.value = null
+  submitted.value = false
 }
-const editMenu = (editMenu) => {
+const editMenuItem = (editMenu) => {
+  selectedCategoryId.value = editMenu.itemCategory.publicId
+  selectedAutoValueIngredients.value = editMenu.ingredients
+  selectedAutoValueSMenu.value = editMenu.menu
   menuItem.value = { ...editMenu }
   menuDialog.value = true
 }
 
-const confirmDeleteMenu = (editMenu) => {
+const confirmDeleteMenuItem = (editMenu) => {
   menuItem.value = editMenu
   deleteMenuDialog.value = true
 }
@@ -176,7 +204,7 @@ const openDetailsDialog = (menuItem) => {
   menuDialog.value = true
 }
 
-const deleteMenu = async () => {
+const deleteMenuItem = async () => {
   const { status } = await menuItemsService.deleteMenuItem(menuItem.value.publicId)
   if (status === 204) {
     menuItems.value = menuItems.value.filter((val) => val.publicId !== menuItem.value.publicId)
@@ -207,13 +235,44 @@ const onMenuRowSelect = (event) => {
     detail: event.data.name,
     life: 3000
   })
-  selectedMenu.value = {}
 }
 
 const formatCurrency = (value) => {
   const price = value / 10
   return price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 }
+
+const formatCurrencyForAPI = (value) => {
+  return value * 10
+}
+const getImageURL = (path) => {
+  return import.meta.env.VITE_ROOT_API + "/files/" + path
+}
+
+const getUploadURL = () => {
+  return import.meta.env.VITE_ROOT_API + '/menu/menu/upload'
+}
+
+const onUpload = (event) => {
+  menuItem.value.imageUrl = "menu-items-pics/" +event.xhr.response;
+}
+
+const options = [
+  { name: 'isVegetarian', value: 'isVegetarian' },
+  { name: 'isVegan', value: 'isVegan' },
+  { name: 'isGlutenFree', value: 'isGlutenFree' },
+  { name: 'isSpicy', value: 'isSpicy' },
+  { name: 'isHalal', value: 'isHalal'},
+  { name: 'isKosher', value: 'isKosher'},
+  { name: 'isPeanuts', value: 'isPeanuts'},
+  { name: 'isTreeNuts', value: 'isTreeNuts'},
+  { name: 'isDairy', value: 'isDairy'},
+  { name: 'isEggs', value: 'isEggs'},
+  { name: 'isShellfish', value: 'isShellfish'},
+  { name: 'isSoy', value: 'isSoy'},
+]
+
+
 </script>
 
 <template>
@@ -389,7 +448,7 @@ const formatCurrency = (value) => {
               <span class="p-column-title">Image</span>
               <Image
                 preview
-                :src="slotProps.data.imageUrl"
+                :src="getImageURL(slotProps.data.imageUrl)"
                 :alt="slotProps.data.imageUrl"
                 class="shadow-2"
                 height="75"
@@ -460,12 +519,12 @@ const formatCurrency = (value) => {
               <Button
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-success mr-2"
-                @click="editMenu(slotProps.data)"
+                @click="editMenuItem(slotProps.data)"
               />
               <Button
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-warning mt-2 mr-2"
-                @click="confirmDeleteMenu(slotProps.data)"
+                @click="confirmDeleteMenuItem(slotProps.data)"
               />
               <Button
                 icon="pi pi-info-circle"
@@ -487,18 +546,42 @@ const formatCurrency = (value) => {
             <label for="name">Title</label>
             <InputText
               id="name"
-              v-model.trim="menuItem.name"
+              v-model.trim="menuItem.title"
               required="true"
               autofocus
               :class="{ 'p-invalid': submitted && !menuItem.name }"
             />
             <small class="p-invalid" v-if="submitted && !menuItem.name">Name is required.</small>
           </div>
+
           <div class="field">
             <label for="name">Description(optional)</label>
-            <InputText id="name" v-model.trim="menuItem.description" required="true" autofocus />
+            <InputText id="name" v-model.trim="menuItem.description" required="false" autofocus />
           </div>
 
+          <div class = "field w-full">
+            <label for="imageUrl">Image</label>
+            <FileUpload class = "w-full"
+                        mode="basic"
+                        id="imageUrl"
+                        ref="fileUpload"
+                        name="file"
+                        :url="getUploadURL()"
+                        accept="image/*"
+                        @upload="onUpload"
+                        :auto="false"
+                        :maxFileSize="1000000"
+                        choose-label="Select Image"/>
+          </div>
+          <div class="field">
+            <label for="name">Price</label>
+            <InputNumber v-model="menuItem.price"
+                         inputId="currency-us"
+                         mode="currency"
+                         showButtons
+                         :currency="useUserStore().getUserCurrency()"
+                         :locale="useUserStore().getUserLocale()" />
+          </div>
 
           <div class="field">
             <label for="categorySelect">Select category</label>
@@ -553,9 +636,13 @@ const formatCurrency = (value) => {
             <small class="p-invalid" v-if="submitted && !menuItem.restaurantId"
               >Selling point is required.</small>
           </div>
-
-
-
+          <div class="field">
+            <label for="additionalItemProps">Additional properties</label>
+            <SelectButton id = "additionalItemProps" v-model="selectedAdditionalItemProps" :options="options.slice(0, 4)" optionLabel="name" multiple aria-labelledby="multiple" />
+          </div>
+          <div class = "field">
+            <SelectButton id = "additionalItemProps" v-model="selectedAdditionalItemProps" :options="options.slice(5, 9)" optionLabel="name" multiple aria-labelledby="multiple" />
+          </div>
           <div class="field-checkbox mb-0">
             <Checkbox
               id="terms"
@@ -593,7 +680,7 @@ const formatCurrency = (value) => {
               class="p-button-text"
               @click="deleteMenuDialog = false"
             />
-            <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteMenu" />
+            <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteMenuItem" />
           </template>
         </Dialog>
       </div>
