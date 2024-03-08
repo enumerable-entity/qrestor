@@ -2,8 +2,10 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import router from './router'
 import App from './App.vue'
-
+import { createI18n } from 'vue-i18n'
 import '@/assets/styles.scss';
+import { messages } from './i18n.js'
+import { useUserStore } from '@/store'
 
 // COMPONENTS
 import PrimeVue from 'primevue/config'
@@ -110,6 +112,16 @@ const app = createApp(App)
 app.use(PrimeVue)
 app.use(createPinia())
 app.use(router)
+const userStore = useUserStore()
+const i18n = createI18n({
+  locale: userStore.getUserLocale(),
+  fallbackLocale: 'en',
+  allowComposition: true,
+  legacy: false,
+  messages
+})
+
+app.use(i18n)
 
 app.use(ToastService)
 app.use(DialogService)

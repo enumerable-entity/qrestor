@@ -16,6 +16,9 @@ export const useUserStore = defineStore({
 
       // store user details and jwt in local storage to keep user logged in between page refreshes
       localStorage.setItem('authUserInfo', JSON.stringify(data))
+    },
+    getUserLocale() {
+      return this.userInfo?.settings.language
     }
   }
 })

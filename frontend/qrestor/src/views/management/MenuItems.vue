@@ -6,11 +6,14 @@ import MenuItemsService from '@/service/MenuItemsService.js'
 import SellingPointsService from '@/service/SellingPointsService.js'
 import { useToast } from 'primevue/usetoast'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const toast = useToast()
 const route = useRoute()
 
 const menus = ref(null)
+const categories = ref(null)
 const menuDialog = ref(false)
 const deleteMenuDialog = ref(false)
 const deleteMenusDialog = ref(false)
@@ -68,6 +71,7 @@ const menuItemsService = new MenuItemsService()
 
 onBeforeMount(async () => {
   initFilters1()
+  categories.value = await menuItemsService.getAllCategories()
   if (menuContextId.value) {
     const { data } = await menuItemsService.getMenuItemsForMenuId(menuContextId.value)
     menus.value = data
@@ -198,7 +202,7 @@ const formatCurrency = (value) => {
           <template v-slot:start>
             <div class="my-2">
               <Button
-                label="New"
+                :label="t('button.new')"
                 icon="pi pi-plus"
                 class="p-button-success mr-2"
                 @click="openNew"
@@ -322,7 +326,7 @@ const formatCurrency = (value) => {
           >
             <template #body="slotProps">
               <span class="p-column-title">Category</span>
-              <Tag class="mr-2" :value="slotProps.data.itemCategory.nlsKey" :rounded="false" severity="warning"></Tag>
+              <Tag class="mr-2" :value="t(slotProps.data.itemCategory.nlsKey)" :rounded="false" severity="warning"></Tag>
             </template>
             <template #filter="{ filterModel }">
               <InputText

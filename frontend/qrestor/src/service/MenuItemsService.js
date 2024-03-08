@@ -24,4 +24,8 @@ export default class MenuItemsService {
     deleteMenu(publicId) {
         return fetchWrapper.delete(this.url + '/' + publicId)
     }
+
+    getAllCategories() {
+        return fetchWrapper.get('/menu/category')
+    }
 }
