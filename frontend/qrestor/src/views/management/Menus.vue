@@ -288,11 +288,11 @@ const onRowSelect = (event) => {
           </Column>
           <Column
             field="restaurantId"
-            header="Restaurant ID"
+            header="Selling Point ID"
             headerStyle="width:23%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Restaurant ID</span>
+              <span class="p-column-title">Selling Point ID</span>
               {{ slotProps.data.restaurantId }}
             </template>
             <template #filter="{ filterModel }">

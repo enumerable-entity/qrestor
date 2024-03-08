@@ -29,6 +29,11 @@ const router = createRouter({
           path: '/management/menus/menu-items',
           name: 'menu-items-all',
           component: () => import('@/views/management/MenuItems.vue')
+        },
+        {
+          path: '/management/menus/menu-items/:menuItemId/menu-item-options',
+          name: 'menu-item-options',
+          component: () => import('@/views/management/MenuItemOptions.vue')
         }
       ]
     },

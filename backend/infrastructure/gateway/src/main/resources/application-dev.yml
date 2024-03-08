@@ -76,6 +76,12 @@ spring:
             - Path=/paymentor/**
           filters:
             - RewritePath=/paymentor/(?<segment>.*), /${segment}
+        - id: minio
+          uri: https://127.0.0.1:9000/
+          predicates:
+            - Path=/files/**
+          filters:
+            - RewritePath=/files/(?<segment>.*), /${segment}
 management:
   metrics:
     tags:
