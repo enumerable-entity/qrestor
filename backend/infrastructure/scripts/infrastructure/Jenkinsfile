@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+    node {
+        label 'raspi4'
+    }
+}
 
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials-id')
