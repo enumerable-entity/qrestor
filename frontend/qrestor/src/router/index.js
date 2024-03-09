@@ -39,6 +39,16 @@ const router = createRouter({
           path: '/management/menus/menu-items/menu-item-options',
           name: 'menu-item-options-all',
           component: () => import('@/views/management/MenuItemOptions.vue')
+        },
+        {
+          path: '/management/menus/menu-item-options/options-positions',
+          name: 'menu-item-options-positions-all',
+          component: () => import('@/views/management/MenuItemOptionsPositions.vue')
+        },
+        {
+          path: '/management/menus/menu-item-options/:optionId/options-positions',
+          name: 'menu-item-options-positions',
+          component: () => import('@/views/management/MenuItemOptionsPositions.vue')
         }
       ]
     },

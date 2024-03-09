@@ -1,35 +1,36 @@
 <script setup>
 import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import { onBeforeMount, ref } from 'vue'
+import OptionsPositionsService from '@/service/OptionsPositionsService.js'
 import MenuItemsOptionsService from '@/service/MenuItemsOptionsService.js'
-import MenuItemsService from '@/service/MenuItemsService.js'
 import IngredientsService from '@/service/IngredientsService.js'
 import { useToast } from 'primevue/usetoast'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useUserStore } from '@/store.js'
 
 const { t } = useI18n()
 const toast = useToast()
 const route = useRoute()
 
 const menuItemOptions = ref(null)
-const menuItemOption = ref({})
+const optionPosition = ref({})
 const menuDialog = ref(false)
 const deleteMenuDialog = ref(false)
 const selectedMenu = ref(null)
 const dt = ref(null)
 const submitted = ref(false)
 
-const autoValueMenu = ref(null)
+const autoValueOption = ref(null)
 const selectedAutoValueSMenu = ref(null)
 const autoFilteredValueMenu = ref([])
 
 const searchMenuItem = (event) => {
   setTimeout(() => {
     if (!event.query.trim().length) {
-      autoFilteredValueMenu.value = [...autoValueMenu.value]
+      autoFilteredValueMenu.value = [...autoValueOption.value]
     } else {
-      autoFilteredValueMenu.value = autoValueMenu.value.filter((menuItem) => {
+      autoFilteredValueMenu.value = autoValueOption.value.filter((menuItem) => {
         return menuItem.title.toLowerCase().startsWith(event.query.toLowerCase())
       })
     }
@@ -53,8 +54,8 @@ const searchIngredients = (event) => {
 }
 
 
-const menuItemContextId = ref(route.params.menuItemId)
-const menuContextName = ref(null)
+const itemOptionContextId = ref(route.params.optionId)
+const optionContextName = ref(null)
 
 const filters1 = ref(null)
 const loading1 = ref(null)
@@ -80,22 +81,22 @@ const initFilters1 = () => {
 }
 
 // SERVICES INSTANCES
-const menuItemsService = new MenuItemsService()
-const ingredientsService = new IngredientsService()
 const menuItemsOptionsService = new MenuItemsOptionsService()
+const ingredientsService = new IngredientsService()
+const optionPositionsService = new OptionsPositionsService()
 
 onBeforeMount(async () => {
   initFilters1()
 
-  if (menuItemContextId.value) {
-    const { data } = await menuItemsOptionsService.getMenuItemsOptionsForMenuItemId(menuItemContextId.value)
+  if (itemOptionContextId.value) {
+    const { data } = await optionPositionsService.getOptionsPositionsForOptionId(itemOptionContextId.value)
     menuItemOptions.value = data
-    menuContextName.value = data.length > 0 ? data[0].menuItemTitle : ''
+    optionContextName.value = data.length > 0 ? data[0].itemOptionTitle : ''
   } else {
-    const { data } = await menuItemsOptionsService.getAllMenuItemsOptions()
-    const { data: menuData } = await menuItemsService.getAllMenuItems()
+    const { data } = await optionPositionsService.getAllOptionsPositions()
+    const { data: positionData } = await menuItemsOptionsService.getAllMenuItemsOptions()
     menuItemOptions.value = data
-    autoValueMenu.value = menuData
+    autoValueOption.value = positionData
 
   }
    const dictResponse = await ingredientsService.getIngredients()
@@ -108,14 +109,15 @@ const clearFilter1 = () => {
 }
 
 const openNew = () => {
-  menuItemOption.value = {
+  optionPosition.value = {
     title: '',
+    price: 0,
     menuItemOptionPositions: [],
-    menuItemId: { publicId: menuItemContextId.value },
-    required: false,
-    enabled: false,
-    multiSelect: false
+    itemOptionId: { publicId: itemOptionContextId.value },
+    enabled: false
+
   }
+
   submitted.value = false
   menuDialog.value = true
 }
@@ -128,7 +130,7 @@ const hideDialog = () => {
 const routemenu = ref(null)
 
 const items = [
-  {label: "Manage option positions", route: 'menu-item-options-positions', icon: 'pi pi-fw pi-pencil'}
+  {label: "Empty context", route: 'MenuItemsOptions', icon: 'pi pi-fw pi-pencil'}
 ]
 
 const onRowContextMenu = (event) => {
@@ -138,42 +140,42 @@ const onRowContextMenu = (event) => {
 
 const saveMenuItemOption = async () => {
   submitted.value = true
-  menuItemOption.value.menuItemOptionPositions = selectedAutoValueIngredients.value
-  menuItemOption.value.menuItemId = selectedAutoValueSMenu.value.publicId || menuItemContextId.value
+  optionPosition.value.menuItemOptionPositions = selectedAutoValueIngredients.value
+  optionPosition.value.itemOptionId = selectedAutoValueSMenu.value.publicId || itemOptionContextId.value
 
-  if (menuItemOption.value.publicId) {
-    const { data } = await menuItemsOptionsService.updateMenuItemOption(menuItemOption.value)
+  if (optionPosition.value.publicId) {
+    const { data } = await optionPositionsService.updateOptionPosition(optionPosition.value)
     menuDialog.value = false
     const index = menuItemOptions.value.findIndex((el) => el.publicId === data.publicId)
     if (index !== -1) {
       menuItemOptions.value[index] = data
     }
   } else {
-    const { data } = await menuItemsOptionsService.addMenuItemOption(menuItemOption.value)
+    const { data } = await optionPositionsService.addOptionPosition(optionPosition.value)
     toast.add({
       severity: 'success',
       summary: 'Successful',
-      detail: 'New Menu Item Option saved',
+      detail: 'New option position saved',
       life: 3000
     })
     menuDialog.value = false
     menuItemOptions.value.push(data)
   }
-  menuItemOption.value = {}
+  optionPosition.value = {}
   selectedAutoValueSMenu.value = null
   selectedAutoValueIngredients.value = null
   submitted.value = false
 }
-const editMenuItem = (editMenu) => {
-  selectedAutoValueIngredients.value = editMenu.menuItemOptionPositions
-  selectedAutoValueSMenu.value = {publicId: editMenu.menuItemId, title: editMenu.menuItemTitle}
+const editMenuItem = (editPosition) => {
+  selectedAutoValueIngredients.value = editPosition.menuItemOptionPositions
+  selectedAutoValueSMenu.value = {publicId: editPosition.itemOptionId, title: editPosition.itemOptionTitle}
 
-  menuItemOption.value = { ...editMenu }
+  optionPosition.value = { ...editPosition }
   menuDialog.value = true
 }
 
 const confirmDeleteMenuItem = (editMenu) => {
-  menuItemOption.value = editMenu
+  optionPosition.value = editMenu
   deleteMenuDialog.value = true
 }
 
@@ -183,15 +185,15 @@ const openDetailsDialog = (menuItem) => {
 }
 
 const deleteMenuItem = async () => {
-  const { status } = await menuItemsOptionsService.deleteMenuItemOption(menuItemOption.value.publicId)
+  const { status } = await optionPositionsService.deleteOptionPosition(optionPosition.value.publicId)
   if (status === 204) {
-    menuItemOptions.value = menuItemOptions.value.filter((val) => val.publicId !== menuItemOption.value.publicId)
+    menuItemOptions.value = menuItemOptions.value.filter((val) => val.publicId !== optionPosition.value.publicId)
     deleteMenuDialog.value = false
-    menuItemOption.value = {}
+    optionPosition.value = {}
     toast.add({
       severity: 'success',
       summary: 'Successful',
-      detail: 'Menu deleted',
+      detail: 'Option position deleted',
       life: 3000
     })
   }
@@ -218,7 +220,10 @@ const onMenuRowSelect = (event) => {
 const formatCurrencyForAPI = (value) => {
   return value * 10
 }
-
+const formatCurrency = (value) => {
+  const price = value / 10
+  return price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+}
 
 </script>
 
@@ -285,12 +290,12 @@ const formatCurrencyForAPI = (value) => {
               class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
             >
               <h5 class="m-0">
-                Manage menu items options <span v-if="menuItemContextId">for menu item: </span>
+                Manage options positions <span v-if="itemOptionContextId">for option: </span>
                 <Tag
-                  v-if="menuItemContextId"
+                  v-if="itemOptionContextId"
                   class="ml-2 text-lg"
                   severity="info"
-                  :value="menuContextName"
+                  :value="optionContextName"
                 ></Tag>
               </h5>
               <Button
@@ -306,11 +311,11 @@ const formatCurrencyForAPI = (value) => {
               </span>
             </div>
           </template>
-          <template #empty> No menu items options found.</template>
-          <template #loading> Loading menu items options data. Please wait.</template>
+          <template #empty> No options positions found.</template>
+          <template #loading> Loading options positions data. Please wait.</template>
 
           <Column headerStyle="width: 3rem"></Column>
-          <Column field="publicId" header="Id" headerStyle="width:10%; min-width:10rem;">
+          <Column field="publicId" header="Id" headerStyle="width:20%; min-width:10rem;">
             <template #body="slotProps">
               <span class="p-column-title">Id</span>
               {{ makeIdShorter(slotProps.data.publicId) }}
@@ -336,6 +341,22 @@ const formatCurrencyForAPI = (value) => {
               />
             </template>
           </Column>
+
+          <Column field="price" header="Price" headerStyle="width:10%; min-width:10rem;">
+            <template #body="slotProps">
+              <span class="p-column-title">Price</span>
+              {{ formatCurrency(slotProps.data.price) }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search by price"
+              />
+            </template>
+          </Column>
+
           <Column
             field="isActive"
             :sortable="true"
@@ -357,81 +378,15 @@ const formatCurrencyForAPI = (value) => {
               <TriStateCheckbox v-model="filterModel.value" />
             </template>
           </Column>
-
           <Column
-            field="required"
-            :sortable="true"
-            header="Is required"
-            dataType="boolean"
-            headerStyle="width:11%"
-            style="min-width: 4rem"
-          >
-            <template #body="{ data }">
-              <i
-                class="pi"
-                :class="{
-                  'text-green-500 pi-check-circle': data.required,
-                  'text-pink-500 pi-times-circle': !data.required
-                }"
-              ></i>
-            </template>
-            <template #filter="{ filterModel }">
-              <TriStateCheckbox v-model="filterModel.value" />
-            </template>
-          </Column>
-
-          <Column
-            field="multiSelect"
-            :sortable="true"
-            header="Is multiselect"
-            dataType="boolean"
-            headerStyle="width:12%;"
-            style="min-width: 3rem"
-          >
-            <template #body="{ data }">
-              <i
-                class="pi"
-                :class="{
-                  'text-green-500 pi-check-circle': data.multiSelect,
-                  'text-pink-500 pi-times-circle': !data.multiSelect
-                }"
-              ></i>
-            </template>
-            <template #filter="{ filterModel }">
-              <TriStateCheckbox v-model="filterModel.value" />
-            </template>
-          </Column>
-
-
-          <Column
-            field="menuItemOptionPositions"
-            header="Positions"
-            :sortable="false"
-            headerStyle="width:14%; min-width:10rem;"
-          >
-            <template #body="slotProps">
-              <span class="p-column-title">Positions</span>
-              <Tag
-                v-for="attr in slotProps.data.menuItemOptionPositions"
-                class="m-1"
-                v-bind:key="attr.publicId"
-                :value="attr.title"
-                :rounded="false"
-                severity="success"
-              ></Tag>
-            </template>
-          </Column>
-
-          <Column
-            v-if="!menuItemContextId"
-            field="menuItemTitle"
-            header="Menu item"
+            field="itemOptionTitle"
+            header="Item option title"
             :sortable="true"
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Menu item</span>
-              {{ slotProps.data.menuItemTitle }}
+              <span class="p-column-title">Item option title</span>
+              {{ slotProps.data.itemOptionTitle }}
             </template>
             <template #filter="{ filterModel }">
               <InputText
@@ -470,7 +425,7 @@ const formatCurrencyForAPI = (value) => {
 
         <ContextMenu ref="routemenu" :model="items" @hide="selectedMenu = null" class="w-2">
           <template #item="{ item, props }">
-            <router-link v-if="item.route" v-slot="{ href, navigate }" :to="{name: item.route, params: {optionId: selectedMenu.publicId } }" custom>
+            <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
               <a v-ripple :href="href" v-bind="props.action" @click="navigate">
                 <span :class="item.icon" />
                 <span class="ml-2">{{ item.label }}</span>
@@ -487,7 +442,7 @@ const formatCurrencyForAPI = (value) => {
         <Dialog
           v-model:visible="menuDialog"
           :style="{ width: '450px' }"
-          header="Menu item option details"
+          header="Option position details"
           :modal="true"
           class="p-fluid"
         >
@@ -495,35 +450,30 @@ const formatCurrencyForAPI = (value) => {
             <label for="title">Title</label>
             <InputText
               id="title"
-              v-model.trim="menuItemOption.title"
+              v-model.trim="optionPosition.title"
               required="true"
               autofocus
-              :class="{ 'p-invalid': submitted && !menuItemOption.title }"
+              :class="{ 'p-invalid': submitted && !optionPosition.title }"
             />
-            <small class="p-invalid" v-if="submitted && !menuItemOption.title">Title is required.</small>
+            <small class="p-invalid" v-if="submitted && !optionPosition.title">Title is required.</small>
           </div>
 
           <div class="field">
-            <label for="ingredientsSelect">Select a few positions</label>
-            <AutoComplete
-              id="ingredientsSelect"
-              v-model="selectedAutoValueIngredients"
-              :class="{ 'p-invalid': submitted && !menuItemOption.menuItemOptionPositions }"
-              optionLabel="name"
-              multiple
-              :suggestions="autoFilteredValueIngredient"
-              @complete="searchIngredients"
-            />
-            <small class="p-invalid" v-if="submitted && !menuItemOption.menuItemOptionPositions"
-            >Few ingredients are required.</small>
+            <label for="price">Price</label>
+            <InputNumber v-model="optionPosition.price"
+                         id = "price"
+                         inputId="currency-us"
+                         mode="currency"
+                         showButtons
+                         :currency="useUserStore().getUserCurrency()"
+                         :locale="useUserStore().getUserLocale()" />
           </div>
 
-
-          <div class="field" v-if="!menuItemContextId">
-            <label for="currency">Select Menu Item for this Option</label>
+          <div class="field" v-if="!itemOptionContextId">
+            <label for="currency">Select Option for this position</label>
             <AutoComplete
               class="w-full"
-              :class="{ 'p-invalid': submitted && !menuItemOption.menuItemId }"
+              :class="{ 'p-invalid': submitted && !optionPosition.itemOptionId }"
               required="true"
               autofocus
               placeholder="Search"
@@ -535,7 +485,7 @@ const formatCurrencyForAPI = (value) => {
               @complete="searchMenuItem($event)"
               field="title"
             />
-            <small class="p-invalid" v-if="submitted && !menuItemOption.menuItemId"
+            <small class="p-invalid" v-if="submitted && !optionPosition.itemOptionId"
               >Selling point is required.</small>
           </div>
           <div class="field-checkbox mb-0">
@@ -543,28 +493,10 @@ const formatCurrencyForAPI = (value) => {
               id="active"
               name="active"
               value="true"
-              v-model="menuItemOption.enabled"
+              v-model="optionPosition.enabled"
               :binary="true"
             />
             <label for="active" class = "mr-3">Is Active</label>
-
-            <Checkbox
-              id="required"
-              name="required"
-              value="true"
-              v-model="menuItemOption.multiSelect"
-              :binary="true"
-            />
-            <label for="required" class = "mr-3">Is multiselect</label>
-
-            <Checkbox
-              id="multiSelect"
-              name="required"
-              value="true"
-              v-model="menuItemOption.required"
-              :binary="true"
-            />
-            <label for="multiSelect" >Is required</label>
           </div>
 
           <template #footer>
@@ -581,8 +513,8 @@ const formatCurrencyForAPI = (value) => {
         >
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="menuItemOption"
-              >Are you sure you want to delete <b>{{ menuItemOption.name }}</b
+            <span v-if="optionPosition"
+              >Are you sure you want to delete <b>{{ optionPosition.name }}</b
               >?</span
             >
           </div>

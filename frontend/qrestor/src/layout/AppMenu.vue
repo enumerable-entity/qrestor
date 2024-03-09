@@ -32,6 +32,11 @@ const model = ref([
             label: 'Menu items options',
             icon: 'pi pi-fw pi-server',
             to: {name: 'menu-item-options-all'},
+          },
+          {
+            label: 'Options positions',
+            icon: 'pi pi-fw pi-server',
+            to: {name: 'menu-item-options-positions-all'},
           }
         ]
       }
