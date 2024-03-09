@@ -328,11 +328,13 @@ const onRowSelect = (event) => {
           <Column headerStyle="min-width:10rem;" header="Actions">
             <template #body="slotProps">
               <Button
+                text
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-success mr-2"
                 @click="editMenu(slotProps.data)"
               />
               <Button
+                text
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-warning mt-2"
                 @click="confirmDeleteMenu(slotProps.data)"

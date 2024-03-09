@@ -12,7 +12,7 @@ const model = ref([
       {
         label: 'Selling points',
         icon: 'pi pi-fw pi-pencil',
-        to: '/pages/spoints'
+        to: {name: 'selling-points'},
       },
       {
         label: 'Menus',
@@ -21,12 +21,17 @@ const model = ref([
           {
             label: 'Menus',
             icon: 'pi pi-fw pi-book',
-            to: '/management/menus',
+            to: {name: 'menus'},
           },
           {
             label: 'Menu items',
             icon: 'pi pi-fw pi-pencil',
-            to: '/management/menus/menu-items',
+            to: {name: 'menu-items-all'},
+          },
+          {
+            label: 'Menu items options',
+            icon: 'pi pi-fw pi-server',
+            to: {name: 'menu-item-options-all'},
           }
         ]
       }

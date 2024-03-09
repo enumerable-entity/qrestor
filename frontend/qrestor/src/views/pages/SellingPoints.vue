@@ -286,14 +286,16 @@ const initFilters = () => {
               />
             </template>
           </Column>
-          <Column headerStyle="min-width:10rem;">
+          <Column header="Actions" headerStyle="min-width:10rem;">
             <template #body="slotProps">
               <Button
+                text
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-success mr-2"
                 @click="editPoint(slotProps.data)"
               />
               <Button
+                text
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-warning mt-2"
                 @click="confirmDeletePoint(slotProps.data)"

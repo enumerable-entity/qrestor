@@ -530,16 +530,19 @@ const options = [
           <Column headerStyle="min-width:12rem; width:25%;" header="Actions">
             <template #body="slotProps">
               <Button
+                text
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-success mr-2"
                 @click="editMenuItem(slotProps.data)"
               />
               <Button
+                text
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-warning mt-2 mr-2"
                 @click="confirmDeleteMenuItem(slotProps.data)"
               />
               <Button
+                text
                 icon="pi pi-info-circle"
                 class="p-button-rounded p-button-warning mt-2"
                 @click="openDetailsDialog(slotProps.data)"

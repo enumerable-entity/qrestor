@@ -12,7 +12,7 @@ const router = createRouter({
       children: [
         {
           path: '/pages/spoints',
-          name: 'crud',
+          name: 'selling-points',
           component: () => import('@/views/pages/SellingPoints.vue')
         },
         {
@@ -33,6 +33,11 @@ const router = createRouter({
         {
           path: '/management/menus/menu-items/:menuItemId/menu-item-options',
           name: 'menu-item-options',
+          component: () => import('@/views/management/MenuItemOptions.vue')
+        },
+        {
+          path: '/management/menus/menu-items/menu-item-options',
+          name: 'menu-item-options-all',
           component: () => import('@/views/management/MenuItemOptions.vue')
         }
       ]
