@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio-deployment
+  namespace: qrestor-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+      - name: minio
+        image: bitnami/minio:2024.1.13
+        ports:
+        - containerPort: 9000
+        env:
+        - name: MINIO_SERVER_ACCESS_KEY
+          value: "qrestor123qrestor123"
+        - name: MINIO_SERVER_SECRET_KEY
+          value: "qrestor123qrestor123"
+        - name: MINIO_ROOT_USER
+          value: "qrestor123"
+        - name: MINIO_ROOT_PASSWORD
+          value: "qrestor123"
+        - name: MINIO_DEFAULT_BUCKETS
+          value: "menu-items-pics, backgrounds, logos"
+        - name: MINIO_SCHEME
+          value: "https"
+        volumeMounts:
+        - name: minio-data
+          mountPath: /bitnami/minio/data
+        - name: minio-root-keys
+          mountPath: /certs
+        - name: minio-ca-certs
+          mountPath: /certs/CAs
+      volumes:
+      - name: minio-data
+        persistentVolumeClaim:
+          claimName: minio-pvc
+      - name: minio-root-keys
+        secret:
+          secretName: minio-root-keys
+          items:
+          - key: private.key
+            path: private.key
+          - key: public.crt
+            path: public.crt
+      - name: minio-ca-certs
+        secret:
+          secretName: minio-ca-certs
+          items:
+          - key: public.crt
+            path: public.crt
