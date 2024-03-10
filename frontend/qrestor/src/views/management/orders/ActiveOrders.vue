@@ -5,9 +5,8 @@ import OrdersService from '@/service/OrdersService.js'
 import SellingPointsService from '@/service/SellingPointsService.js'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
 
-const route = useRoute()
+
 const toast = useToast()
 const { t } = useI18n()
 const orders = ref(null)
@@ -19,22 +18,6 @@ const dt = ref(null)
 const submitted = ref(false)
 
 const datesFromTo = ref([new Date(), new Date()])
-
-const autoValueSellPoint = ref(null)
-const selectedAutoValueSellPoint = ref(null)
-const autoFilteredValueSellPoint = ref([])
-
-const searchSellingPoint = (event) => {
-  setTimeout(() => {
-    if (!event.query.trim().length) {
-      autoFilteredValueSellPoint.value = [...autoValueSellPoint.value]
-    } else {
-      autoFilteredValueSellPoint.value = autoValueSellPoint.value.filter((restaurant) => {
-        return restaurant.name.toLowerCase().startsWith(event.query.toLowerCase())
-      })
-    }
-  }, 250)
-}
 
 const filters1 = ref(null)
 const loading1 = ref(null)
@@ -73,14 +56,13 @@ const getSeverity = (status) => {
   }
 }
 
-const isHistoryWindow = ref(route.params.history)
 
 const ordersService = new OrdersService()
 const sellingPointService = new SellingPointsService()
 
 onBeforeMount(async () => {
   initFilters1()
-  const { data } = await ordersService.getOrdersHistoryByDates(
+  const { data } = await ordersService.getActiveForDates(
     datesFromTo.value[0].toISOString().slice(0, 10),
     datesFromTo.value[1].toISOString().slice(0, 10)
   )
@@ -94,40 +76,16 @@ const clearFilter1 = () => {
   initFilters1()
 }
 
-const hideDialog = () => {
+const rejectOrder = () => {
+  ordersService.changeOrderStatus(selectedOrder.value.publicId, 'CANCELLED')
+  orders.value = orders.value.filter((val) => val.publicId !== selectedOrder.value.publicId)
   orderDetailsDialog.value = false
-  submitted.value = false
-}
-
-const saveMenu = async () => {
-  submitted.value = true
-  menu.value.restaurantId = selectedAutoValueSellPoint.value.id
-
-  if (menu.value.publicId) {
-    const { data } = await ordersService.updateMenu(menu.value)
-    orderDetailsDialog.value = false
-    const index = orders.value.findIndex((el) => el.publicId === data.publicId)
-    if (index !== -1) {
-      orders.value[index] = data
-    }
-  } else {
-    const { data } = await ordersService.addMenu(menu.value)
-    toast.add({
-      severity: 'success',
-      summary: 'Successful',
-      detail: 'Menu saved',
-      life: 3000
-    })
-    orderDetailsDialog.value = false
-    orders.value.push(data)
-  }
-  menu.value = {}
-  selectedAutoValueSellPoint.value = null
-}
-
-const confirmDeleteMenu = (editMenu) => {
-  menu.value = editMenu
-  deleteMenuDialog.value = true
+  toast.add({
+    severity: 'success',
+    summary: 'Order rejected',
+    detail: 'Order was rejected',
+    life: 3000
+  })
 }
 
 const deleteMenu = async () => {
@@ -155,12 +113,33 @@ const onRowSelect = (event) => {
 }
 
 const statuses = [
-  { label: 'Payment in progress', icon: 'pi pi-check', command: () => {} },
-  { label: 'Confirmed', icon: 'pi pi-check', command: () => {
-      console.log('Confirmed')
+  { label: 'In progress', icon: 'pi pi-angle-double-right', command: () => {
+      changeStatus('IN_PROGRESS')
     } },
-  { label: 'Canceled', icon: 'pi pi-check', command: () => {} }
+  { label: 'Completed', icon: 'pi pi-check', command: () => {
+      changeStatus('COMPLETED')
+    } },
+  { label: 'Canceled', icon: 'pi pi-times', command: () => {
+      changeStatus('CANCELLED')
+    } }
 ]
+
+const changeStatus = (status) => {
+  ordersService.changeOrderStatus(selectedOrder.value.publicId, status)
+  orders.value = orders.value.map((val) => {
+    if (val.publicId === selectedOrder.value.publicId) {
+      val.status = status
+    }
+    return val
+  })
+  orderDetailsDialog.value = false
+  toast.add({
+    severity: 'success',
+    summary: 'Order status changed',
+    detail: 'Order status was changed',
+    life: 3000
+  })
+}
 
 const onDateSelect = (event) => {
   if (event !== undefined) {
@@ -398,7 +377,7 @@ const onDateSelect = (event) => {
           <template #footer>
             <div class="formgrid grid">
               <div class="field col-3">
-                <Button severity="danger" label="Reject" icon="pi pi-times" @click="hideDialog" />
+                <Button severity="danger" label="Reject" icon="pi pi-times" @click="rejectOrder" />
               </div>
               <div class="field col-9">
                 <SplitButton severity="info" label="Change status" :model="statuses" @click="saveMenu"></SplitButton>

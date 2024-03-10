@@ -9,6 +9,10 @@ export default class OrdersService {
         return fetchWrapper.get(this.url + '/history?dateFrom=' + dateFrom + '&dateTo=' + dateTo)
     }
 
+    getActiveForDates(dateFrom, dateTo) {
+        return fetchWrapper.get(this.url + '/active?dateFrom=' + dateFrom + '&dateTo=' + dateTo)
+    }
+
     getMenuItemsOptionsForMenuItemId(menuItemId) {
         return fetchWrapper.get(this.url + '/all?menuItemId=' + menuItemId)
     }
@@ -26,6 +30,6 @@ export default class OrdersService {
     }
 
     changeOrderStatus(orderId, status) {
-        return fetchWrapper.get(this.url+'/' + orderId +  '/status?status=' + status)
+        return fetchWrapper.post(this.url+'/' + orderId +  '/status?status=' + status)
     }
 }
