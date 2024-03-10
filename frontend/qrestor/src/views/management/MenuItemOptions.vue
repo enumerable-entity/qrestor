@@ -309,7 +309,6 @@ const formatCurrencyForAPI = (value) => {
           <template #empty> No menu items options found.</template>
           <template #loading> Loading menu items options data. Please wait.</template>
 
-          <Column headerStyle="width: 3rem"></Column>
           <Column field="publicId" header="Id" headerStyle="width:10%; min-width:10rem;">
             <template #body="slotProps">
               <span class="p-column-title">Id</span>
