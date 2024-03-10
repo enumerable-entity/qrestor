@@ -63,7 +63,7 @@ spring:
           predicates:
             - Path=/auth/**
           filters:
-            - RewritePath=/auth/(?<segment>.*), /api/v1/${segment}
+            - RewritePath=/auth/(?<segment>.*), /${segment}
         - id: kitchenboard
           uri: lb://kitchenboard
           predicates:

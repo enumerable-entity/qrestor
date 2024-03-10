@@ -6,6 +6,7 @@ import com.qrestor.menu.systemuser.enitity.SyncUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @Table(name = "menu_items_options_positions", schema = "menu", indexes = {
         @Index(name = "menu_items_options_position_public_id_idx", columnList = "public_id", unique = true)
 })
+@FieldNameConstants
 public class MenuItemOptionPositionEntity extends OwnedEntity implements PublicEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

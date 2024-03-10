@@ -19,5 +19,6 @@ public class MenuItemOptionDTO extends AbstractPublicDTO {
     private List<MenuItemOptionPositionDTO> menuItemOptionPositions;
     private boolean isEnabled;
     private UUID menuItemId;
+    private String menuItemTitle;
 
 }

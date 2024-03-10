@@ -51,8 +51,8 @@ public class MenuItemOptionsServiceImpl extends AbstractCrudService<MenuItemOpti
     public MenuItemOptionDTO create(MenuItemOptionDTO dto) {
         dto.setPublicId(Utils.generatePublicId());
         MenuItemOptionEntity entity = mapper.toEntity(dto);
-        Optional<MenuItemEntity> menuOption = menuItemsService.findEntityByUuidIn(dto.getMenuItemId());
-        entity.setMenuItem(menuOption.orElseThrow(() -> new RuntimeException("Menu option not found")));
+        Optional<MenuItemEntity> menuItem = menuItemsService.findEntityByUuidIn(dto.getMenuItemId());
+        entity.setMenuItem(menuItem.orElseThrow(() -> new RuntimeException("Menu option not found")));
         return mapper.toDto(repository.save(entity));
     }
 }
