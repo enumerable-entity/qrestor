@@ -82,9 +82,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<OrderDTO> getOrdersHistory(LocalDate dateFrom, LocalDate dateTo, Pageable pageable) {
-        Optional<UUID> waiterRestaurantId = Optional.ofNullable(restaurantHttpClient.getWaiterRestaurantId());
-        if (waiterRestaurantId.isPresent()) {
-            return orderRepository.findAllByRestaurantIdAndOrderDateBetween(waiterRestaurantId.get(),
+        Optional<UUID> userRestaurantId = Optional.ofNullable(restaurantHttpClient.getWaiterRestaurantId());
+        if (userRestaurantId.isPresent()) {
+            return orderRepository.findAllByRestaurantIdAndOrderDateBetween(userRestaurantId.get(),
                     dateFrom.atStartOfDay(), dateTo.atStartOfDay(), pageable).map(orderMapper::toDto);
         } else {
             throw new RuntimeException("Waiter restaurant id not found");

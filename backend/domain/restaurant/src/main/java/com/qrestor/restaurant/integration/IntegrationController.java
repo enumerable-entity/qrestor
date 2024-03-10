@@ -23,7 +23,7 @@ public class IntegrationController {
     }
 
     @GetMapping("/getWaiterRestaurantId")
-    @PreAuthorize("hasRole('WAITER')")
+    @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
     public UUID getWaiterRestaurantId(){
         return integrationService.getWaiterRestaurantId();
     }
