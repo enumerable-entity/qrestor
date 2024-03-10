@@ -1,6 +1,7 @@
 package com.qrestor.restaurant.integration;
 
 import com.qrestor.models.dto.PermissionCheckResponse;
+import com.qrestor.models.dto.RestaurantBasicInfoDTO;
 import com.qrestor.restaurant.service.RestaurantService;
 import com.qrestor.restaurant.systemuser.service.SyncUserService;
 import com.qrestor.security.SecurityUtils;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,9 +23,13 @@ public class IntegrationService {
         return ResponseEntity.ok(restaurantService.checkOwnership(restaurantId));
     }
 
-    public UUID getWaiterRestaurantId() {
-        UUID waiterId = SecurityUtils.getPrincipalUUID();
-        return syncUserService.getRestaurantIdForWaiter(waiterId);
+    public List<RestaurantBasicInfoDTO> getUserRestaurants() {
+        List<String> roles = SecurityUtils.getPrincipalRoles();
+        if(roles.contains("WAITER")) {
+            return syncUserService.getRestaurantIdForWaiter(SecurityUtils.getPrincipalUUID());
+        } else{
+            return restaurantService.getRestaurantsInfoForUser();
+        }
     }
 
     public UUID getRestaurantOwnerId(UUID restaurantId) {

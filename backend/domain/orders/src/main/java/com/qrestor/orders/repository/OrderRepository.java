@@ -16,6 +16,9 @@ import java.util.UUID;
 public interface OrderRepository extends PublicRepository<OrderEntity, Long> {
     List<OrderEntity> findAllByRestaurantIdAndStatusIn(UUID restaurantId, Set<OrderStatus> orderStatus);
 
-    Page<OrderEntity> findAllByRestaurantIdAndOrderDateBetween(UUID restaurantId, LocalDateTime dateFrom,
-                                                               LocalDateTime dateTo, Pageable pageable);
+    Page<OrderEntity> findAllByRestaurantIdInAndStatusInAndOrderDateBetween(
+            Set<UUID> restaurantId,
+            Set<OrderStatus> statuses,
+            LocalDateTime dateFrom,
+            LocalDateTime dateTo, Pageable pageable);
 }

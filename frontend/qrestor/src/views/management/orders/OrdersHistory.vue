@@ -4,19 +4,19 @@ import { onBeforeMount, ref } from 'vue'
 import OrdersService from '@/service/OrdersService.js'
 import SellingPointsService from '@/service/SellingPointsService.js'
 import { useToast } from 'primevue/usetoast'
-import router from '@/router/index.js'
+import { useI18n } from 'vue-i18n'
+
+
 
 const toast = useToast()
-
+const { t } = useI18n()
 const orders = ref(null)
-const menuDialog = ref(false)
+const orderDetailsDialog = ref(false)
 const deleteMenuDialog = ref(false)
-const deleteMenusDialog = ref(false)
 const menu = ref({})
-const selectedMenu = ref(null)
+const selectedOrder = ref(null)
 const dt = ref(null)
 const submitted = ref(false)
-//init date from from current date in format yyyy-mm-dd
 
 const datesFromTo = ref([new Date(), new Date()])
 
@@ -59,12 +59,29 @@ const initFilters1 = () => {
   }
 }
 
+const getSeverity = (status) => {
+  if (status === 'PAYMENT_IN_PROGRESS') {
+    return 'info'
+  } else if (status === 'PENDING') {
+    return 'warning'
+  } else if (status === 'IN_PROGRESS') {
+    return 'help'
+  } else if (status === 'COMPLETED') {
+    return 'success'
+  } else if (status === 'CANCELLED') {
+    return 'danger'
+  }
+}
+
 const ordersService = new OrdersService()
 const sellingPointService = new SellingPointsService()
 
 onBeforeMount(async () => {
   initFilters1()
-  const { data } = await ordersService.getOrdersHistoryByDates(datesFromTo.value[0].toISOString().slice(0, 10), datesFromTo.value[1].toISOString().slice(0, 10))
+  const { data } = await ordersService.getOrdersHistoryByDates(
+    datesFromTo.value[0].toISOString().slice(0, 10),
+    datesFromTo.value[1].toISOString().slice(0, 10)
+  )
   //const dictResponse = await sellingPointService.getSellingPointsDictionary()
   //autoValueSellPoint.value = dictResponse.data
   orders.value = data.content
@@ -75,15 +92,8 @@ const clearFilter1 = () => {
   initFilters1()
 }
 
-const openNew = () => {
-  menu.value = {}
-  menu.value.isActive = false
-  submitted.value = false
-  menuDialog.value = true
-}
-
 const hideDialog = () => {
-  menuDialog.value = false
+  orderDetailsDialog.value = false
   submitted.value = false
 }
 
@@ -93,7 +103,7 @@ const saveMenu = async () => {
 
   if (menu.value.publicId) {
     const { data } = await ordersService.updateMenu(menu.value)
-    menuDialog.value = false
+    orderDetailsDialog.value = false
     const index = orders.value.findIndex((el) => el.publicId === data.publicId)
     if (index !== -1) {
       orders.value[index] = data
@@ -106,15 +116,11 @@ const saveMenu = async () => {
       detail: 'Menu saved',
       life: 3000
     })
-    menuDialog.value = false
+    orderDetailsDialog.value = false
     orders.value.push(data)
   }
   menu.value = {}
   selectedAutoValueSellPoint.value = null
-}
-const editMenu = (editMenu) => {
-  menu.value = { ...editMenu }
-  menuDialog.value = true
 }
 
 const confirmDeleteMenu = (editMenu) => {
@@ -141,42 +147,36 @@ const makeIdShorter = (id) => {
   return id.substring(0, 8) + ' ...'
 }
 
-const exportCSV = () => {
-  dt.value.exportCSV()
-}
-
-const deleteSelectedMenus = () => {
-  orders.value = orders.value.filter((val) => !selectedMenu.value.includes(val))
-  deleteMenusDialog.value = false
-  selectedMenu.value = null
-  toast.add({
-    severity: 'success',
-    summary: 'Successful',
-    detail: 'Menus was deleted',
-    life: 3000
-  })
-}
-
-// ROW SELECT
 const onRowSelect = (event) => {
-  router.push('/management/orders/' + event.data.publicId + '/menu-items')
-  selectedMenu.value = {}
+  orderDetailsDialog.value = true
+  selectedOrder.value = { ...event.data }
 }
+
+const statuses = [
+  { label: 'Payment in progress', icon: 'pi pi-check', command: () => {} },
+  { label: 'Confirmed', icon: 'pi pi-check', command: () => {
+    console.log('Confirmed')
+    } },
+  { label: 'Canceled', icon: 'pi pi-check', command: () => {} }
+]
 
 const onDateSelect = (event) => {
-  if(event !== undefined){
+  if (event !== undefined) {
     const selectedDateFrom = event[0]
     const selectedDateTo = event[1]
     if (selectedDateFrom && selectedDateTo) {
-      datesFromTo.value[0]= selectedDateFrom
+      datesFromTo.value[0] = selectedDateFrom
       datesFromTo.value[1] = selectedDateTo
-      ordersService.getOrdersHistoryByDates(datesFromTo.value[0].toISOString().slice(0, 10), datesFromTo.value[1].toISOString().slice(0, 10))
+      ordersService
+        .getOrdersHistoryByDates(
+          datesFromTo.value[0].toISOString().slice(0, 10),
+          datesFromTo.value[1].toISOString().slice(0, 10)
+        )
         .then((response) => {
-        orders.value = response.data.content
-      })
+          orders.value = response.data.content
+        })
     }
   }
-
 }
 </script>
 
@@ -185,39 +185,10 @@ const onDateSelect = (event) => {
     <div class="col-12">
       <div class="card">
         <Toast />
-        <Toolbar class="mb-4">
-          <template v-slot:start>
-            <div class="my-2">
-              <Button
-                label="New"
-                icon="pi pi-plus"
-                class="p-button-success mr-2"
-                @click="openNew"
-              />
-            </div>
-          </template>
-          <template v-slot:end>
-            <FileUpload
-              mode="basic"
-              accept="image/*"
-              :maxFileSize="1000000"
-              label="Import"
-              chooseLabel="Import"
-              class="mr-2 inline-block"
-            />
-            <Button
-              label="Export"
-              icon="pi pi-upload"
-              class="p-button-help"
-              @click="exportCSV($event)"
-            />
-          </template>
-        </Toolbar>
-
         <DataTable
           ref="dt"
           :value="orders"
-          v-model:selection="selectedMenu"
+          v-model:selection="selectedOrder"
           selectionMode="single"
           @rowSelect="onRowSelect"
           v-model:filters="filters1"
@@ -238,7 +209,7 @@ const onDateSelect = (event) => {
             <div
               class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
             >
-              <h5 class="m-0">Orders history for dates range:</h5>
+              <h5 class="m-0">Orders history</h5>
               <Calendar
                 v-model="datesFromTo"
                 @update:modelValue="onDateSelect"
@@ -261,10 +232,9 @@ const onDateSelect = (event) => {
               </span>
             </div>
           </template>
-          <template #empty> No menus found. </template>
-          <template #loading> Loading menus data. Please wait. </template>
+          <template #empty> No orders found.</template>
+          <template #loading> Loading orders data. Please wait.</template>
 
-          <Column headerStyle="width: 3rem"></Column>
           <Column field="publicId" header="Id" headerStyle="width:10%; min-width:10rem;">
             <template #body="slotProps">
               <span class="p-column-title">Id</span>
@@ -272,14 +242,14 @@ const onDateSelect = (event) => {
             </template>
           </Column>
           <Column
-            field="name"
-            header="Name"
+            field="restaurantName"
+            header="Selling point name"
             :sortable="true"
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Name</span>
-              {{ slotProps.data.name }}
+              <span class="p-column-title">Selling point name</span>
+              {{ slotProps.data.restaurantName }}
             </template>
             <template #filter="{ filterModel }">
               <InputText
@@ -291,14 +261,32 @@ const onDateSelect = (event) => {
             </template>
           </Column>
           <Column
-            field="description"
-            header="Description"
+            field="restaurantTitle"
+            header="Selling point title"
             :sortable="true"
-            headerStyle="width:14%; min-width:10rem;"
+            headerStyle="width:12%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Description</span>
-              {{ slotProps.data.description }}
+              {{ slotProps.data.restaurantTitle }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search by name"
+              />
+            </template>
+          </Column>
+          <Column
+            field="tableNumber"
+            header="Table number"
+            :sortable="true"
+            headerStyle="width:9%; min-width:10rem;"
+          >
+            <template #body="slotProps">
+              <span class="p-column-title">Table number</span>
+              {{ slotProps.data.tableNumber }}
             </template>
             <template #filter="{ filterModel }">
               <InputText
@@ -310,37 +298,58 @@ const onDateSelect = (event) => {
             </template>
           </Column>
           <Column
-            field="restaurantId"
-            header="Selling Point ID"
-            headerStyle="width:23%; min-width:10rem;"
+            field="status"
+            header="Status"
+            :sortable="true"
+            headerStyle="width:9%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Selling Point ID</span>
-              {{ slotProps.data.restaurantId }}
+              <span class="p-column-title">Table number</span>
+              <Tag :value="t(slotProps.data.status)" :severity="getSeverity(slotProps.data.status)" />
             </template>
             <template #filter="{ filterModel }">
               <InputText
                 type="text"
                 v-model="filterModel.value"
                 class="p-column-filter"
-                placeholder="Search by restaurant"
+                placeholder="Search by description"
               />
             </template>
           </Column>
+
           <Column
-            field="isActive"
+            field="items"
+            header="Items count"
             :sortable="true"
-            header="Is Active"
+            headerStyle="width:9%; min-width:10rem;"
+          >
+            <template #body="slotProps">
+              <span class="p-column-title">Items count</span>
+              {{ slotProps.data.items.length }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search by description"
+              />
+            </template>
+          </Column>
+
+          <Column
+            field="paymentSelected"
+            :sortable="true"
+            header="Online payment"
             dataType="boolean"
-            bodyClass=""
-            style="min-width: 3rem"
+            style="min-width: 3rem; width: 13%"
           >
             <template #body="{ data }">
               <i
                 class="pi"
                 :class="{
-                  'text-green-500 pi-check-circle': data.isActive,
-                  'text-pink-500 pi-times-circle': !data.isActive
+                  'text-green-500 pi-check-circle': data.paymentSelected,
+                  'text-pink-500 pi-times-circle': !data.paymentSelected
                 }"
               ></i>
             </template>
@@ -348,82 +357,41 @@ const onDateSelect = (event) => {
               <TriStateCheckbox v-model="filterModel.value" />
             </template>
           </Column>
-          <Column headerStyle="min-width:10rem;" header="Actions">
-            <template #body="slotProps">
-              <Button
-                text
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-success mr-2"
-                @click="editMenu(slotProps.data)"
-              />
-              <Button
-                text
-                icon="pi pi-trash"
-                class="p-button-rounded p-button-warning mt-2"
-                @click="confirmDeleteMenu(slotProps.data)"
-              />
-            </template>
-          </Column>
         </DataTable>
 
         <Dialog
-          v-model:visible="menuDialog"
+          v-model:visible="orderDetailsDialog"
           :style="{ width: '450px' }"
-          header="Menu details"
+          :header="
+            'Order details with ID: ' +
+            (selectedOrder ? ' - ' + makeIdShorter(selectedOrder.publicId) : '')
+          "
           :modal="true"
           class="p-fluid"
         >
-          <div class="field">
-            <label for="name">Title</label>
-            <InputText
-              id="name"
-              v-model.trim="menu.name"
-              required="true"
-              autofocus
-              :class="{ 'p-invalid': submitted && !menu.name }"
-            />
-            <small class="p-invalid" v-if="submitted && !menu.name">Name is required.</small>
-          </div>
-          <div class="field">
-            <label for="name">Description(optional)</label>
-            <InputText id="name" v-model.trim="menu.description" required="true" autofocus />
-          </div>
-          <div class="field">
-            <label for="currency">Select selling point for this menu</label>
-            <AutoComplete
-              class="w-full"
-              :class="{ 'p-invalid': submitted && !menu.restaurantId }"
-              required="true"
-              autofocus
-              placeholder="Search"
-              id="currency"
-              :dropdown="true"
-              :multiple="false"
-              v-model="selectedAutoValueSellPoint"
-              :suggestions="autoFilteredValueSellPoint"
-              @complete="searchSellingPoint($event)"
-              field="name"
-            />
-            <small class="p-invalid" v-if="submitted && !menu.restaurantId"
-              >Selling point is required.</small
-            >
-          </div>
-
-          <div class="field-checkbox mb-0">
-            <Checkbox
-              id="terms"
-              name="option"
-              value="true"
-              v-model="menu.isActive"
-              :binary="true"
-            />
-            <label for="terms">Is Active</label>
-          </div>
-
-          <template #footer>
-            <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
-            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveMenu" />
-          </template>
+          <Card>
+            <template #content>
+                <p class="m-0 p-0 text-xl">ID: <span class="text-xl">{{selectedOrder.publicId}}</span></p>
+            </template>
+          </Card>
+          <Divider></Divider>
+          <Card>
+            <template #title>Selling Point Details</template>
+            <template #content >
+              <p class="m-0 p-0 text-xl">Name: <span class="text-base">{{selectedOrder.restaurantName}}</span></p>
+              <p class="m-0 p-0 text-xl">Title: <span class="text-base">{{selectedOrder.restaurantTitle}}</span></p>
+            </template>
+          </Card>
+          <Divider></Divider>
+          <Card>
+            <template #title>Order Details</template>
+            <template #content>
+              <p class="m-0 p-1 text-xl">Table number: <span class="text-base"><Tag class="m-0" :value="selectedOrder.tableNumber" severity="info"/></span></p>
+              <p class="m-0 p-1 text-xl">Status: <Tag class="m-0" :value="t(selectedOrder.status)" :severity="getSeverity(selectedOrder.status)"/></p>
+              <p class="m-0 p-1 text-xl">Items count: <Tag class="m-0" :value="selectedOrder.items.length" severity="info"/></p>
+              <p class="m-0 p-1 text-xl">Online payment: <i class="pi" :class="{'text-green-500 pi-check-circle': selectedOrder.paymentSelected, 'text-pink-500 pi-times-circle': !selectedOrder.paymentSelected}"></i></p>
+            </template>
+          </Card>
         </Dialog>
 
         <Dialog
@@ -447,32 +415,6 @@ const onDateSelect = (event) => {
               @click="deleteMenuDialog = false"
             />
             <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteMenu" />
-          </template>
-        </Dialog>
-
-        <Dialog
-          v-model:visible="deleteMenusDialog"
-          :style="{ width: '450px' }"
-          header="Confirm"
-          :modal="true"
-        >
-          <div class="flex align-items-center justify-content-center">
-            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="menu">Are you sure you want to delete the selected menus?</span>
-          </div>
-          <template #footer>
-            <Button
-              label="No"
-              icon="pi pi-times"
-              class="p-button-text"
-              @click="deleteMenusDialog = false"
-            />
-            <Button
-              label="Yes"
-              icon="pi pi-check"
-              class="p-button-text"
-              @click="deleteSelectedMenus"
-            />
           </template>
         </Dialog>
       </div>

@@ -25,7 +25,7 @@ export default class OrdersService {
         return fetchWrapper.delete(this.url + '/' + publicId)
     }
 
-    getItemsOptionsCombo() {
-        return fetchWrapper.get('/menu/dictionary/itemOptionsCombo')
+    changeOrderStatus(orderId, status) {
+        return fetchWrapper.get(this.url+'/' + orderId +  '/status?status=' + status)
     }
 }
