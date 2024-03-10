@@ -54,6 +54,16 @@ const router = createRouter({
           path: '/management/menus/ingredients',
           name: 'ingredients-all',
           component: () => import('@/views/management/Ingredients.vue')
+        },
+        {
+          path: '/management/orders/active',
+          name: 'active-orders',
+          component: () => import('@/views/management/orders/ActiveOrders.vue')
+        },
+        {
+          path: '/management/orders/history',
+          name: 'orders-history',
+          component: () => import('@/views/management/orders/OrdersHistory.vue')
         }
       ]
     },

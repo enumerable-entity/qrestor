@@ -44,6 +44,22 @@ const model = ref([
             to: {name: 'ingredients-all'},
           }
         ]
+      },
+      {
+        label: 'Orders',
+        icon: 'pi pi-fw pi-pencil',
+        items: [
+          {
+            label: 'Active orders',
+            icon: 'pi pi-fw pi-book',
+            to: {name: 'active-orders'},
+          },
+          {
+            label: 'History',
+            icon: 'pi pi-fw pi-pencil',
+            to: {name: 'orders-history'},
+          }
+        ]
       }
     ]
   }
