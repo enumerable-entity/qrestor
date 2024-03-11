@@ -60,6 +60,17 @@ const model = ref([
             to: {name: 'orders-history'},
           }
         ]
+      },
+      {
+        label: 'Kitchen Board',
+        icon: 'pi pi-fw pi-pencil',
+        items: [
+          {
+            label: 'Live Board',
+            icon: 'pi pi-fw pi-server',
+            to: {name: 'live-board'},
+          }
+        ]
       }
     ]
   }

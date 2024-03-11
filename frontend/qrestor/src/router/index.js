@@ -64,6 +64,11 @@ const router = createRouter({
           path: '/management/orders/history',
           name: 'orders-history',
           component: () => import('@/views/management/orders/OrdersHistory.vue')
+        },
+        {
+          path: '/kitchen/live-board',
+          name: 'live-board',
+          component: () => import('@/views/kitchen/KitchenBoard.vue')
         }
       ]
     },
