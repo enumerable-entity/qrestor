@@ -6,7 +6,6 @@ import SellingPointsService from '@/service/SellingPointsService.js'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 
-
 const toast = useToast()
 const { t } = useI18n()
 const orders = ref(null)
@@ -56,7 +55,6 @@ const getSeverity = (status) => {
   }
 }
 
-
 const ordersService = new OrdersService()
 const sellingPointService = new SellingPointsService()
 
@@ -71,6 +69,43 @@ onBeforeMount(async () => {
   orders.value = data.content
   loading1.value = false
 })
+
+const generateNodesFromItems = () => {
+  const nodes = []
+  selectedOrder.value.items.forEach((menuItem) => {
+    const menuItemNode = {
+      key: menuItem.menuItemId,
+      label: menuItem.menuItemTitle,
+      icon: 'pi pi-fw pi-inbox',
+      children: []
+    }
+    const optionsNodes = []
+    menuItemNode.children = menuItem.menuItemOptions.forEach((option) => {
+      const optionNode = {
+        key: option.publicId,
+        label: option.optionTitle,
+        icon: 'pi pi-fw pi-inbox',
+        children: []
+      }
+      const positionsNodes = []
+      option.optionPositions.forEach((position) => {
+        const optionPositionNode = {
+          key: position.publicId,
+          label: position.optionTitle,
+          icon: 'pi pi-fw pi-inbox'
+        }
+        positionsNodes.push(optionPositionNode)
+      })
+      optionNode.children = positionsNodes
+      optionsNodes.push(optionNode)
+    })
+    menuItemNode.children = optionsNodes
+    nodes.push(menuItemNode)
+  })
+  return nodes
+}
+
+const orderItemsNodes = ref()
 
 const clearFilter1 = () => {
   initFilters1()
@@ -110,18 +145,32 @@ const makeIdShorter = (id) => {
 const onRowSelect = (event) => {
   orderDetailsDialog.value = true
   selectedOrder.value = { ...event.data }
+  orderItemsNodes.value = generateNodesFromItems()
+  console.log(orderItemsNodes.value)
 }
 
 const statuses = [
-  { label: 'In progress', icon: 'pi pi-angle-double-right', command: () => {
+  {
+    label: 'In progress',
+    icon: 'pi pi-angle-double-right',
+    command: () => {
       changeStatus('IN_PROGRESS')
-    } },
-  { label: 'Completed', icon: 'pi pi-check', command: () => {
+    }
+  },
+  {
+    label: 'Completed',
+    icon: 'pi pi-check',
+    command: () => {
       changeStatus('COMPLETED')
-    } },
-  { label: 'Canceled', icon: 'pi pi-times', command: () => {
+    }
+  },
+  {
+    label: 'Canceled',
+    icon: 'pi pi-times',
+    command: () => {
       changeStatus('CANCELLED')
-    } }
+    }
+  }
 ]
 
 const changeStatus = (status) => {
@@ -149,7 +198,7 @@ const onDateSelect = (event) => {
       datesFromTo.value[0] = selectedDateFrom
       datesFromTo.value[1] = selectedDateTo
       ordersService
-        .getOrdersHistoryByDates(
+        .getActiveForDates(
           datesFromTo.value[0].toISOString().slice(0, 10),
           datesFromTo.value[1].toISOString().slice(0, 10)
         )
@@ -190,7 +239,7 @@ const onDateSelect = (event) => {
             <div
               class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
             >
-              <h5 class="m-0">Orders history</h5>
+              <h5 class="m-0">Active orders</h5>
               <Calendar
                 v-model="datesFromTo"
                 @update:modelValue="onDateSelect"
@@ -286,7 +335,10 @@ const onDateSelect = (event) => {
           >
             <template #body="slotProps">
               <span class="p-column-title">Table number</span>
-              <Tag :value="t(slotProps.data.status)" :severity="getSeverity(slotProps.data.status)" />
+              <Tag
+                :value="t(slotProps.data.status)"
+                :severity="getSeverity(slotProps.data.status)"
+              />
             </template>
             <template #filter="{ filterModel }">
               <InputText
@@ -342,7 +394,7 @@ const onDateSelect = (event) => {
 
         <Dialog
           v-model:visible="orderDetailsDialog"
-          :style="{ width: '450px' }"
+          :style="{ width: '500px' }"
           :header="
             'Order details with ID: ' +
             (selectedOrder ? ' - ' + makeIdShorter(selectedOrder.publicId) : '')
@@ -352,25 +404,62 @@ const onDateSelect = (event) => {
         >
           <Card>
             <template #content>
-              <p class="m-0 p-0 text-xl">ID: <span class="text-xl">{{selectedOrder.publicId}}</span></p>
+              <p class="m-0 p-0 text-xl">
+                ID: <span class="text-xl">{{ selectedOrder.publicId }}</span>
+              </p>
             </template>
           </Card>
           <Divider></Divider>
           <Card>
             <template #title>Selling Point Details</template>
-            <template #content >
-              <p class="m-0 p-0 text-xl">Name: <span class="text-base">{{selectedOrder.restaurantName}}</span></p>
-              <p class="m-0 p-0 text-xl">Title: <span class="text-base">{{selectedOrder.restaurantTitle}}</span></p>
+            <template #content>
+              <p class="m-0 p-0 text-xl">
+                Name: <span class="text-base">{{ selectedOrder.restaurantName }}</span>
+              </p>
+              <p class="m-0 p-0 text-xl">
+                Title: <span class="text-base">{{ selectedOrder.restaurantTitle }}</span>
+              </p>
             </template>
           </Card>
           <Divider></Divider>
           <Card>
             <template #title>Order Details</template>
             <template #content>
-              <p class="m-0 p-1 text-xl">Table number: <span class="text-base"><Tag class="m-0" :value="selectedOrder.tableNumber" severity="info"/></span></p>
-              <p class="m-0 p-1 text-xl">Status: <Tag class="m-0" :value="t(selectedOrder.status)" :severity="getSeverity(selectedOrder.status)"/></p>
-              <p class="m-0 p-1 text-xl">Items count: <Tag class="m-0" :value="selectedOrder.items.length" severity="info"/></p>
-              <p class="m-0 p-1 text-xl">Online payment: <i class="pi" :class="{'text-green-500 pi-check-circle': selectedOrder.paymentSelected, 'text-pink-500 pi-times-circle': !selectedOrder.paymentSelected}"></i></p>
+              <p class="m-0 p-1 text-xl">
+                Table number:
+                <span class="text-base"
+                  ><Tag class="m-0" :value="selectedOrder.tableNumber" severity="info"
+                /></span>
+              </p>
+              <p class="m-0 p-1 text-xl">
+                Status:
+                <Tag
+                  class="m-0"
+                  :value="t(selectedOrder.status)"
+                  :severity="getSeverity(selectedOrder.status)"
+                />
+              </p>
+              <p class="m-0 p-1 text-xl">
+                Items count:
+                <Tag class="m-0" :value="selectedOrder.items.length" severity="info" />
+              </p>
+              <p class="m-0 p-1 text-xl">
+                Online payment:
+                <i
+                  class="pi"
+                  :class="{
+                    'text-green-500 pi-check-circle': selectedOrder.paymentSelected,
+                    'text-pink-500 pi-times-circle': !selectedOrder.paymentSelected
+                  }"
+                ></i>
+              </p>
+            </template>
+          </Card>
+          <Divider></Divider>
+          <Card>
+            <template #title>Order items</template>
+            <template #content>
+              <Tree :value="orderItemsNodes" class="w-full md:w-30rem"></Tree>
             </template>
           </Card>
 
@@ -380,7 +469,12 @@ const onDateSelect = (event) => {
                 <Button severity="danger" label="Reject" icon="pi pi-times" @click="rejectOrder" />
               </div>
               <div class="field col-9">
-                <SplitButton severity="info" label="Change status" :model="statuses" @click="saveMenu"></SplitButton>
+                <SplitButton
+                  severity="info"
+                  label="Change status"
+                  :model="statuses"
+                  @click="saveMenu"
+                ></SplitButton>
               </div>
             </div>
           </template>
@@ -395,8 +489,8 @@ const onDateSelect = (event) => {
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
             <span v-if="menu"
-            >Are you sure you want to delete <b>{{ menu.name }}</b
-            >?</span
+              >Are you sure you want to delete <b>{{ menu.name }}</b
+              >?</span
             >
           </div>
           <template #footer>

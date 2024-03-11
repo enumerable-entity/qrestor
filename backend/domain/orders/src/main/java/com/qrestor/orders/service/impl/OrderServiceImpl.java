@@ -70,12 +70,12 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity order = orderRepository.findByUuid(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         Optional<List<RestaurantBasicInfoDTO>> waiterRestaurants = Optional.ofNullable(restaurantHttpClient.getWaiterRestaurantId());
-        if (waiterRestaurants.isPresent() && !waiterRestaurants.get().isEmpty() && !waiterRestaurants.get().get(0).equals(order.getRestaurantId())) {
+        Map<UUID, RestaurantBasicInfoDTO> map = waiterRestaurants.get().stream().collect(Collectors.toMap(RestaurantBasicInfoDTO::getPublicId, res -> res));
+        if (!waiterRestaurants.get().isEmpty() && !map.containsKey(order.getRestaurantId())) {
             throw new RuntimeException("Order not found");
         }
         order.setStatus(status);
         orderRepository.saveAndFlush(order);
-        Map<UUID, RestaurantBasicInfoDTO> map = waiterRestaurants.get().stream().collect(Collectors.toMap(RestaurantBasicInfoDTO::getPublicId, res -> res));
         eventPublisher.publishEvent(
                 new OrderEvent(this, OrderEventType.UPDATE, orderMapper.toDto(order, map.get(order.getRestaurantId()))));
     }
@@ -87,7 +87,22 @@ public class OrderServiceImpl implements OrderService {
             var restInfoList = userRestaurants.get();
             Map<UUID, RestaurantBasicInfoDTO> map = restInfoList.stream().collect(Collectors.toMap(RestaurantBasicInfoDTO::getPublicId, res -> res));
             return orderRepository.findAllByRestaurantIdInAndStatusInAndOrderDateBetween(map.keySet(), Set.of(OrderStatus.COMPLETED, OrderStatus.CANCELLED),
-                    dateFrom.atStartOfDay(), dateTo.atStartOfDay(), pageable)
+                    dateFrom.atStartOfDay(), dateTo.plusDays(1).atStartOfDay(), pageable)
+                    .map(orderEntity -> orderMapper.toDto(orderEntity, map.get(orderEntity.getRestaurantId())));
+        } else {
+            throw new RuntimeException("Waiter or restaurateur restaurant id not found");
+        }
+    }
+
+    @Override
+    public Page<OrderDTO> active(LocalDate dateFrom, LocalDate dateTo, Pageable pageable) {
+        Optional<List<RestaurantBasicInfoDTO>> userRestaurants = Optional.ofNullable(restaurantHttpClient.getWaiterRestaurantId());
+        Set<OrderStatus> completed = Set.of(OrderStatus.PENDING, OrderStatus.PAYMENT_IN_PROGRESS, OrderStatus.IN_PROGRESS);
+        if (userRestaurants.isPresent() && !userRestaurants.get().isEmpty()) {
+            var restInfoList = userRestaurants.get();
+            Map<UUID, RestaurantBasicInfoDTO> map = restInfoList.stream().collect(Collectors.toMap(RestaurantBasicInfoDTO::getPublicId, res -> res));
+            return orderRepository.findAllByRestaurantIdInAndStatusInAndOrderDateBetween(map.keySet(), completed,
+                            dateFrom.atStartOfDay(), dateTo.plusDays(1).atStartOfDay(), pageable)
                     .map(orderEntity -> orderMapper.toDto(orderEntity, map.get(orderEntity.getRestaurantId())));
         } else {
             throw new RuntimeException("Waiter or restaurateur restaurant id not found");

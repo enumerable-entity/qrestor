@@ -44,6 +44,15 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
+    @GetMapping("/active")
+    public ResponseEntity<Page<OrderDTO>> getActiveOrders(@RequestParam LocalDate dateFrom,
+                                                           @RequestParam LocalDate dateTo,
+                                                           Pageable pageable) {
+
+        return ResponseEntity.ok(orderService.active(dateFrom, dateTo, pageable));
+    }
+
+    @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
     @PostMapping("/{orderId}/status")
     public ResponseEntity<Void> changeOrderStatus(@PathVariable UUID orderId, @RequestParam OrderStatus status) {
         orderService.changeOrderStatus(orderId, status);

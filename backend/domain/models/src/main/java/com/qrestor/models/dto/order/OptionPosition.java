@@ -5,13 +5,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
 
-import java.util.List;
-import java.util.UUID;
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 @FieldNameConstants
-public class MenuItemOption extends AbstractPublicDTO {
+public class OptionPosition extends AbstractPublicDTO {
     private String optionTitle;
-    private List<OptionPosition> optionPositions;
 }
