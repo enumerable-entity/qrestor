@@ -2,7 +2,6 @@
 import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import { onBeforeMount, ref } from 'vue'
 import OrdersService from '@/service/OrdersService.js'
-import SellingPointsService from '@/service/SellingPointsService.js'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 
@@ -10,11 +9,8 @@ const toast = useToast()
 const { t } = useI18n()
 const orders = ref(null)
 const orderDetailsDialog = ref(false)
-const deleteMenuDialog = ref(false)
-const menu = ref({})
 const selectedOrder = ref(null)
 const dt = ref(null)
-const submitted = ref(false)
 
 const datesFromTo = ref([new Date(), new Date()])
 
@@ -56,7 +52,6 @@ const getSeverity = (status) => {
 }
 
 const ordersService = new OrdersService()
-const sellingPointService = new SellingPointsService()
 
 onBeforeMount(async () => {
   initFilters1()
@@ -64,8 +59,6 @@ onBeforeMount(async () => {
     datesFromTo.value[0].toISOString().slice(0, 10),
     datesFromTo.value[1].toISOString().slice(0, 10)
   )
-  //const dictResponse = await sellingPointService.getSellingPointsDictionary()
-  //autoValueSellPoint.value = dictResponse.data
   orders.value = data.content
   loading1.value = false
 })
@@ -121,21 +114,6 @@ const rejectOrder = () => {
     detail: 'Order was rejected',
     life: 3000
   })
-}
-
-const deleteMenu = async () => {
-  const { status } = await ordersService.deleteMenu(menu.value.publicId)
-  if (status === 204) {
-    orders.value = orders.value.filter((val) => val.publicId !== menu.value.publicId)
-    deleteMenuDialog.value = false
-    menu.value = {}
-    toast.add({
-      severity: 'success',
-      summary: 'Successful',
-      detail: 'Menu deleted',
-      life: 3000
-    })
-  }
 }
 
 const makeIdShorter = (id) => {
@@ -473,34 +451,9 @@ const onDateSelect = (event) => {
                   severity="info"
                   label="Change status"
                   :model="statuses"
-                  @click="saveMenu"
                 ></SplitButton>
               </div>
             </div>
-          </template>
-        </Dialog>
-
-        <Dialog
-          v-model:visible="deleteMenuDialog"
-          :style="{ width: '450px' }"
-          header="Confirm"
-          :modal="true"
-        >
-          <div class="flex align-items-center justify-content-center">
-            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="menu"
-              >Are you sure you want to delete <b>{{ menu.name }}</b
-              >?</span
-            >
-          </div>
-          <template #footer>
-            <Button
-              label="No"
-              icon="pi pi-times"
-              class="p-button-text"
-              @click="deleteMenuDialog = false"
-            />
-            <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteMenu" />
           </template>
         </Dialog>
       </div>

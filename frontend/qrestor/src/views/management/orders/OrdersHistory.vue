@@ -2,40 +2,16 @@
 import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import { onBeforeMount, ref } from 'vue'
 import OrdersService from '@/service/OrdersService.js'
-import SellingPointsService from '@/service/SellingPointsService.js'
-import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 
 
-
-const toast = useToast()
 const { t } = useI18n()
 const orders = ref(null)
 const orderDetailsDialog = ref(false)
-const deleteMenuDialog = ref(false)
-const menu = ref({})
 const selectedOrder = ref(null)
 const dt = ref(null)
-const submitted = ref(false)
 
 const datesFromTo = ref([new Date(), new Date()])
-
-const autoValueSellPoint = ref(null)
-const selectedAutoValueSellPoint = ref(null)
-const autoFilteredValueSellPoint = ref([])
-
-const searchSellingPoint = (event) => {
-  setTimeout(() => {
-    if (!event.query.trim().length) {
-      autoFilteredValueSellPoint.value = [...autoValueSellPoint.value]
-    } else {
-      autoFilteredValueSellPoint.value = autoValueSellPoint.value.filter((restaurant) => {
-        return restaurant.name.toLowerCase().startsWith(event.query.toLowerCase())
-      })
-    }
-  }, 250)
-}
-
 const filters1 = ref(null)
 const loading1 = ref(null)
 
@@ -74,7 +50,6 @@ const getSeverity = (status) => {
 }
 
 const ordersService = new OrdersService()
-const sellingPointService = new SellingPointsService()
 
 onBeforeMount(async () => {
   initFilters1()
@@ -82,65 +57,12 @@ onBeforeMount(async () => {
     datesFromTo.value[0].toISOString().slice(0, 10),
     datesFromTo.value[1].toISOString().slice(0, 10)
   )
-  //const dictResponse = await sellingPointService.getSellingPointsDictionary()
-  //autoValueSellPoint.value = dictResponse.data
   orders.value = data.content
   loading1.value = false
 })
 
 const clearFilter1 = () => {
   initFilters1()
-}
-
-const hideDialog = () => {
-  orderDetailsDialog.value = false
-  submitted.value = false
-}
-
-const saveMenu = async () => {
-  submitted.value = true
-  menu.value.restaurantId = selectedAutoValueSellPoint.value.id
-
-  if (menu.value.publicId) {
-    const { data } = await ordersService.updateMenu(menu.value)
-    orderDetailsDialog.value = false
-    const index = orders.value.findIndex((el) => el.publicId === data.publicId)
-    if (index !== -1) {
-      orders.value[index] = data
-    }
-  } else {
-    const { data } = await ordersService.addMenu(menu.value)
-    toast.add({
-      severity: 'success',
-      summary: 'Successful',
-      detail: 'Menu saved',
-      life: 3000
-    })
-    orderDetailsDialog.value = false
-    orders.value.push(data)
-  }
-  menu.value = {}
-  selectedAutoValueSellPoint.value = null
-}
-
-const confirmDeleteMenu = (editMenu) => {
-  menu.value = editMenu
-  deleteMenuDialog.value = true
-}
-
-const deleteMenu = async () => {
-  const { status } = await ordersService.deleteMenu(menu.value.publicId)
-  if (status === 204) {
-    orders.value = orders.value.filter((val) => val.publicId !== menu.value.publicId)
-    deleteMenuDialog.value = false
-    menu.value = {}
-    toast.add({
-      severity: 'success',
-      summary: 'Successful',
-      detail: 'Menu deleted',
-      life: 3000
-    })
-  }
 }
 
 const makeIdShorter = (id) => {
@@ -151,14 +73,6 @@ const onRowSelect = (event) => {
   orderDetailsDialog.value = true
   selectedOrder.value = { ...event.data }
 }
-
-const statuses = [
-  { label: 'Payment in progress', icon: 'pi pi-check', command: () => {} },
-  { label: 'Confirmed', icon: 'pi pi-check', command: () => {
-    console.log('Confirmed')
-    } },
-  { label: 'Canceled', icon: 'pi pi-check', command: () => {} }
-]
 
 const onDateSelect = (event) => {
   if (event !== undefined) {
@@ -394,29 +308,6 @@ const onDateSelect = (event) => {
           </Card>
         </Dialog>
 
-        <Dialog
-          v-model:visible="deleteMenuDialog"
-          :style="{ width: '450px' }"
-          header="Confirm"
-          :modal="true"
-        >
-          <div class="flex align-items-center justify-content-center">
-            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="menu"
-              >Are you sure you want to delete <b>{{ menu.name }}</b
-              >?</span
-            >
-          </div>
-          <template #footer>
-            <Button
-              label="No"
-              icon="pi pi-times"
-              class="p-button-text"
-              @click="deleteMenuDialog = false"
-            />
-            <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteMenu" />
-          </template>
-        </Dialog>
       </div>
     </div>
   </div>
