@@ -1,9 +1,11 @@
 package com.qrestor.kitchenboard.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qrestor.kitchenboard.client.OrdersHttpClient;
 import com.qrestor.kitchenboard.client.RestaurantHttpClient;
 import com.qrestor.models.dto.order.OrderDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -16,25 +18,31 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.qrestor.models.dto.order.OrderStatus.IN_PROGRESS;
-import static com.qrestor.models.dto.order.OrderStatus.PENDING;
 import static com.qrestor.kitchenboard.enums.SSEvent.*;
+import static com.qrestor.models.dto.order.OrderStatus.*;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class SseService {
 
     private final RestaurantHttpClient restaurantHttpClient;
     private final OrdersHttpClient ordersHttpClient;
+    private final ObjectMapper objectMapper;
     private final Map<UUID, SseEmitter> restaurantIdToEmitter = new ConcurrentHashMap<>();
 
     public void addNewActiveSSEmitter(SseEmitter emitter) {
-        String waiterRestaurantId = restaurantHttpClient.getWaiterRestaurantId().getBody();
+        String waiterRestaurantId = restaurantHttpClient.getWaiterRestaurantId().stream()
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("Waiter is not assigned to any restaurant"))
+                .getPublicId()
+                .toString();
         if (waiterRestaurantId != null) {
             //        emitters.computeIfPresent(principalUUID, (k, v) -> {
 //            v.complete();
 //            return emitter;
 //        });
+            log.info("Waiter restaurant id: {}", waiterRestaurantId);
             UUID restaurantId = UUID.fromString(waiterRestaurantId);
             restaurantIdToEmitter.put(restaurantId, emitter);
             emitter.onCompletion(() -> restaurantIdToEmitter.remove(restaurantId));
@@ -46,16 +54,16 @@ public class SseService {
     }
 
     private void initOrdersForWaiterDashboard(UUID restaurantId) {
-        ordersHttpClient.getOrdersForRestaurant(restaurantId, Set.of(PENDING, IN_PROGRESS)).forEach(orderDTO -> {
+        ordersHttpClient.getOrdersForRestaurant(restaurantId, Set.of(PENDING, IN_PROGRESS, PAYMENT_IN_PROGRESS)).forEach(orderDTO -> {
             try {
                 Set<ResponseBodyEmitter.DataWithMediaType> newOrderSSEvent =
                         SseEmitter
                                 .event()
                                 .id(orderDTO.getPublicId().toString())
-                                .name(ORDERS.name())
+                                .name(INIT_ORDERS.name())
                                 .reconnectTime(10000L)
                                 .comment("Init order has been received.")
-                                .data(orderDTO.toString(), MediaType.APPLICATION_JSON)
+                                .data(objectMapper.writeValueAsString(orderDTO), MediaType.APPLICATION_JSON)
                                 .build();
                 restaurantIdToEmitter.get(restaurantId).send(newOrderSSEvent);
             } catch (IOException e) {
@@ -99,7 +107,7 @@ public class SseService {
                                 .name(NEW_ORDER.name())
                                 .reconnectTime(10000L)
                                 .comment("New order has been placed.")
-                                .data(message.toString(), MediaType.APPLICATION_JSON)
+                                .data(objectMapper.writeValueAsString(message), MediaType.APPLICATION_JSON)
                                 .build();
                 emitter.send(newOrderSSEvent);
             } catch (IOException e) {

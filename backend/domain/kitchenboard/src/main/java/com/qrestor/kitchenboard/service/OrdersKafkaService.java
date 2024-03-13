@@ -12,7 +12,7 @@ public class OrdersKafkaService {
     private final SseService sseService;
 
     public void handle(OrderDTO message) {
-        sseService.emitOrderToWaiterDashboard(message);
         log.info("MESSAGE CONSUMED FOR RESTAURANT ID: {}", message.getRestaurantId());
+        sseService.emitOrderToWaiterDashboard(message);
     }
 }
