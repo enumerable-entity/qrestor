@@ -8,7 +8,7 @@ import com.qrestor.models.dto.order.OrderStatus;
 import com.qrestor.orders.client.RestaurantHttpClient;
 import com.qrestor.orders.entity.OrderEntity;
 import com.qrestor.orders.event.OrderEvent;
-import com.qrestor.orders.event.OrderEventType;
+import com.qrestor.models.dto.kafka.OrderEventType;
 import com.qrestor.orders.mapper.OrderMapper;
 import com.qrestor.orders.repository.OrderRepository;
 import com.qrestor.orders.service.OrderService;

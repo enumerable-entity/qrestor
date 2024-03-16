@@ -1,5 +1,6 @@
 package com.qrestor.orders.event;
 
+import com.qrestor.models.dto.kafka.OrderEventType;
 import com.qrestor.models.dto.order.OrderDTO;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;

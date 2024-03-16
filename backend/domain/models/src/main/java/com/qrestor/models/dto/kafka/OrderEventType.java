@@ -1,4 +1,4 @@
-package com.qrestor.orders.event;
+package com.qrestor.models.dto.kafka;
 
 public enum OrderEventType {
     NEW,
