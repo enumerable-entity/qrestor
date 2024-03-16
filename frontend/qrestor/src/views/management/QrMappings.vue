@@ -1,20 +1,22 @@
 <script setup>
 import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import { onBeforeMount, ref } from 'vue'
-import MenuItemsOptionsService from '@/service/MenuItemsOptionsService.js'
 import QrService from '@/service/QrService.js'
-import IngredientsService from '@/service/IngredientsService.js'
+import MenuService from '@/service/MenuService.js'
+import SellingPointsService from '@/service/SellingPointsService.js'
 import { useToast } from 'primevue/usetoast'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const toast = useToast()
-const route = useRoute()
 
-const menuItemOptions = ref(null)
-const menuItemOption = ref({})
-const menuDialog = ref(false)
+const qrMappings = ref(null)
+const menuComboList = ref(null)
+const sellingPointsComboList = ref(null)
+
+
+const qrMapping = ref({})
+const qrDialog = ref(false)
 const deleteMenuDialog = ref(false)
 const selectedMenu = ref(null)
 const dt = ref(null)
@@ -30,31 +32,27 @@ const searchMenuItem = (event) => {
       autoFilteredValueMenu.value = [...autoValueMenu.value]
     } else {
       autoFilteredValueMenu.value = autoValueMenu.value.filter((menuItem) => {
-        return menuItem.title.toLowerCase().startsWith(event.query.toLowerCase())
+        return menuItem.name.toLowerCase().startsWith(event.query.toLowerCase())
       })
     }
   }, 250)
 }
 
-const autoValueIngredient = ref(null)
-const selectedAutoValueIngredients = ref([])
-const autoFilteredValueIngredient= ref([])
+const autoValueQrMapping = ref(null)
+const selectedAutoValueSellingPoints = ref([])
+const autoFilteredValueSellingPoints = ref([])
 
-const searchIngredients = (event) => {
+const searchSellingPoints = (event) => {
   setTimeout(() => {
     if (!event.query.trim().length) {
-      autoFilteredValueIngredient.value = [...autoValueIngredient.value]
+      autoFilteredValueSellingPoints.value = [...autoValueQrMapping.value]
     } else {
-      autoFilteredValueIngredient.value = autoValueIngredient.value.filter((ingredient) => {
-        return ingredient.name.toLowerCase().startsWith(event.query.toLowerCase())
+      autoFilteredValueSellingPoints.value = autoValueQrMapping.value.filter((qrMapping) => {
+        return qrMapping.name.toLowerCase().startsWith(event.query.toLowerCase())
       })
     }
   }, 250)
 }
-
-
-const menuItemContextId = ref(route.params.menuItemId)
-const menuContextName = ref(null)
 
 const filters1 = ref(null)
 const loading1 = ref(null)
@@ -80,27 +78,20 @@ const initFilters1 = () => {
 }
 
 // SERVICES INSTANCES
-const menuItemsService = new QrService()
-const ingredientsService = new IngredientsService()
-const menuItemsOptionsService = new MenuItemsOptionsService()
+const qrService = new QrService()
+const menuService = new MenuService()
+const sellingPointsService = new SellingPointsService()
 
 onBeforeMount(async () => {
   initFilters1()
-
-  if (menuItemContextId.value) {
-    const { data } = await menuItemsOptionsService.getMenuItemsOptionsForMenuItemId(menuItemContextId.value)
-    menuItemOptions.value = data
-    menuContextName.value = data.length > 0 ? data[0].menuItemTitle : ''
-  } else {
-    const { data } = await menuItemsOptionsService.getAllMenuItemsOptions()
-    const { data: menuData } = await menuItemsService.getAllMenuItems()
-    menuItemOptions.value = data
-    autoValueMenu.value = menuData
-
-  }
-   const dictResponse = await ingredientsService.getIngredients()
-   autoValueIngredient.value = dictResponse.data
-   loading1.value = false
+  const { data: menuData } = await qrService.getAllQrCodes()
+  const { data: menuCombo } = await menuService.getMenuCombo()
+  const { data: spointsCombo} = await sellingPointsService.getSellingPointsDictionary()
+  qrMappings.value = menuData
+  menuComboList.value = menuCombo
+  autoValueQrMapping.value = spointsCombo
+  autoValueMenu.value = menuCombo
+  loading1.value = false
 })
 
 const clearFilter1 = () => {
@@ -108,97 +99,85 @@ const clearFilter1 = () => {
 }
 
 const openNew = () => {
-  menuItemOption.value = {
-    title: '',
-    menuItemOptionPositions: [],
-    menuItemId: { publicId: menuItemContextId.value },
-    required: false,
-    enabled: false,
-    multiSelect: false
+  qrMapping.value = {
+    restaurantId: '',
+    menuId: '',
+    tableId: '',
+    isActive: false
   }
   submitted.value = false
-  menuDialog.value = true
+  qrDialog.value = true
 }
 
 const hideDialog = () => {
-  menuDialog.value = false
+  qrDialog.value = false
   submitted.value = false
 }
 
-const routemenu = ref(null)
 
-const items = [
-  {label: "Manage option positions", route: 'menu-item-options-positions', icon: 'pi pi-fw pi-pencil'}
-]
-
-const onRowContextMenu = (event) => {
-  routemenu.value.show(event.originalEvent)
-  console.log(event)
-}
-
-const saveMenuItemOption = async () => {
+const saveQrMapping = async () => {
   submitted.value = true
-  menuItemOption.value.menuItemOptionPositions = selectedAutoValueIngredients.value
-  menuItemOption.value.menuItemId = selectedAutoValueSMenu.value.publicId || menuItemContextId.value
+  qrMapping.value.restaurantId = selectedAutoValueSellingPoints.value.id
+  qrMapping.value.menuId = selectedAutoValueSMenu.value.id
 
-  if (menuItemOption.value.publicId) {
-    const { data } = await menuItemsOptionsService.updateMenuItemOption(menuItemOption.value)
-    menuDialog.value = false
-    const index = menuItemOptions.value.findIndex((el) => el.publicId === data.publicId)
+  if (qrMapping.value.publicId) {
+    const { data } = await qrService.updateQrCode(qrMapping.value)
+    qrDialog.value = false
+    const index = qrMappings.value.findIndex((el) => el.publicId === data.publicId)
     if (index !== -1) {
-      menuItemOptions.value[index] = data
+      qrMappings.value[index] = data
     }
   } else {
-    const { data } = await menuItemsOptionsService.addMenuItemOption(menuItemOption.value)
+    const { data } = await qrService.addQrCode(qrMapping.value)
     toast.add({
       severity: 'success',
       summary: 'Successful',
-      detail: 'New Menu Item Option saved',
+      detail: 'New QR mapping saved',
       life: 3000
     })
-    menuDialog.value = false
-    menuItemOptions.value.push(data)
+    qrDialog.value = false
+    qrMappings.value.push(data)
   }
-  menuItemOption.value = {}
+  qrMapping.value = {}
   selectedAutoValueSMenu.value = null
-  selectedAutoValueIngredients.value = null
+  selectedAutoValueSellingPoints.value = null
   submitted.value = false
 }
 const editMenuItem = (editMenu) => {
-  selectedAutoValueIngredients.value = editMenu.menuItemOptionPositions
-  selectedAutoValueSMenu.value = {publicId: editMenu.menuItemId, title: editMenu.menuItemTitle}
+  selectedAutoValueSellingPoints.value = { id: editMenu.restaurantId, name: editMenu.restaurantName }
+  selectedAutoValueSMenu.value = { id: editMenu.menuId, name: editMenu.menuName }
 
-  menuItemOption.value = { ...editMenu }
-  menuDialog.value = true
+  qrMapping.value = { ...editMenu }
+  qrDialog.value = true
 }
 
 const confirmDeleteMenuItem = (editMenu) => {
-  menuItemOption.value = editMenu
+  qrMapping.value = editMenu
   deleteMenuDialog.value = true
 }
 
-const openDetailsDialog = (menuItem) => {
+const openQrPreview = (menuItem) => {
   menuItem.value = menuItem
-  menuDialog.value = true
+  qrDialog.value = true
 }
 
 const deleteMenuItem = async () => {
-  const { status } = await menuItemsOptionsService.deleteMenuItemOption(menuItemOption.value.publicId)
+  const { status } = await qrService.deleteQrCode(
+    qrMapping.value.publicId
+  )
   if (status === 204) {
-    menuItemOptions.value = menuItemOptions.value.filter((val) => val.publicId !== menuItemOption.value.publicId)
+    qrMappings.value = qrMappings.value.filter(
+      (val) => val.publicId !== qrMapping.value.publicId
+    )
     deleteMenuDialog.value = false
-    menuItemOption.value = {}
+    qrMapping.value = {}
     toast.add({
       severity: 'success',
       summary: 'Successful',
-      detail: 'Menu deleted',
+      detail: 'QR mapping deleted',
       life: 3000
     })
   }
-}
-
-const makeIdShorter = (id) => {
-  return id.substring(0, 8) + ' ...'
 }
 
 const exportCSV = () => {
@@ -214,12 +193,6 @@ const onMenuRowSelect = (event) => {
     life: 3000
   })
 }
-
-const formatCurrencyForAPI = (value) => {
-  return value * 10
-}
-
-
 </script>
 
 <template>
@@ -259,7 +232,7 @@ const formatCurrencyForAPI = (value) => {
 
         <DataTable
           ref="dt"
-          :value="menuItemOptions"
+          :value="qrMappings"
           v-model:selection="selectedMenu"
           v-model:contextMenuSelection="selectedMenu"
           selectionMode="single"
@@ -271,8 +244,6 @@ const formatCurrencyForAPI = (value) => {
           :filters="filters1"
           filterDisplay="menu"
           :rowHover="true"
-          @row-contextmenu="onRowContextMenu"
-          contextMenu
           :rows="10"
           :globalFilterFields="['name', 'description', 'restaurantId']"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -284,15 +255,7 @@ const formatCurrencyForAPI = (value) => {
             <div
               class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
             >
-              <h5 class="m-0">
-                QR codes management
-                <Tag
-                  v-if="menuItemContextId"
-                  class="ml-2 text-lg"
-                  severity="info"
-                  :value="menuContextName"
-                ></Tag>
-              </h5>
+              <h5 class="m-0">QR codes management</h5>
               <Button
                 type="button"
                 icon="pi pi-filter-slash"
@@ -306,25 +269,28 @@ const formatCurrencyForAPI = (value) => {
               </span>
             </div>
           </template>
-          <template #empty> No menu items options found.</template>
-          <template #loading> Loading menu items options data. Please wait.</template>
+          <template #empty> No qr codes mappings found.</template>
+          <template #loading> Loading qr codes mappings. Please wait.</template>
 
-          <Column field="publicId" header="Id" headerStyle="width:10%; min-width:10rem;">
+          <Column
+            field="publicId"
+            header="Qr code identifier"
+            headerStyle="width:13%; min-width:10rem;"
+          >
             <template #body="slotProps">
-              <span class="p-column-title">Id</span>
-              {{ makeIdShorter(slotProps.data.publicId) }}
+              {{ slotProps.data.publicId }}
             </template>
           </Column>
 
           <Column
-            field="title"
-            header="Title"
+            field="restaurantName"
+            header="Selling point title"
             :sortable="true"
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Title</span>
-              {{ slotProps.data.title }}
+              <span class="p-column-title">Selling point title</span>
+              {{ slotProps.data.restaurantName }}
             </template>
             <template #filter="{ filterModel }">
               <InputText
@@ -335,6 +301,46 @@ const formatCurrencyForAPI = (value) => {
               />
             </template>
           </Column>
+
+          <Column
+            field="menuName"
+            header="Menu title"
+            :sortable="true"
+            headerStyle="width:14%; min-width:10rem;"
+          >
+            <template #body="slotProps">
+              <span class="p-column-title">Menu title</span>
+              {{ slotProps.data.menuName }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search by title"
+              />
+            </template>
+          </Column>
+
+          <Column
+            field="tableId"
+            header="Table number"
+            :sortable="true"
+            headerStyle="width:14%; min-width:10rem;"
+          >
+            <template #body="slotProps">
+              {{ slotProps.data.tableId }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search by title"
+              />
+            </template>
+          </Column>
+
           <Column
             field="isActive"
             :sortable="true"
@@ -347,8 +353,8 @@ const formatCurrencyForAPI = (value) => {
               <i
                 class="pi"
                 :class="{
-                  'text-green-500 pi-check-circle': data.enabled,
-                  'text-pink-500 pi-times-circle': !data.enabled
+                  'text-green-500 pi-check-circle': data.isActive,
+                  'text-pink-500 pi-times-circle': !data.isActive
                 }"
               ></i>
             </template>
@@ -357,92 +363,7 @@ const formatCurrencyForAPI = (value) => {
             </template>
           </Column>
 
-          <Column
-            field="required"
-            :sortable="true"
-            header="Is required"
-            dataType="boolean"
-            headerStyle="width:11%"
-            style="min-width: 4rem"
-          >
-            <template #body="{ data }">
-              <i
-                class="pi"
-                :class="{
-                  'text-green-500 pi-check-circle': data.required,
-                  'text-pink-500 pi-times-circle': !data.required
-                }"
-              ></i>
-            </template>
-            <template #filter="{ filterModel }">
-              <TriStateCheckbox v-model="filterModel.value" />
-            </template>
-          </Column>
-
-          <Column
-            field="multiSelect"
-            :sortable="true"
-            header="Is multiselect"
-            dataType="boolean"
-            headerStyle="width:12%;"
-            style="min-width: 3rem"
-          >
-            <template #body="{ data }">
-              <i
-                class="pi"
-                :class="{
-                  'text-green-500 pi-check-circle': data.multiSelect,
-                  'text-pink-500 pi-times-circle': !data.multiSelect
-                }"
-              ></i>
-            </template>
-            <template #filter="{ filterModel }">
-              <TriStateCheckbox v-model="filterModel.value" />
-            </template>
-          </Column>
-
-
-          <Column
-            field="menuItemOptionPositions"
-            header="Positions"
-            :sortable="false"
-            headerStyle="width:14%; min-width:10rem;"
-          >
-            <template #body="slotProps">
-              <span class="p-column-title">Positions</span>
-              <Tag
-                v-for="attr in slotProps.data.menuItemOptionPositions"
-                class="m-1"
-                v-bind:key="attr.publicId"
-                :value="attr.title"
-                :rounded="false"
-                severity="success"
-              ></Tag>
-            </template>
-          </Column>
-
-          <Column
-            v-if="!menuItemContextId"
-            field="menuItemTitle"
-            header="Menu item"
-            :sortable="true"
-            headerStyle="width:14%; min-width:10rem;"
-          >
-            <template #body="slotProps">
-              <span class="p-column-title">Menu item</span>
-              {{ slotProps.data.menuItemTitle }}
-            </template>
-            <template #filter="{ filterModel }">
-              <InputText
-                type="text"
-                v-model="filterModel.value"
-                class="p-column-filter"
-                placeholder="Search by title"
-              />
-            </template>
-          </Column>
-
-          <Column headerStyle="min-width:12rem; width:25%;" header="Actions">
+          <Column headerStyle="min-width:12rem; width:10%;" header="Actions">
             <template #body="slotProps">
               <Button
                 text
@@ -458,71 +379,55 @@ const formatCurrencyForAPI = (value) => {
               />
               <Button
                 text
-                icon="pi pi-info-circle"
+                icon="pi pi-qrcode"
                 class="p-button-rounded p-button-warning mt-2"
-                @click="openDetailsDialog(slotProps.data)"
+                @click="openQrPreview(slotProps.data)"
               />
             </template>
           </Column>
-
         </DataTable>
 
-        <ContextMenu ref="routemenu" :model="items" @hide="selectedMenu = null" class="w-2">
-          <template #item="{ item, props }">
-            <router-link v-if="item.route" v-slot="{ href, navigate }" :to="{name: item.route, params: {optionId: selectedMenu.publicId } }" custom>
-              <a v-ripple :href="href" v-bind="props.action" @click="navigate">
-                <span :class="item.icon" />
-                <span class="ml-2">{{ item.label }}</span>
-              </a>
-            </router-link>
-            <a v-else v-ripple :href="item.url" :target="item.target" v-bind="props.action">
-              <span :class="item.icon" />
-              <span class="ml-2">{{ item.label }}</span>
-            </a>
-          </template>
-        </ContextMenu>
-
-
         <Dialog
-          v-model:visible="menuDialog"
+          v-model:visible="qrDialog"
           :style="{ width: '450px' }"
-          header="Menu item option details"
+          header="QR code mapping details"
           :modal="true"
           class="p-fluid"
         >
           <div class="field">
-            <label for="title">Title</label>
-            <InputText
-              id="title"
-              v-model.trim="menuItemOption.title"
-              required="true"
-              autofocus
-              :class="{ 'p-invalid': submitted && !menuItemOption.title }"
-            />
-            <small class="p-invalid" v-if="submitted && !menuItemOption.title">Title is required.</small>
+            <label for="price">Table number</label>
+            <InputNumber v-model="qrMapping.tableId"
+                         id = "price"
+                         inputId="currency-us"
+                         showButtons/>
           </div>
 
           <div class="field">
-            <label for="ingredientsSelect">Select a few positions</label>
-            <AutoComplete
-              id="ingredientsSelect"
-              v-model="selectedAutoValueIngredients"
-              :class="{ 'p-invalid': submitted && !menuItemOption.menuItemOptionPositions }"
-              optionLabel="name"
-              multiple
-              :suggestions="autoFilteredValueIngredient"
-              @complete="searchIngredients"
-            />
-            <small class="p-invalid" v-if="submitted && !menuItemOption.menuItemOptionPositions"
-            >Few ingredients are required.</small>
-          </div>
-
-
-          <div class="field" v-if="!menuItemContextId">
-            <label for="currency">Select Menu Item for this Option</label>
+            <label for="ingredientsSelect">Select selling point</label>
             <AutoComplete
               class="w-full"
-              :class="{ 'p-invalid': submitted && !menuItemOption.menuItemId }"
+              :class="{ 'p-invalid': submitted && !qrMapping.restaurantId }"
+              required="true"
+              autofocus
+              placeholder="Search"
+              id="ingredientsSelect"
+              :dropdown="true"
+              :multiple="false"
+              v-model="selectedAutoValueSellingPoints"
+              :suggestions="autoFilteredValueSellingPoints"
+              @complete="searchSellingPoints($event)"
+              field="name"
+            />
+            <small class="p-invalid" v-if="submitted && !qrMapping.restaurantId"
+              >Selling point required</small
+            >
+          </div>
+
+          <div class="field">
+            <label for="currency">Select menu for linking</label>
+            <AutoComplete
+              class="w-full"
+              :class="{ 'p-invalid': submitted && !qrMapping.menuItemId }"
               required="true"
               autofocus
               placeholder="Search"
@@ -532,43 +437,31 @@ const formatCurrencyForAPI = (value) => {
               v-model="selectedAutoValueSMenu"
               :suggestions="autoFilteredValueMenu"
               @complete="searchMenuItem($event)"
-              field="title"
+              field="name"
             />
-            <small class="p-invalid" v-if="submitted && !menuItemOption.menuItemId"
-              >Selling point is required.</small>
+            <small class="p-invalid" v-if="submitted && !qrMapping.menuItemId"
+              >Selling point is required.</small
+            >
           </div>
           <div class="field-checkbox mb-0">
             <Checkbox
               id="active"
               name="active"
               value="true"
-              v-model="menuItemOption.enabled"
+              v-model="qrMapping.isActive"
               :binary="true"
             />
-            <label for="active" class = "mr-3">Is Active</label>
-
-            <Checkbox
-              id="required"
-              name="required"
-              value="true"
-              v-model="menuItemOption.multiSelect"
-              :binary="true"
-            />
-            <label for="required" class = "mr-3">Is multiselect</label>
-
-            <Checkbox
-              id="multiSelect"
-              name="required"
-              value="true"
-              v-model="menuItemOption.required"
-              :binary="true"
-            />
-            <label for="multiSelect" >Is required</label>
+            <label for="active" class="mr-3">Is Active</label>
           </div>
 
           <template #footer>
             <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
-            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveMenuItemOption" />
+            <Button
+              label="Save"
+              icon="pi pi-check"
+              class="p-button-text"
+              @click="saveQrMapping"
+            />
           </template>
         </Dialog>
 
@@ -580,8 +473,8 @@ const formatCurrencyForAPI = (value) => {
         >
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="menuItemOption"
-              >Are you sure you want to delete <b>{{ menuItemOption.name }}</b
+            <span v-if="qrMapping"
+              >Are you sure you want to delete <b>{{ qrMapping.name }}</b
               >?</span
             >
           </div>

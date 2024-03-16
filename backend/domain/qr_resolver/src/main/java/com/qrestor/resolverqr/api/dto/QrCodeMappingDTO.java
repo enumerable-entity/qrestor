@@ -18,8 +18,10 @@ public class QrCodeMappingDTO extends AbstractPublicDTO {
     private Integer tableId;
     @NotNull
     private UUID restaurantId;
+    private String restaurantName;
     @NotNull
     private UUID menuId;
+    private String menuName;
     @NotNull
     private Boolean isActive;
 }

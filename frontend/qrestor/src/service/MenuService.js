@@ -20,4 +20,8 @@ export default class MenuService {
     deleteMenu(publicId) {
         return fetchWrapper.delete(this.url + '/' + publicId)
     }
+
+    getMenuCombo() {
+        return fetchWrapper.get('/menu/dictionary/menusCombo')
+    }
 }

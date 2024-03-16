@@ -13,7 +13,7 @@ const toast = useToast()
 const route = useRoute()
 
 const menuItemOptions = ref(null)
-const menuItemOption = ref({})
+const qrMapping = ref({})
 const menuDialog = ref(false)
 const deleteMenuDialog = ref(false)
 const selectedMenu = ref(null)
@@ -581,7 +581,7 @@ const formatCurrencyForAPI = (value) => {
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
             <span v-if="menuItemOption"
-              >Are you sure you want to delete <b>{{ menuItemOption.name }}</b
+              >Are you sure you want to delete <b>{{ qrMapping.name }}</b
               >?</span
             >
           </div>

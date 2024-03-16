@@ -13,6 +13,7 @@ public interface RestEndpoints {
     String INGREDIENTS_COMBO = "/ingredientsCombo";
     String ITEM_OPTIONS_COMBO = "/itemOptionsCombo";
     String ITEM_OPTION_POSITIONS_COMBO = "/itemOptionPositionsCombo";
+    String MENUS_COMBO = "/menusCombo";
     String DICTIONARY = "/dictionary";
     String MENU_MANAGEMENT = MANAGEMENT + MENU;
     String INGREDIENTS_MANAGEMENT = MANAGEMENT + INGREDIENTS;

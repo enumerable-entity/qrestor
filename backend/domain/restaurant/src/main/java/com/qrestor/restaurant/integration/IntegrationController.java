@@ -1,5 +1,6 @@
 package com.qrestor.restaurant.integration;
 
+import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.models.dto.PermissionCheckResponse;
 import com.qrestor.models.dto.RestaurantBasicInfoDTO;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,5 +35,11 @@ public class IntegrationController {
     @PostMapping("/getRestaurantOwnerId")
     public UUID getRestaurantOwnerId(@RequestBody UUID restaurantId){
         return integrationService.getRestaurantOwnerId(restaurantId);
+    }
+
+    @GetMapping("/getRestaurantsDict")
+    @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
+    public Collection<DictionaryDTO<String>> getRestaurantsDict(){
+        return integrationService.getRestaurantsDict();
     }
 }

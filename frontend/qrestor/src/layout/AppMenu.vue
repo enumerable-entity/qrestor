@@ -20,17 +20,17 @@ const model = ref([
         items: [
           {
             label: 'Menus',
-            icon: 'pi pi-fw pi-book',
+            icon: 'pi pi-fw pi-list',
             to: '/management/menus',
           },
           {
             label: 'Menu items',
-            icon: 'pi pi-fw pi-pencil',
+            icon: 'pi pi-fw pi-bars',
             to: '/management/menus/menu-items',
           },
           {
             label: 'Menu items options',
-            icon: 'pi pi-fw pi-server',
+            icon: 'pi pi-fw pi-align-center',
             to: '/management/menus/menu-items/menu-item-options',
           },
           {
@@ -47,16 +47,16 @@ const model = ref([
       },
       {
         label: 'Orders',
-        icon: 'pi pi-fw pi-pencil',
+        icon: 'pi pi-fw pi-shopping-cart',
         items: [
           {
             label: 'Active orders',
-            icon: 'pi pi-fw pi-book',
+            icon: 'pi pi-fw pi-clock',
             to: '/management/orders/active',
           },
           {
             label: 'History',
-            icon: 'pi pi-fw pi-pencil',
+            icon: 'pi pi-fw pi-history',
             to: '/management/orders/history',
           }
         ]
@@ -74,11 +74,11 @@ const model = ref([
       },
       {
         label: 'QR codes',
-        icon: 'pi pi-fw pi-pencil',
+        icon: 'pi pi-fw pi-qrcode',
         items: [
           {
             label: 'Mappings',
-            icon: 'pi pi-fw pi-server',
+            icon: 'pi pi-fw pi-arrow-right-arrow-left',
             to: '/qr-codes-management'
           }
         ]

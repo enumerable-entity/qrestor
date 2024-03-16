@@ -4,12 +4,14 @@ import com.qrestor.menu.service.MenuItemOptionPositionsService;
 import com.qrestor.menu.service.MenuItemsService;
 import com.qrestor.menu.service.MenuService;
 import com.qrestor.models.Pair;
+import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.models.dto.menu.eximport.MenuAgregateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -39,6 +41,11 @@ public class IntegrationController {
     @PostMapping("/getMenuItemOptionsPositionsPricesMap")
     ResponseEntity<Map<UUID, Pair<String, Long>>> getMenuItemsOptionsPositionsPriceMap(@RequestBody Set<UUID> menuItemOptionsPositionsIds) {
         return ResponseEntity.ok(menuItemOptionsService.getMenuItemsOptionsPositionsPriceMap(menuItemOptionsPositionsIds));
+    }
+
+    @GetMapping("/getMenuCombo")
+    Collection<DictionaryDTO<String>> getMenuCombo(){
+        return menuService.getMenuCombo();
     }
 
 }

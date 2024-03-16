@@ -3,6 +3,7 @@ package com.qrestor.menu.service.impl;
 import com.qrestor.commons.AbstractCrudService;
 import com.qrestor.menu.mapper.export.MenuExportMapper;
 import com.qrestor.models.Pair;
+import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.models.dto.menu.eximport.MenuAgregateDTO;
 import com.qrestor.security.SecurityUtils;
 import com.qrestor.menu.api.dto.MenuDTO;
@@ -20,12 +21,14 @@ import java.util.*;
 public class MenuServiceImpl extends AbstractCrudService<MenuDTO, MenuEntity> implements MenuService {
     private final MenuValidator validator;
     private final MenuExportMapper exportMapper;
+    private final MenuRepository repository;
 
     public MenuServiceImpl(MenuMapper mapper, MenuRepository repository,
                            MenuValidator validator, MenuExportMapper exportMapper) {
         super(mapper, repository);
         this.validator = validator;
         this.exportMapper = exportMapper;
+        this.repository = repository;
     }
 
     @Override
@@ -49,5 +52,10 @@ public class MenuServiceImpl extends AbstractCrudService<MenuDTO, MenuEntity> im
             return menuAgregateDTO;
         }
         return new MenuAgregateDTO();
+    }
+
+    @Override
+    public Collection<DictionaryDTO<String>> getMenuCombo() {
+        return repository.getMenuCombo(SecurityUtils.getPrincipalUUID());
     }
 }

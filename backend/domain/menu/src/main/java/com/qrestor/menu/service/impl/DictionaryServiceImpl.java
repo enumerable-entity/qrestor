@@ -39,4 +39,9 @@ public class DictionaryServiceImpl implements DictionaryService {
     public Collection<DictionaryDTO<String>> getMenuItemOptionsPositionsCombo(UUID menuItemOptionId) {
         return optionPositionsRepository.getMenuItemOptionsPositionsCombo(SecurityUtils.getPrincipalUUID(), menuItemOptionId);
     }
+
+    @Override
+    public Collection<DictionaryDTO<String>> getMenuCombo() {
+        return repository.getMenuCombo(SecurityUtils.getPrincipalUUID());
+    }
 }
