@@ -47,10 +47,11 @@ public class OrderServiceImpl implements OrderService {
 
         newOrder.setOrderDate(LocalDateTime.now());
         OrderEntity newSavedOrder = orderRepository.saveAndFlush(newOrder);
+        var newOrderDto = orderMapper.toDto(newSavedOrder, new RestaurantBasicInfoDTO(orderDTO.getRestaurantTitle(), orderDTO.getRestaurantName()));
         eventPublisher.publishEvent(
-                new OrderEvent(this, OrderEventType.NEW, orderDTO));
+                new OrderEvent(this, OrderEventType.NEW, newOrderDto));
         log.info("New order placed with id: {}", newSavedOrder.getPublicId());
-        return orderMapper.toDto(newSavedOrder, new RestaurantBasicInfoDTO("empty", "empty"));
+        return newOrderDto;
     }
 
     @Override

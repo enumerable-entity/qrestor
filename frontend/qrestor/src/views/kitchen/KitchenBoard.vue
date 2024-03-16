@@ -13,7 +13,7 @@ const { t } = useI18n()
 const orders = ref([])
 const orderDetailsDialog = ref(false)
 const selectedOrder = ref(null)
-const waiterRequests = ref([])
+const waiterRequests = ref(new Set())
 
 const getSeverity = (status) => {
   if (status === 'PAYMENT_IN_PROGRESS') {
@@ -34,19 +34,30 @@ const boardSSEservice = new KithchenBoardSSEservice()
 
 const onSSEmessage = (data, event) => {
   console.log('SSE message', data)
-  if(event !== 'INIT_ORDERS' && event !== 'WAITER_CALL') {
-    toast.add({
-      severity: 'success',
-      summary: 'New order received',
-      detail: 'Order ID: ' + data.publicId,
-      life: 6000
-    })
-  }
-  if(event !== 'WAITER_CALL'){
-    orders.value.unshift(data)
-  }else{
-    waiterRequests.value.push(data)
-    waiterCallsStore.addWaiterCall(data)
+
+  switch (event) {
+    case 'INIT_ORDERS':
+      orders.value.unshift(data)
+      break
+    case 'NEW_ORDER':
+      orders.value.push(data)
+      toast.add({
+        severity: 'success',
+        summary: 'New order received',
+        detail: 'Order ID: ' + data.publicId,
+        life: 6000
+      })
+      break
+    case 'ORDER_STATUS_CHANGED':
+      var order = orders.value.find(order => order.publicId === data.publicId);
+      if(order) {
+        order.status = data.status;
+      }
+      break
+    case 'WAITER_CALL':
+      waiterRequests.value.add(data.tableNr)
+      waiterCallsStore.addWaiterCall(data.tableNr)
+      break
   }
 }
 
@@ -58,8 +69,7 @@ onBeforeMount(async () => {
 
 const acceptWaiterCall = (tableNrr) => {
   console.log("waiter call accepted", tableNrr)
-  waiterRequests.value = waiterRequests.value.filter(x => x.tableNr !== tableNrr)
-  waiterCallsStore.remove(tableNrr)
+  waiterRequests.value = waiterCallsStore.remove(tableNrr)
   toast.add({
     severity: 'success',
     summary: 'Waiter Call accepted',
@@ -166,29 +176,30 @@ const changeStatus = (status) => {
 <template>
   <div class="grid">
     <div class="col-12">
+      <h1 class="text-4xl text-center">Kitchen Board</h1>
 
-        <Card
-          class ="mb-5 bg-orange-600 fadein animation-duration-2000 animation-iteration-infinite"
-          v-if="!(waiterRequests.length === 0)"
-        >
-          <template #content>
-            <div class="flex flex-wrap align-items-center justify-content-center	text-6xl" >
-              Waiter request to tables:
-                <Tag
-                  @click=acceptWaiterCall(waiterRequest.tableNr)
-                  class="text-6xl ml-4 cursor-pointer"
-                  severity="info"
-                  :value=waiterRequest.tableNr
-                  v-for="waiterRequest in waiterRequests"
-                  :key="waiterRequest.tableNr"/>
+      <Card
+        class ="mb-5 bg-orange-600 fadein animation-duration-2000 animation-iteration-infinite"
+        v-if="!(waiterRequests.size === 0)"
+      >
+        <template #content>
+          <div class="flex flex-wrap align-items-center justify-content-center	text-6xl" >
+            Waiter request to tables:
+            <Tag
+              @click=acceptWaiterCall(waiterRequest)
+              class="text-6xl ml-4 cursor-pointer"
+              severity="info"
+              :value=waiterRequest
+              v-for="waiterRequest in waiterRequests"
+              :key="waiterRequest"/>
 
-            </div>
-          </template>
+          </div>
+        </template>
 
-        </Card>
+      </Card>
 
       <div class="card">
-
+        <h1 v-if="orders.length < 1" class="text-xl text-center">No active orders</h1>
         <Toast />
         <div class="grid">
           <Card
@@ -203,7 +214,13 @@ const changeStatus = (status) => {
 
             </template>
             <template #title>Order ID: {{order.publicId}}</template>
-            <template #subtitle>Card subtitle</template>
+            <template #subtitle><span>STATUS: </span>
+              <Tag
+                class="text-xl ml-2"
+                :severity=getSeverity(order.status)
+                :value= t(order.status)
+              />
+            </template>
             <template #content>
               <p class="m-0">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
