@@ -63,3 +63,21 @@ export const useAuthStore = defineStore({
     }
   }
 })
+
+export const useWaiterCallsStore = defineStore({
+  id: 'waiterCalls',
+  state: () => ({
+    waiterCalls: []
+  }),
+  actions: {
+    async addWaiterCall(call) {
+      this.waiterCalls.push(call)
+    },
+    getCalls() {
+      return this.waiterCalls
+    },
+    remove(tableNr){
+      this.waiterCalls = this.waiterCalls.filter(x => x.tableNr !== tableNr)
+    }
+  }
+})

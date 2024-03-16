@@ -4,12 +4,16 @@ import OrdersService from '@/service/OrdersService.js'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 import KithchenBoardSSEservice from '@/service/KithchenBoardSSEservice.js'
+import {useWaiterCallsStore} from '@/store.js'
 
+
+const waiterCallsStore = useWaiterCallsStore()
 const toast = useToast()
 const { t } = useI18n()
 const orders = ref([])
 const orderDetailsDialog = ref(false)
 const selectedOrder = ref(null)
+const waiterRequests = ref([])
 
 const getSeverity = (status) => {
   if (status === 'PAYMENT_IN_PROGRESS') {
@@ -30,7 +34,7 @@ const boardSSEservice = new KithchenBoardSSEservice()
 
 const onSSEmessage = (data, event) => {
   console.log('SSE message', data)
-  if(event !== 'INIT_ORDERS') {
+  if(event !== 'INIT_ORDERS' && event !== 'WAITER_CALL') {
     toast.add({
       severity: 'success',
       summary: 'New order received',
@@ -38,13 +42,31 @@ const onSSEmessage = (data, event) => {
       life: 6000
     })
   }
-  orders.value.unshift(data)
+  if(event !== 'WAITER_CALL'){
+    orders.value.unshift(data)
+  }else{
+    waiterRequests.value.push(data)
+    waiterCallsStore.addWaiterCall(data)
+  }
 }
 
 onBeforeMount(async () => {
   orders.value = []
+  waiterRequests.value = waiterCallsStore.getCalls()
   boardSSEservice.connect(onSSEmessage)
 })
+
+const acceptWaiterCall = (tableNrr) => {
+  console.log("waiter call accepted", tableNrr)
+  waiterRequests.value = waiterRequests.value.filter(x => x.tableNr !== tableNrr)
+  waiterCallsStore.remove(tableNrr)
+  toast.add({
+    severity: 'success',
+    summary: 'Waiter Call accepted',
+    detail: 'Table: ' + tableNrr,
+    life: 3000
+  })
+}
 
 const generateNodesFromItems = () => {
   const nodes = []
@@ -144,7 +166,29 @@ const changeStatus = (status) => {
 <template>
   <div class="grid">
     <div class="col-12">
+
+        <Card
+          class ="mb-5 bg-orange-600 fadein animation-duration-2000 animation-iteration-infinite"
+          v-if="!(waiterRequests.length === 0)"
+        >
+          <template #content>
+            <div class="flex flex-wrap align-items-center justify-content-center	text-6xl" >
+              Waiter request to tables:
+                <Tag
+                  @click=acceptWaiterCall(waiterRequest.tableNr)
+                  class="text-6xl ml-4 cursor-pointer"
+                  severity="info"
+                  :value=waiterRequest.tableNr
+                  v-for="waiterRequest in waiterRequests"
+                  :key="waiterRequest.tableNr"/>
+
+            </div>
+          </template>
+
+        </Card>
+
       <div class="card">
+
         <Toast />
         <div class="grid">
           <Card
