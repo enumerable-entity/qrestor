@@ -38,10 +38,6 @@ public class SseService {
                 .getPublicId()
                 .toString();
         if (waiterRestaurantId != null) {
-            //        emitters.computeIfPresent(principalUUID, (k, v) -> {
-//            v.complete();
-//            return emitter;
-//        });
             log.info("Waiter restaurant id: {}", waiterRestaurantId);
             UUID restaurantId = UUID.fromString(waiterRestaurantId);
             restaurantIdToEmitter.put(restaurantId, emitter);
@@ -85,7 +81,7 @@ public class SseService {
                                 .name(WAITER_CALL.name())
                                 .reconnectTime(10000L)
                                 .comment("Waiter request for table " + tableNr)
-                                .data(tableNr, MediaType.TEXT_PLAIN)
+                                .data("{\"tableNr\":" + tableNr + "}", MediaType.APPLICATION_JSON)
                                 .build();
                 restaurantEmitter.send(waiterRequestSSEvent);
             } catch (IOException e) {
