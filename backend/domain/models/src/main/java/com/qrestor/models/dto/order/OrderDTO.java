@@ -13,6 +13,8 @@ import java.util.UUID;
 @FieldNameConstants
 public class OrderDTO extends AbstractPublicDTO {
     private UUID restaurantId;
+    private String restaurantName;
+    private String restaurantTitle;
     private int tableNumber;
     private List<ItemOrderDetails> items;
     private OrderStatus status;

@@ -29,7 +29,12 @@ public class OrderController {
         return ResponseEntity.ok(orderService.placeOrder(orderDTO));
     }
 
-    @PreAuthorize("hasRole('WAITER')")
+    @GetMapping("/{orderId}/items")
+    public ResponseEntity<List<ItemOrderDetails>> getOrderItems(@PathVariable UUID orderId) {
+        return ResponseEntity.ok(orderService.getOrderItems(orderId));
+    }
+
+    @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
     @GetMapping("/history")
     public ResponseEntity<Page<OrderDTO>> getOrdersHistory(@RequestParam LocalDate dateFrom,
                                                            @RequestParam LocalDate dateTo,
@@ -38,15 +43,19 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersHistory(dateFrom, dateTo, pageable));
     }
 
-    @PreAuthorize("hasRole('WAITER')")
+    @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
+    @GetMapping("/active")
+    public ResponseEntity<Page<OrderDTO>> getActiveOrders(@RequestParam LocalDate dateFrom,
+                                                           @RequestParam LocalDate dateTo,
+                                                           Pageable pageable) {
+
+        return ResponseEntity.ok(orderService.active(dateFrom, dateTo, pageable));
+    }
+
+    @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
     @PostMapping("/{orderId}/status")
     public ResponseEntity<Void> changeOrderStatus(@PathVariable UUID orderId, @RequestParam OrderStatus status) {
         orderService.changeOrderStatus(orderId, status);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{orderId}/items")
-    public ResponseEntity<List<ItemOrderDetails>> getOrderItems(@PathVariable UUID orderId) {
-        return ResponseEntity.ok(orderService.getOrderItems(orderId));
     }
 }

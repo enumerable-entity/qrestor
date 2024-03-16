@@ -16,4 +16,5 @@ public class MenuItemOptionPositionDTO extends AbstractPublicDTO {
     BigDecimal price;
     boolean isEnabled;
     private UUID itemOptionId;
+    private String itemOptionTitle;
 }

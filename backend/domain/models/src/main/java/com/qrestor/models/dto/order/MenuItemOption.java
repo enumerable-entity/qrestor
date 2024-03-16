@@ -12,5 +12,6 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @FieldNameConstants
 public class MenuItemOption extends AbstractPublicDTO {
-    private List<UUID> optionPositions;
+    private String optionTitle;
+    private List<OptionPosition> optionPositions;
 }

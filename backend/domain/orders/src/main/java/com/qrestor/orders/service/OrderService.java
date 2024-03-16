@@ -21,4 +21,6 @@ public interface OrderService {
     void changeOrderStatus(UUID orderId, OrderStatus status);
 
     Page<OrderDTO> getOrdersHistory(LocalDate dateFrom, LocalDate dateTo, Pageable pageable);
+
+    Page<OrderDTO> active(LocalDate dateFrom, LocalDate dateTo, Pageable pageable);
 }

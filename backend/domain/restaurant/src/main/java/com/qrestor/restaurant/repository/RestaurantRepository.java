@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -28,4 +29,6 @@ public interface RestaurantRepository extends PublicRepository<RestaurantEntity,
     Collection<DictionaryDTO<String>> getRestaurantCombo(UUID principalUUID);
 
     boolean existsByPublicIdAndUserId(UUID publicId, UUID userId);
+
+    List<RestaurantEntity> findAllByUserUuid(UUID userUuid);
 }

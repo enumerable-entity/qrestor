@@ -46,7 +46,13 @@
             <scope>runtime</scope>
         </dependency>
     </dependencies>
-
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>QRestor releases</name>
+            <url>https://maven.pkg.github.com/enumerable-entity/qrestor</url>
+        </repository>
+    </distributionManagement>
     <build>
         <plugins>
         </plugins>

@@ -12,13 +12,63 @@ const router = createRouter({
       children: [
         {
           path: '/pages/spoints',
-          name: 'crud',
+          name: 'selling-points',
           component: () => import('@/views/pages/SellingPoints.vue')
         },
         {
-          path: '/pages/menus',
-          name: 'crud2',
-          component: () => import('@/views/pages/Menus.vue')
+          path: '/management/menus',
+          name: 'menus',
+          component: () => import('@/views/management/Menus.vue')
+        },
+        {
+          path: '/management/menus/:menuId/menu-items',
+          name: 'menu-items',
+          component: () => import('@/views/management/MenuItems.vue')
+        },
+        {
+          path: '/management/menus/menu-items',
+          name: 'menu-items-all',
+          component: () => import('@/views/management/MenuItems.vue')
+        },
+        {
+          path: '/management/menus/menu-items/:menuItemId/menu-item-options',
+          name: 'menu-item-options',
+          component: () => import('@/views/management/MenuItemOptions.vue')
+        },
+        {
+          path: '/management/menus/menu-items/menu-item-options',
+          name: 'menu-item-options-all',
+          component: () => import('@/views/management/MenuItemOptions.vue')
+        },
+        {
+          path: '/management/menus/menu-item-options/options-positions',
+          name: 'menu-item-options-positions-all',
+          component: () => import('@/views/management/MenuItemOptionsPositions.vue')
+        },
+        {
+          path: '/management/menus/menu-item-options/:optionId/options-positions',
+          name: 'menu-item-options-positions',
+          component: () => import('@/views/management/MenuItemOptionsPositions.vue')
+        },
+        {
+          path: '/management/menus/ingredients',
+          name: 'ingredients-all',
+          component: () => import('@/views/management/Ingredients.vue')
+        },
+        {
+          path: '/management/orders/active',
+          name: 'active-orders',
+          component: () => import('@/views/management/orders/ActiveOrders.vue')
+        },
+        {
+          path: '/management/orders/history',
+          name: 'orders-history',
+          component: () => import('@/views/management/orders/OrdersHistory.vue')
+        },
+        {
+          path: '/kitchen/live-board',
+          name: 'live-board',
+          component: () => import('@/views/kitchen/KitchenBoard.vue')
         }
       ]
     },

@@ -9,11 +9,8 @@ export default class SellingPointsService {
             .then((res) => res.json())
             .then((d) => d);
     }
-
-    getpoin() {
-        return fetch('/demo/data/products.json')
-            .then((res) => res.json())
-            .then((d) => d.data);
+    getSellingPointsDictionary() {
+        return fetchWrapper.get('/restaurant/dictionary/restaurantCombo')
     }
 
     getSellingPoints() {

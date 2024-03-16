@@ -12,6 +12,7 @@ eureka:
     hostname: localhost
 #Spring cloud gateway configuration
 spring:
+
   application:
     -name: api-gateway
   cloud:
@@ -34,6 +35,20 @@ spring:
             - Path=/auth/**
           filters:
             - RewritePath=/auth/(?<segment>.*), /auth/api/v1/${segment}
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            maxAge: 3600
+#        add-to-simple-url-handler-mapping: true
 management:
   metrics:
     tags:

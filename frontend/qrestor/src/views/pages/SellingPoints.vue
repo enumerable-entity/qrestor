@@ -205,6 +205,8 @@ const initFilters = () => {
               </span>
             </div>
           </template>
+          <template #empty> No selling points found. </template>
+          <template #loading> Loading selling points data. Please wait. </template>
 
           <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
           <Column
@@ -276,7 +278,7 @@ const initFilters = () => {
           <Column header="Menu background" headerStyle="width:10%; min-width:8rem;">
             <template #body="slotProps">
               <span class="p-column-title">Menu background</span>
-              <img
+              <Image
                 :src="slotProps.data.settings.backgroundImageUrl"
                 :alt="slotProps.data.settings.backgroundImageUrl"
                 class="shadow-2"
@@ -284,14 +286,16 @@ const initFilters = () => {
               />
             </template>
           </Column>
-          <Column headerStyle="min-width:10rem;">
+          <Column header="Actions" headerStyle="min-width:10rem;">
             <template #body="slotProps">
               <Button
+                text
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-success mr-2"
                 @click="editPoint(slotProps.data)"
               />
               <Button
+                text
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-warning mt-2"
                 @click="confirmDeletePoint(slotProps.data)"
@@ -307,13 +311,6 @@ const initFilters = () => {
           :modal="true"
           class="p-fluid"
         >
-          <img
-            :src="'/demo/images/product/' + point.image"
-            :alt="point.image"
-            v-if="point.image"
-            width="150"
-            class="mt-0 mx-auto mb-5 block shadow-2"
-          />
           <div class="field">
             <label for="name">Name</label>
             <InputText

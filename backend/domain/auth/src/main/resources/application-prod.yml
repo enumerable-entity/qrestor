@@ -1,5 +1,10 @@
 app:
   domain: https://qrestor.com
+  auth:
+    jwt:
+      secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
+      expiration: ${AUTH_SERVICE_TOKEN_EXPIRATION:#{1000 * 60 * 60 *24 * 7}}
+      issuer: ${AUTH_SERVICE_TOKEN_ISSUER:${spring.application.name}}
 management:
   metrics:
     tags:
@@ -13,12 +18,14 @@ management:
       probability: 1.0
   zipkin:
     tracing:
-      endpoint: http://localhost:9411/api/v2/spans
-
+      endpoint: http://zipkin:9411/api/v2/spans
+eureka:
+  client:
+    enabled: false
 #PostgreSQL
 spring:
   datasource:
-    url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
+    url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://postgres:5432/${spring.application.name}}
     username: ${AUTH_SERVICE_DB_USER:${spring.application.name}}
     password: ${AUTH_SERVICE_DB_PASSWORD:${spring.application.name}}
     driver-class-name: org.postgresql.Driver
@@ -35,22 +42,14 @@ spring:
           lob:
             non_contextual_creation: true
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka:9092
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/changelog-master.xml
   data:
     redis:
-      host: ${REDIS_HOST:localhost}
+      host: ${REDIS_HOST:redis}
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD:${spring.application.name}}
       database: ${REDIS_DB:0}
       timeout: 10000
-
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
-        cache: DEBUG
-        stat: DEBUG

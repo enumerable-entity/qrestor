@@ -16,6 +16,12 @@ export const useUserStore = defineStore({
 
       // store user details and jwt in local storage to keep user logged in between page refreshes
       localStorage.setItem('authUserInfo', JSON.stringify(data))
+    },
+    getUserLocale() {
+      return this.userInfo?.settings.language
+    },
+    getUserCurrency() {
+      return this.userInfo?.settings.currency
     }
   }
 })
@@ -54,6 +60,24 @@ export const useAuthStore = defineStore({
     isAuthenticated() {
       var isAuth = !!this.tokens?.accessToken
       return isAuth
+    }
+  }
+})
+
+export const useWaiterCallsStore = defineStore({
+  id: 'waiterCalls',
+  state: () => ({
+    waiterCalls: []
+  }),
+  actions: {
+    async addWaiterCall(call) {
+      this.waiterCalls.push(call)
+    },
+    getCalls() {
+      return this.waiterCalls
+    },
+    remove(tableNr){
+      this.waiterCalls = this.waiterCalls.filter(x => x.tableNr !== tableNr)
     }
   }
 })

@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface SyncUserMapper {
     @Mapping(target = "id", ignore = true)
     UserKafkaSyncDTO toDto(SyncUser syncUser);
+
     @Mapping(target = "ownedRestaurants", ignore = true)
     @Mapping(target = "restaurant", ignore = true)
     SyncUser toEntity(UserKafkaSyncDTO userKafkaSyncDTO);

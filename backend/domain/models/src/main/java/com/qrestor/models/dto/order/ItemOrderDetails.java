@@ -10,6 +10,7 @@ import java.util.UUID;
 @FieldNameConstants
 public class ItemOrderDetails {
     private UUID menuItemId;
+    private String menuItemTitle;
     private List<MenuItemOption> menuItemOptions;
     private int quantity;
     private String specialInstructions;

@@ -11,6 +11,7 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 @Mapper(unmappedTargetPolicy = IGNORE)
 public interface MenuItemOptionPositionMapper extends CrudMapper<MenuItemOptionPositionDTO, MenuItemOptionPositionEntity> {
     @Mapping(target = "itemOptionId", source = "menuItemOption.publicId")
+    @Mapping(target = "itemOptionTitle", source = "menuItemOption.title")
     @Override
     MenuItemOptionPositionDTO toDto(MenuItemOptionPositionEntity entity);
 

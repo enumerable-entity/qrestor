@@ -1,5 +1,6 @@
 package com.qrestor.orders.mapper;
 
+import com.qrestor.models.dto.RestaurantBasicInfoDTO;
 import com.qrestor.models.dto.order.OrderDTO;
 import com.qrestor.orders.entity.OrderEntity;
 import org.mapstruct.Mapper;
@@ -10,7 +11,10 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-    OrderDTO toDto(OrderEntity orderEntity);
+    @Mapping(target = "restaurantTitle", source = "restInfo.title")
+    @Mapping(target = "restaurantName", source = "restInfo.name")
+    @Mapping(target = "publicId", source = "orderEntity.publicId")
+    OrderDTO toDto(OrderEntity orderEntity, RestaurantBasicInfoDTO restInfo);
 
     List<OrderDTO> toDto(List<OrderEntity> orderEntityList);
 
