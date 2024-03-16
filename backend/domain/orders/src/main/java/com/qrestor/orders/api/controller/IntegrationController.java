@@ -21,7 +21,7 @@ public class IntegrationController {
 
     private final IntegrationService integrationService;
 
-    @PreAuthorize("hasRole('WAITER')")
+    @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
     @GetMapping("/{restaurantId}/getOrders")
     ResponseEntity<List<OrderDTO>> getOrdersForRestaurant(@PathVariable UUID restaurantId,
                                                           @RequestParam Set<OrderStatus> orderStatus) {

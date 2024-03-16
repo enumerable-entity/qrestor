@@ -80,6 +80,11 @@ const model = ref([
             label: 'Mappings',
             icon: 'pi pi-fw pi-arrow-right-arrow-left',
             to: '/qr-codes-management'
+          },
+          {
+            label: 'Configuration',
+            icon: 'pi pi-fw pi-wrench',
+            to: '/qr-codes-config'
           }
         ]
       }

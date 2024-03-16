@@ -158,86 +158,93 @@ const changeStatus = (status) => {
 
       <div class="card">
         <h1 v-if="orders.length < 1" class="text-xl text-center">No active orders</h1>
-        <Toast/>
+        <Toast />
         <div class="flex align-content-start flex-wrap">
-          <Card
-            class="ml-3 mt-3 surface-50 w-3 min-w-3 max-w-3 "
-            v-for="order in orders"
-            :key="order.publicId"
-          >
-            <template #title>Order ID: {{ makeIdShorter(order.publicId) }}</template>
-            <template #content>
-              <p class="m-0 p-0 text-xl">
-                STATUS:
-                <span>
+          <div class="w-3 min-w-3"
+               v-for="order in orders"
+               :key="order.publicId">
+            <Card
+              class="ml-3 mt-3 surface-50  "
+            >
+              <template #title>Order ID: {{ makeIdShorter(order.publicId) }}</template>
+              <template #content>
+                <p class="m-0 p-0 text-xl">
+                  STATUS:
+                  <span>
                   <Tag
                     class="text-lg ml-2"
                     :severity=getSeverity(order.status)
                     :value=t(order.status)
                   />
                 </span>
-              </p>
+                </p>
 
-              <p class="m-0 p-0 text-xl">
-                Table number:
-                <span class="text-base"
-                ><Tag class="m-0" :value="order.tableNumber" severity="info"
-                /></span>
-              </p>
-              <p class="m-0 p-0 text-xl">
-                Items count:
-                <Tag class="m-0" :value="order.items.length" severity="info" />
-              </p>
-              <p class="m-0 p-0 text-xl">
-                Online payment:
-                <i
-                  class="pi ml-2"
-                  :class="{
+                <p class="m-0 p-0 text-xl">
+                  Table number:
+                  <span class="text-base"
+                  ><Tag class="m-0" :value="order.tableNumber" severity="info"
+                  /></span>
+                </p>
+                <p class="m-0 p-0 text-xl">
+                  Items count:
+                  <Tag class="m-0" :value="order.items.length" severity="info" />
+                </p>
+                <p class="m-0 p-0 text-xl">
+                  Online payment:
+                  <i
+                    class="pi ml-2"
+                    :class="{
                     'text-green-500 pi-check-circle': order.paymentSelected,
                     'text-pink-500 pi-times-circle': !order.paymentSelected
                   }"
-                ></i>
-              </p>
-              <Divider class="mb-3 mt-0 p-0"></Divider>
-              <p class="text-xl">Order items:</p>
-              <div class=" w-full">
-                <div class=" m-0 p-0 text-xl" v-for="item in order.items" :key="item.menuItemId">
-                  <p class="m-2"> Title: {{ item.menuItemTitle }} </p>
-                  <p class="m-2"> Quantity: {{ item.quantity }} </p>
-                  <p class="m-2"> Note: {{ item.specialInstructions }}</p>
-                  <Divider class ="m-0 p-0"></Divider>
-                  <p class="m-2"> Options:</p>
-                  <div class="list">
-                    <li class=" ml-3" v-for="option in item.menuItemOptions" :key="option.publicId">
-                      {{ option.optionTitle }}
-                      <li class=" ml-4 mt-2 " v-for="position in option.optionPositions" :key="position.publicId">
-                        <span class="mt-2"> {{ position.optionTitle }}</span>
+                  ></i>
+                </p>
+                <Divider class="mb-3 mt-0 p-0"></Divider>
+                <p class="text-xl">Order items:</p>
+                <div class=" w-full">
+                  <div class=" m-0 p-0 text-xl" v-for="item in order.items" :key="item.menuItemId">
+                    <p class="m-2"> Title: {{ item.menuItemTitle }} </p>
+                    <p class="m-2"> Quantity: {{ item.quantity }} </p>
+                    <p class="m-2"> Note: {{ item.specialInstructions }}</p>
+                    <Divider class="m-0 p-0"></Divider>
+                    <p class="m-2"> Options:</p>
+                    <div class="list">
+                      <li class=" ml-3" v-for="option in item.menuItemOptions" :key="option.publicId">
+                        {{ option.optionTitle }}
+                        <li class=" ml-4 mt-2 " v-for="position in option.optionPositions" :key="position.publicId">
+                          <span class="mt-2"> {{ position.optionTitle }}</span>
+                        </li>
                       </li>
-                    </li>
+                    </div>
+
+                  </div>
+                </div>
+
+              </template>
+              <template #footer>
+                <Divider class="mb-3 mt-0 p-0"></Divider>
+
+                <div class="grid">
+                  <div class=" col-6">
+                    <Button class="w-auto" severity="danger" label="Reject" icon="pi pi-times"
+                            @click="rejectOrder(order.publicId)" />
+                  </div>
+
+                  <div class="flex col-6">
+                    <SplitButton
+                      class="m-0 ml-auto p-0"
+                      severity="info"
+                      label="Status"
+                      :model="statuses"
+                      @click="setContextOrderId(order.publicId)"
+                    ></SplitButton>
                   </div>
 
                 </div>
-              </div>
+              </template>
+            </Card>
 
-            </template>
-            <template #footer>
-              <Divider class="mb-3 mt-0 p-0"></Divider>
-              <div class="grid">
-                <div class=" col-6">
-                  <Button  class="w-auto" severity="danger" label="Reject" icon="pi pi-times" @click="rejectOrder(order.publicId)" />
-                </div>
-                <div class=" col-6">
-                  <SplitButton
-                    class="m-0 p-0"
-                    severity="info"
-                    label="Status"
-                    :model="statuses"
-                    @click="setContextOrderId(order.publicId)"
-                  ></SplitButton>
-                </div>
-              </div>
-            </template>
-          </Card>
+          </div>
         </div>
       </div>
     </div>

@@ -24,7 +24,7 @@ public class Controller {
     private final SseService sseService;
 
     @GetMapping(path = SSE_SUBSCRIBE, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    @PreAuthorize("hasRole('WAITER')")
+    @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
     public SseEmitter subscribe() {
         log.info("SSE subscribe request");
         SseEmitter eventEmitter = new SseEmitter(Long.MAX_VALUE);

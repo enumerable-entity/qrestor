@@ -74,6 +74,11 @@ const router = createRouter({
           path: '/qr-codes-management',
           name: 'qr-codes-management',
           component: () => import('@/views/management/QrMappings.vue')
+        },
+        {
+          path: '/qr-codes-config',
+          name: 'qr-codes-config',
+          component: () => import('@/views/management/QrConfiguration.vue')
         }
       ]
     },
