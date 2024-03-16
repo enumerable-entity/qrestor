@@ -69,6 +69,11 @@ const router = createRouter({
           path: '/kitchen/live-board',
           name: 'live-board',
           component: () => import('@/views/kitchen/KitchenBoard.vue')
+        },
+        {
+          path: '/qr-codes-management',
+          name: 'qr-codes-management',
+          component: () => import('@/views/management/QrMappings.vue')
         }
       ]
     },

@@ -12,7 +12,7 @@ const model = ref([
       {
         label: 'Selling points',
         icon: 'pi pi-fw pi-pencil',
-        to: {name: 'selling-points'},
+        to: '/pages/spoints',
       },
       {
         label: 'Menus',
@@ -21,27 +21,27 @@ const model = ref([
           {
             label: 'Menus',
             icon: 'pi pi-fw pi-book',
-            to: {name: 'menus'},
+            to: '/management/menus',
           },
           {
             label: 'Menu items',
             icon: 'pi pi-fw pi-pencil',
-            to: {name: 'menu-items-all'},
+            to: '/management/menus/menu-items',
           },
           {
             label: 'Menu items options',
             icon: 'pi pi-fw pi-server',
-            to: {name: 'menu-item-options-all'},
+            to: '/management/menus/menu-items/menu-item-options',
           },
           {
             label: 'Options positions',
             icon: 'pi pi-fw pi-server',
-            to: {name: 'menu-item-options-positions-all'},
+            to: '/management/menus/menu-item-options/options-positions',
           },
           {
             label: 'Ingredients',
             icon: 'pi pi-fw pi-server',
-            to: {name: 'ingredients-all'},
+            to: '/management/menus/ingredients',
           }
         ]
       },
@@ -52,12 +52,12 @@ const model = ref([
           {
             label: 'Active orders',
             icon: 'pi pi-fw pi-book',
-            to: {name: 'active-orders'},
+            to: '/management/orders/active',
           },
           {
             label: 'History',
             icon: 'pi pi-fw pi-pencil',
-            to: {name: 'orders-history'},
+            to: '/management/orders/history',
           }
         ]
       },
@@ -68,7 +68,18 @@ const model = ref([
           {
             label: 'Live Board',
             icon: 'pi pi-fw pi-server',
-            to: {name: 'live-board'},
+            to: '/kitchen/live-board',
+          }
+        ]
+      },
+      {
+        label: 'QR codes',
+        icon: 'pi pi-fw pi-pencil',
+        items: [
+          {
+            label: 'Mappings',
+            icon: 'pi pi-fw pi-server',
+            to: '/qr-codes-management'
           }
         ]
       }
