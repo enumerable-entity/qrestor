@@ -23,6 +23,8 @@ jobs:
         echo "Starting Maven build..."
         mvn -f backend/domain/auth/pom.xml clean package
         echo "Maven build completed."
+      env:
+        GITHUB_TOKEN: ${{ secrets.MAVEN_GITHUB_TOKEN }}
 
     - name: Login to DockerHub
       uses: docker/login-action@v1
