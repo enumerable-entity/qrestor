@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { onBeforeMount, ref } from 'vue'
 import QrService from '@/service/QrService.js'
 import MenuService from '@/service/MenuService.js'
