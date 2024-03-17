@@ -11,15 +11,15 @@ const model = ref([
     items: [
       {
         label: 'Selling points',
-        icon: 'pi pi-fw pi-pencil',
+        icon: 'pi pi-fw pi-home',
         to: '/pages/spoints',
       },
       {
         label: 'Menus',
-        icon: 'pi pi-fw pi-bars',
+        icon: 'pi pi-fw pi-book',
         items: [
           {
-            label: 'Menus',
+            label: 'All Menus',
             icon: 'pi pi-fw pi-list',
             to: '/management/menus',
           },

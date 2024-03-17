@@ -143,6 +143,7 @@ const initFilters = () => {
           v-model:selection="selectedPoints"
           dataKey="id"
           :paginator="true"
+          :rowHover="true"
           :rows="5"
           :filters="filters"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
