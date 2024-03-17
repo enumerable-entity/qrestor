@@ -9,7 +9,6 @@ const toast = useToast()
 const points = ref(null)
 const pointDialog = ref(false)
 const deletePointDialog = ref(false)
-const deletePointsDialog = ref(false)
 const point = ref({})
 const selectedPoints = ref(null)
 const dt = ref(null)
@@ -113,25 +112,6 @@ const makeIdShorter = (id) => {
   return id.substring(0, 8) + ' ...'
 }
 
-const exportCSV = () => {
-  dt.value.exportCSV()
-}
-
-const confirmDeleteSelected = () => {
-  deletePointsDialog.value = true
-}
-const deleteSelectedPoints = () => {
-  points.value = points.value.filter((val) => !selectedPoints.value.includes(val))
-  deletePointsDialog.value = false
-  selectedPoints.value = null
-  toast.add({
-    severity: 'success',
-    summary: 'Successful',
-    detail: 'Selling points deleted',
-    life: 3000
-  })
-}
-
 const initFilters = () => {
   filters.value = {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS }
@@ -144,7 +124,7 @@ const initFilters = () => {
     <div class="col-12">
       <div class="card">
         <Toast />
-        <Toolbar class="mb-4">
+        <Toolbar >
           <template v-slot:start>
             <div class="my-2">
               <Button
@@ -153,31 +133,7 @@ const initFilters = () => {
                 class="p-button-success mr-2"
                 @click="openNew"
               />
-              <Button
-                label="Delete"
-                icon="pi pi-trash"
-                class="p-button-danger"
-                @click="confirmDeleteSelected"
-                :disabled="!selectedPoints || !selectedPoints.length"
-              />
             </div>
-          </template>
-
-          <template v-slot:end>
-            <FileUpload
-              mode="basic"
-              accept="image/*"
-              :maxFileSize="1000000"
-              label="Import"
-              chooseLabel="Import"
-              class="mr-2 inline-block"
-            />
-            <Button
-              label="Export"
-              icon="pi pi-upload"
-              class="p-button-help"
-              @click="exportCSV($event)"
-            />
           </template>
         </Toolbar>
 
@@ -187,7 +143,7 @@ const initFilters = () => {
           v-model:selection="selectedPoints"
           dataKey="id"
           :paginator="true"
-          :rows="10"
+          :rows="5"
           :filters="filters"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25]"
@@ -207,12 +163,9 @@ const initFilters = () => {
           </template>
           <template #empty> No selling points found. </template>
           <template #loading> Loading selling points data. Please wait. </template>
-
-          <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
           <Column
             field="publicId"
             header="Id"
-            :sortable="true"
             headerStyle="width:10%; min-width:10rem;"
           >
             <template #body="slotProps">
@@ -227,7 +180,6 @@ const initFilters = () => {
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Name</span>
               {{ slotProps.data.name }}
             </template>
           </Column>
@@ -238,7 +190,6 @@ const initFilters = () => {
             headerStyle="width:14%; min-width:8rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Title</span>
               {{ slotProps.data.title }}
             </template>
           </Column>
@@ -249,18 +200,15 @@ const initFilters = () => {
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Description</span>
               {{ slotProps.data.description }}
             </template>
           </Column>
           <Column
             field="address"
             header="Address"
-            :sortable="true"
             headerStyle="width:19%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Address</span>
               {{ formatAddress(slotProps.data.address) }}
             </template>
           </Column>
@@ -419,32 +367,6 @@ const initFilters = () => {
               @click="deletePointDialog = false"
             />
             <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deletePoint" />
-          </template>
-        </Dialog>
-
-        <Dialog
-          v-model:visible="deletePointsDialog"
-          :style="{ width: '450px' }"
-          header="Confirm"
-          :modal="true"
-        >
-          <div class="flex align-items-center justify-content-center">
-            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="point">Are you sure you want to delete the selected points?</span>
-          </div>
-          <template #footer>
-            <Button
-              label="No"
-              icon="pi pi-times"
-              class="p-button-text"
-              @click="deletePointsDialog = false"
-            />
-            <Button
-              label="Yes"
-              icon="pi pi-check"
-              class="p-button-text"
-              @click="deleteSelectedPoints"
-            />
           </template>
         </Dialog>
       </div>
