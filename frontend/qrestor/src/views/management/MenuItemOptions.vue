@@ -3,17 +3,17 @@ import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import { onBeforeMount, ref } from 'vue'
 import MenuItemsOptionsService from '@/service/MenuItemsOptionsService.js'
 import MenuItemsService from '@/service/MenuItemsService.js'
-import IngredientsService from '@/service/IngredientsService.js'
 import { useToast } from 'primevue/usetoast'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import OptionsPositionsService from '@/service/OptionsPositionsService.js'
 
 const { t } = useI18n()
 const toast = useToast()
 const route = useRoute()
 
 const menuItemOptions = ref(null)
-const qrMapping = ref({})
+const menuItemOption = ref({})
 const menuDialog = ref(false)
 const deleteMenuDialog = ref(false)
 const selectedMenu = ref(null)
@@ -36,22 +36,21 @@ const searchMenuItem = (event) => {
   }, 250)
 }
 
-const autoValueIngredient = ref(null)
-const selectedAutoValueIngredients = ref([])
-const autoFilteredValueIngredient= ref([])
+const autoValueOptionPositions = ref(null)
+const selectedAutoValueOptionPositions = ref([])
+const autoFilteredValueOptionPosition = ref([])
 
 const searchIngredients = (event) => {
   setTimeout(() => {
     if (!event.query.trim().length) {
-      autoFilteredValueIngredient.value = [...autoValueIngredient.value]
+      autoFilteredValueOptionPosition.value = [...autoValueOptionPositions.value]
     } else {
-      autoFilteredValueIngredient.value = autoValueIngredient.value.filter((ingredient) => {
+      autoFilteredValueOptionPosition.value = autoValueOptionPositions.value.filter((ingredient) => {
         return ingredient.name.toLowerCase().startsWith(event.query.toLowerCase())
       })
     }
   }, 250)
 }
-
 
 const menuItemContextId = ref(route.params.menuItemId)
 const menuContextName = ref(null)
@@ -62,33 +61,26 @@ const loading1 = ref(null)
 const initFilters1 = () => {
   filters1.value = {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: {
+    title: {
       operator: FilterOperator.AND,
       constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
     },
-    description: {
-      operator: FilterOperator.AND,
-      constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
-    },
-    restaurantId: {
-      operator: FilterOperator.AND,
-      constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
-    },
-
     isActive: { value: null, matchMode: FilterMatchMode.EQUALS }
   }
 }
 
 // SERVICES INSTANCES
 const menuItemsService = new MenuItemsService()
-const ingredientsService = new IngredientsService()
+const optionPositionsService = new OptionsPositionsService()
 const menuItemsOptionsService = new MenuItemsOptionsService()
 
 onBeforeMount(async () => {
   initFilters1()
 
   if (menuItemContextId.value) {
-    const { data } = await menuItemsOptionsService.getMenuItemsOptionsForMenuItemId(menuItemContextId.value)
+    const { data } = await menuItemsOptionsService.getMenuItemsOptionsForMenuItemId(
+      menuItemContextId.value
+    )
     menuItemOptions.value = data
     menuContextName.value = data.length > 0 ? data[0].menuItemTitle : ''
   } else {
@@ -96,11 +88,10 @@ onBeforeMount(async () => {
     const { data: menuData } = await menuItemsService.getAllMenuItems()
     menuItemOptions.value = data
     autoValueMenu.value = menuData
-
   }
-   const dictResponse = await ingredientsService.getIngredients()
-   autoValueIngredient.value = dictResponse.data
-   loading1.value = false
+  const dictResponse = await optionPositionsService.getItemsOptionsPositionsCombo()
+  autoValueOptionPositions.value = dictResponse.data
+  loading1.value = false
 })
 
 const clearFilter1 = () => {
@@ -128,7 +119,11 @@ const hideDialog = () => {
 const routemenu = ref(null)
 
 const items = [
-  {label: "Manage option positions", route: 'menu-item-options-positions', icon: 'pi pi-fw pi-pencil'}
+  {
+    label: 'Manage option positions',
+    route: 'menu-item-options-positions',
+    icon: 'pi pi-fw pi-pencil'
+  }
 ]
 
 const onRowContextMenu = (event) => {
@@ -138,7 +133,7 @@ const onRowContextMenu = (event) => {
 
 const saveMenuItemOption = async () => {
   submitted.value = true
-  menuItemOption.value.menuItemOptionPositions = selectedAutoValueIngredients.value
+  menuItemOption.value.menuItemOptionPositions = selectedAutoValueOptionPositions.value
   menuItemOption.value.menuItemId = selectedAutoValueSMenu.value.publicId || menuItemContextId.value
 
   if (menuItemOption.value.publicId) {
@@ -161,12 +156,12 @@ const saveMenuItemOption = async () => {
   }
   menuItemOption.value = {}
   selectedAutoValueSMenu.value = null
-  selectedAutoValueIngredients.value = null
+  selectedAutoValueOptionPositions.value = null
   submitted.value = false
 }
 const editMenuItem = (editMenu) => {
-  selectedAutoValueIngredients.value = editMenu.menuItemOptionPositions
-  selectedAutoValueSMenu.value = {publicId: editMenu.menuItemId, title: editMenu.menuItemTitle}
+  selectedAutoValueOptionPositions.value = editMenu.menuItemOptionPositions
+  selectedAutoValueSMenu.value = { publicId: editMenu.menuItemId, title: editMenu.menuItemTitle }
 
   menuItemOption.value = { ...editMenu }
   menuDialog.value = true
@@ -183,9 +178,13 @@ const openDetailsDialog = (menuItem) => {
 }
 
 const deleteMenuItem = async () => {
-  const { status } = await menuItemsOptionsService.deleteMenuItemOption(menuItemOption.value.publicId)
+  const { status } = await menuItemsOptionsService.deleteMenuItemOption(
+    menuItemOption.value.publicId
+  )
   if (status === 204) {
-    menuItemOptions.value = menuItemOptions.value.filter((val) => val.publicId !== menuItemOption.value.publicId)
+    menuItemOptions.value = menuItemOptions.value.filter(
+      (val) => val.publicId !== menuItemOption.value.publicId
+    )
     deleteMenuDialog.value = false
     menuItemOption.value = {}
     toast.add({
@@ -204,22 +203,6 @@ const makeIdShorter = (id) => {
 const exportCSV = () => {
   dt.value.exportCSV()
 }
-
-// ROW SELECT
-const onMenuRowSelect = (event) => {
-  toast.add({
-    severity: 'info',
-    summary: 'Menu Selected',
-    detail: event.data.name,
-    life: 3000
-  })
-}
-
-const formatCurrencyForAPI = (value) => {
-  return value * 10
-}
-
-
 </script>
 
 <template>
@@ -227,7 +210,7 @@ const formatCurrencyForAPI = (value) => {
     <div class="col-12">
       <div class="card">
         <Toast />
-        <Toolbar class="mb-4">
+        <Toolbar>
           <template v-slot:start>
             <div class="my-2">
               <Button
@@ -239,15 +222,6 @@ const formatCurrencyForAPI = (value) => {
             </div>
           </template>
           <template v-slot:end>
-            <FileUpload
-              mode="basic"
-              accept="image/*"
-              url="localhost:8080/menu/management/menu-items"
-              :maxFileSize="1000000"
-              label="Import"
-              chooseLabel="Import"
-              class="mr-2 inline-block"
-            />
             <Button
               label="Export"
               icon="pi pi-upload"
@@ -263,7 +237,6 @@ const formatCurrencyForAPI = (value) => {
           v-model:selection="selectedMenu"
           v-model:contextMenuSelection="selectedMenu"
           selectionMode="single"
-          @rowSelect="onMenuRowSelect"
           v-model:filters="filters1"
           dataKey="publicId"
           :paginator="true"
@@ -273,7 +246,7 @@ const formatCurrencyForAPI = (value) => {
           :rowHover="true"
           @row-contextmenu="onRowContextMenu"
           contextMenu
-          :rows="10"
+          :rows="5"
           :globalFilterFields="['name', 'description', 'restaurantId']"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25]"
@@ -311,7 +284,6 @@ const formatCurrencyForAPI = (value) => {
 
           <Column field="publicId" header="Id" headerStyle="width:10%; min-width:10rem;">
             <template #body="slotProps">
-              <span class="p-column-title">Id</span>
               {{ makeIdShorter(slotProps.data.publicId) }}
             </template>
           </Column>
@@ -323,7 +295,6 @@ const formatCurrencyForAPI = (value) => {
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Title</span>
               {{ slotProps.data.title }}
             </template>
             <template #filter="{ filterModel }">
@@ -336,7 +307,7 @@ const formatCurrencyForAPI = (value) => {
             </template>
           </Column>
           <Column
-            field="isActive"
+            field="enabled"
             :sortable="true"
             header="Is Active"
             dataType="boolean"
@@ -351,9 +322,6 @@ const formatCurrencyForAPI = (value) => {
                   'text-pink-500 pi-times-circle': !data.enabled
                 }"
               ></i>
-            </template>
-            <template #filter="{ filterModel }">
-              <TriStateCheckbox v-model="filterModel.value" />
             </template>
           </Column>
 
@@ -374,9 +342,6 @@ const formatCurrencyForAPI = (value) => {
                 }"
               ></i>
             </template>
-            <template #filter="{ filterModel }">
-              <TriStateCheckbox v-model="filterModel.value" />
-            </template>
           </Column>
 
           <Column
@@ -396,11 +361,7 @@ const formatCurrencyForAPI = (value) => {
                 }"
               ></i>
             </template>
-            <template #filter="{ filterModel }">
-              <TriStateCheckbox v-model="filterModel.value" />
-            </template>
           </Column>
-
 
           <Column
             field="menuItemOptionPositions"
@@ -429,7 +390,6 @@ const formatCurrencyForAPI = (value) => {
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Menu item</span>
               {{ slotProps.data.menuItemTitle }}
             </template>
             <template #filter="{ filterModel }">
@@ -464,12 +424,16 @@ const formatCurrencyForAPI = (value) => {
               />
             </template>
           </Column>
-
         </DataTable>
 
         <ContextMenu ref="routemenu" :model="items" @hide="selectedMenu = null" class="w-2">
           <template #item="{ item, props }">
-            <router-link v-if="item.route" v-slot="{ href, navigate }" :to="{name: item.route, params: {optionId: selectedMenu.publicId } }" custom>
+            <router-link
+              v-if="item.route"
+              v-slot="{ href, navigate }"
+              :to="{ name: item.route, params: { optionId: selectedMenu.publicId } }"
+              custom
+            >
               <a v-ripple :href="href" v-bind="props.action" @click="navigate">
                 <span :class="item.icon" />
                 <span class="ml-2">{{ item.label }}</span>
@@ -481,7 +445,6 @@ const formatCurrencyForAPI = (value) => {
             </a>
           </template>
         </ContextMenu>
-
 
         <Dialog
           v-model:visible="menuDialog"
@@ -499,24 +462,26 @@ const formatCurrencyForAPI = (value) => {
               autofocus
               :class="{ 'p-invalid': submitted && !menuItemOption.title }"
             />
-            <small class="p-invalid" v-if="submitted && !menuItemOption.title">Title is required.</small>
+            <small class="p-invalid" v-if="submitted && !menuItemOption.title"
+              >Title is required.</small
+            >
           </div>
 
           <div class="field">
             <label for="ingredientsSelect">Select a few positions</label>
             <AutoComplete
               id="ingredientsSelect"
-              v-model="selectedAutoValueIngredients"
+              v-model="selectedAutoValueOptionPositions"
               :class="{ 'p-invalid': submitted && !menuItemOption.menuItemOptionPositions }"
               optionLabel="name"
               multiple
-              :suggestions="autoFilteredValueIngredient"
+              :suggestions="autoFilteredValueOptionPosition"
               @complete="searchIngredients"
             />
             <small class="p-invalid" v-if="submitted && !menuItemOption.menuItemOptionPositions"
-            >Few ingredients are required.</small>
+              >Few ingredients are required.</small
+            >
           </div>
-
 
           <div class="field" v-if="!menuItemContextId">
             <label for="currency">Select Menu Item for this Option</label>
@@ -535,7 +500,8 @@ const formatCurrencyForAPI = (value) => {
               field="title"
             />
             <small class="p-invalid" v-if="submitted && !menuItemOption.menuItemId"
-              >Selling point is required.</small>
+              >Selling point is required.</small
+            >
           </div>
           <div class="field-checkbox mb-0">
             <Checkbox
@@ -545,7 +511,7 @@ const formatCurrencyForAPI = (value) => {
               v-model="menuItemOption.enabled"
               :binary="true"
             />
-            <label for="active" class = "mr-3">Is Active</label>
+            <label for="active" class="mr-3">Is Active</label>
 
             <Checkbox
               id="required"
@@ -554,7 +520,7 @@ const formatCurrencyForAPI = (value) => {
               v-model="menuItemOption.multiSelect"
               :binary="true"
             />
-            <label for="required" class = "mr-3">Is multiselect</label>
+            <label for="required" class="mr-3">Is multiselect</label>
 
             <Checkbox
               id="multiSelect"
@@ -563,12 +529,17 @@ const formatCurrencyForAPI = (value) => {
               v-model="menuItemOption.required"
               :binary="true"
             />
-            <label for="multiSelect" >Is required</label>
+            <label for="multiSelect">Is required</label>
           </div>
 
           <template #footer>
             <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
-            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveMenuItemOption" />
+            <Button
+              label="Save"
+              icon="pi pi-check"
+              class="p-button-text"
+              @click="saveMenuItemOption"
+            />
           </template>
         </Dialog>
 
@@ -581,7 +552,7 @@ const formatCurrencyForAPI = (value) => {
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
             <span v-if="menuItemOption"
-              >Are you sure you want to delete <b>{{ qrMapping.name }}</b
+              >Are you sure you want to delete <b>{{ menuItemOption.name }}</b
               >?</span
             >
           </div>
