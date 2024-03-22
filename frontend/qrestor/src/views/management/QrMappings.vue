@@ -278,7 +278,7 @@ const onMenuRowSelect = (event) => {
             headerStyle="width:13%; min-width:10rem;"
           >
             <template #body="slotProps">
-              {{ slotProps.dataToEncodeInQr.publicId }}
+              {{ slotProps.data.publicId }}
             </template>
           </Column>
 
@@ -290,7 +290,7 @@ const onMenuRowSelect = (event) => {
           >
             <template #body="slotProps">
               <span class="p-column-title">Selling point title</span>
-              {{ slotProps.dataToEncodeInQr.restaurantName }}
+              {{ slotProps.data.restaurantName }}
             </template>
             <template #filter="{ filterModel }">
               <InputText
@@ -310,7 +310,7 @@ const onMenuRowSelect = (event) => {
           >
             <template #body="slotProps">
               <span class="p-column-title">Menu title</span>
-              {{ slotProps.dataToEncodeInQr.menuName }}
+              {{ slotProps.data.menuName }}
             </template>
             <template #filter="{ filterModel }">
               <InputText
@@ -329,7 +329,7 @@ const onMenuRowSelect = (event) => {
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              {{ slotProps.dataToEncodeInQr.tableId }}
+              {{ slotProps.data.tableId }}
             </template>
             <template #filter="{ filterModel }">
               <InputText
