@@ -1,11 +1,14 @@
 <script setup>
 import { FilterMatchMode, FilterOperator } from 'primevue/api'
-import { onBeforeMount, ref } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import QrService from '@/service/QrService.js'
 import MenuService from '@/service/MenuService.js'
 import SellingPointsService from '@/service/SellingPointsService.js'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
+import StyledQRCode from '@/qr/components/StyledQRCode.vue'
+import { allPresets } from '@/qr/utils/presets.ts'
+import { getNumericCSSValue } from '@/qr/utils/formatting.ts'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -14,9 +17,98 @@ const qrMappings = ref(null)
 const menuComboList = ref(null)
 const sellingPointsComboList = ref(null)
 
+const selectedPreset = ref(null)
+const qrCodeConfig = ref(null)
+const defaultPreset = allPresets[0]
+const dataToEncodeInQr = ref('www.qrestor.com/qr/7a640ca4-a0ae-4ea0-9368-e2a53b7996e3')
+const imageFullUrl = ref()
+const width = ref()
+const height = ref()
+const margin = ref()
+const imageMargin = ref()
+
+const dotsOptionsColor = ref()
+const dotsOptionsType = ref()
+const cornersSquareOptionsColor = ref()
+const cornersSquareOptionsType = ref()
+const cornersDotOptionsColor = ref()
+const cornersDotOptionsType = ref()
+const styleBorderRadius = ref()
+const styledBorderRadiusFormatted = computed(() => `${styleBorderRadius.value}px`)
+const styleBackground = ref(defaultPreset.style.background)
+
+const dotsOptions = computed(() => ({
+  color: dotsOptionsColor.value,
+  type: dotsOptionsType.value
+}))
+const cornersSquareOptions = computed(() => ({
+  color: cornersSquareOptionsColor.value,
+  type: cornersSquareOptionsType.value
+}))
+const cornersDotOptions = computed(() => ({
+  color: cornersDotOptionsColor.value,
+  type: cornersDotOptionsType.value
+}))
+const style = computed(() => ({
+  borderRadius: styledBorderRadiusFormatted.value,
+  background: styleBackground.value
+}))
+const imageOptions = computed(() => ({
+  margin: imageMargin.value
+}))
+
+const qrCodeProps = computed(() => ({
+  data: dataToEncodeInQr.value,
+  image: imageFullUrl.value,
+  width: width.value,
+  height: height.value,
+  margin: margin.value,
+  dotsOptions: dotsOptions.value,
+  cornersSquareOptions: cornersSquareOptions.value,
+  cornersDotOptions: cornersDotOptions.value,
+  imageOptions: imageOptions.value
+}))
+
+function loadQRConfig(jsonString) {
+  const qrCodeConfig = JSON.parse(jsonString)
+  const qrCodeProps = qrCodeConfig.props
+  const qrCodeStyle = qrCodeConfig.style
+  const preset = {
+    ...qrCodeProps,
+    style: qrCodeStyle
+  }
+
+  selectedPreset.value = preset
+}
+
+function loadQRConfigFromLocalStorage() {
+  const qrCodeConfigString = localStorage.getItem('qrCodeConfig')
+  if (qrCodeConfigString) {
+    console.debug('Loading QR code config from local storage')
+    loadQRConfig(qrCodeConfigString)
+  }
+}
+
+const gerQrURL = (path) => {
+  return import.meta.env.VITE_ROOT_API + '/qr/' + path
+}
+
+
+const printQRCode = () =>{
+  // Get the content of the element
+  let content = document.getElementById('qr-code-container').innerHTML;
+  let printWindow = window.open('', '_blank');
+  // Write the content to the new window
+  printWindow.document.write('<html><body onload="window.print()">' + content + '</body></html>');
+
+  // Close the document to trigger the print dialog (this is necessary in some browsers)
+  printWindow.document.close();
+}
+
 
 const qrMapping = ref({})
 const qrDialog = ref(false)
+const qrPreviewDialog = ref(false)
 const deleteMenuDialog = ref(false)
 const selectedMenu = ref(null)
 const dt = ref(null)
@@ -84,6 +176,21 @@ const sellingPointsService = new SellingPointsService()
 
 onBeforeMount(async () => {
   initFilters1()
+  loadQRConfigFromLocalStorage()
+  imageFullUrl.value = selectedPreset.value.image
+  width.value = selectedPreset.value.width
+  height.value = selectedPreset.value.height
+  margin.value = selectedPreset.value.margin
+  imageMargin.value = selectedPreset.value.imageOptions.margin
+  dotsOptionsColor.value = selectedPreset.value.dotsOptions.color
+  dotsOptionsType.value = selectedPreset.value.dotsOptions.type
+  cornersSquareOptionsColor.value = selectedPreset.value.cornersSquareOptions.color
+  cornersSquareOptionsType.value = selectedPreset.value.cornersSquareOptions.type
+  cornersDotOptionsColor.value = selectedPreset.value.cornersDotOptions.color
+  cornersDotOptionsType.value = selectedPreset.value.cornersDotOptions.type
+  styleBorderRadius.value = getNumericCSSValue(selectedPreset.value.style.borderRadius)
+  styleBackground.value = selectedPreset.value.style.background
+
   const { data: menuData } = await qrService.getAllQrCodes()
   const { data: menuCombo } = await menuService.getMenuCombo()
   const { data: spointsCombo} = await sellingPointsService.getSellingPointsDictionary()
@@ -157,8 +264,9 @@ const confirmDeleteMenuItem = (editMenu) => {
 }
 
 const openQrPreview = (menuItem) => {
-  menuItem.value = menuItem
-  qrDialog.value = true
+  dataToEncodeInQr.value = gerQrURL(menuItem.publicId)
+  qrCodeConfig.value = menuItem
+  qrPreviewDialog.value = true
 }
 
 const deleteMenuItem = async () => {
@@ -464,6 +572,51 @@ const onMenuRowSelect = (event) => {
               @click="deleteMenuDialog = false"
             />
             <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteMenuItem" />
+          </template>
+        </Dialog>
+
+
+        <Dialog
+          v-model:visible="qrPreviewDialog"
+          :style="{ width: '343px' }"
+          header="QR code preview"
+          :modal="true"
+          class="p-fluid"
+        >
+          <div class="flex justify-content-start flex-wrap">
+            <div >
+              <div
+                :style="[
+              style,
+              {
+                width: '300px',
+                height: '300px'
+              }
+            ]"
+              >
+                <div id="qr-code-container" >
+                  <StyledQRCode
+
+                    id="qrContainer"
+                    v-if="dataToEncodeInQr"
+                    v-bind="{ ...qrCodeProps, width: 300, height: 300 }"
+                    role="img"
+                    aria-label="QR code"
+                  />
+                  <p v-else>{{ 'No data to encode!' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <template #footer>
+            <Button
+              label="Print QR Code"
+              icon="pi pi-print"
+              class="p-button-text"
+              @click="printQRCode"
+            />
           </template>
         </Dialog>
       </div>

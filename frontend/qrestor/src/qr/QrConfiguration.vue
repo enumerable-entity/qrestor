@@ -126,7 +126,6 @@ async function copyQRToClipboard() {
 }
 
 function downloadQRImageAsPng() {
-  console.debug('Copying image to clipboard')
   const qrCode = document.querySelector('#qr-code-container')
   if (qrCode) {
     downloadPngElement(qrCode as HTMLElement, 'qr-code.png', options.value)
@@ -134,7 +133,6 @@ function downloadQRImageAsPng() {
 }
 
 function downloadQRImageAsSvg() {
-  console.debug('Copying image to clipboard')
   const qrCode = document.querySelector('#qr-code-container')
   if (qrCode) {
     downloadSvgElement(qrCode as HTMLElement, 'qr-code.svg', options.value)
@@ -205,27 +203,6 @@ function loadQRConfig(jsonString: string, key?: string) {
   }
 
   selectedPreset.value = preset
-}
-
-function loadQrConfigFromFile() {
-  console.debug('Loading QR code config')
-  const qrCodeConfigInput = document.createElement('input')
-  qrCodeConfigInput.type = 'file'
-  qrCodeConfigInput.accept = 'application/json'
-  qrCodeConfigInput.onchange = (event: Event) => {
-    const target = event.target as HTMLInputElement
-    if (target.files) {
-      const file = target.files[0]
-      const reader = new FileReader()
-      reader.onload = (event: ProgressEvent<FileReader>) => {
-        const target = event.target as FileReader
-        const result = target.result as string
-        loadQRConfig(result, LOADED_FROM_FILE_PRESET_KEY)
-      }
-      reader.readAsText(file)
-    }
-  }
-  qrCodeConfigInput.click()
 }
 
 function loadQRConfigFromLocalStorage() {
