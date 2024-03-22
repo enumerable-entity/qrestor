@@ -93,18 +93,27 @@ const gerQrURL = (path) => {
   return import.meta.env.VITE_ROOT_API + '/qr/' + path
 }
 
-
-const printQRCode = () =>{
+const divCount = ref(1)
+const printQRCode = () => {
   // Get the content of the element
   let content = document.getElementById('qr-code-container').innerHTML;
   let printWindow = window.open('', '_blank');
-  // Write the content to the new window
-  printWindow.document.write('<html><body onload="window.print()">' + content + '</body></html>');
 
-  // Close the document to trigger the print dialog (this is necessary in some browsers)
+  // Write the content to the new window
+  let divs = '';
+  for (let i = 0; i < divCount.value; i++) {
+    divs += `<div style="display: inline-block;">${content}</div>`;
+  }
+
+  printWindow.document.write(`
+    <html>
+      <body onload="window.print()">
+        ${divs}
+      </body>
+    </html>
+  `);
   printWindow.document.close();
 }
-
 
 const qrMapping = ref({})
 const qrDialog = ref(false)
@@ -193,7 +202,7 @@ onBeforeMount(async () => {
 
   const { data: menuData } = await qrService.getAllQrCodes()
   const { data: menuCombo } = await menuService.getMenuCombo()
-  const { data: spointsCombo} = await sellingPointsService.getSellingPointsDictionary()
+  const { data: spointsCombo } = await sellingPointsService.getSellingPointsDictionary()
   qrMappings.value = menuData
   menuComboList.value = menuCombo
   autoValueQrMapping.value = spointsCombo
@@ -220,7 +229,6 @@ const hideDialog = () => {
   qrDialog.value = false
   submitted.value = false
 }
-
 
 const saveQrMapping = async () => {
   submitted.value = true
@@ -251,7 +259,10 @@ const saveQrMapping = async () => {
   submitted.value = false
 }
 const editMenuItem = (editMenu) => {
-  selectedAutoValueSellingPoints.value = { id: editMenu.restaurantId, name: editMenu.restaurantName }
+  selectedAutoValueSellingPoints.value = {
+    id: editMenu.restaurantId,
+    name: editMenu.restaurantName
+  }
   selectedAutoValueSMenu.value = { id: editMenu.menuId, name: editMenu.menuName }
 
   qrMapping.value = { ...editMenu }
@@ -270,13 +281,9 @@ const openQrPreview = (menuItem) => {
 }
 
 const deleteMenuItem = async () => {
-  const { status } = await qrService.deleteQrCode(
-    qrMapping.value.publicId
-  )
+  const { status } = await qrService.deleteQrCode(qrMapping.value.publicId)
   if (status === 204) {
-    qrMappings.value = qrMappings.value.filter(
-      (val) => val.publicId !== qrMapping.value.publicId
-    )
+    qrMappings.value = qrMappings.value.filter((val) => val.publicId !== qrMapping.value.publicId)
     deleteMenuDialog.value = false
     qrMapping.value = {}
     toast.add({
@@ -482,10 +489,7 @@ const onMenuRowSelect = (event) => {
         >
           <div class="field">
             <label for="price">Table number</label>
-            <InputNumber v-model="qrMapping.tableId"
-                         id = "price"
-                         inputId="currency-us"
-                         showButtons/>
+            <InputNumber v-model="qrMapping.tableId" id="price" inputId="currency-us" showButtons />
           </div>
 
           <div class="field">
@@ -542,12 +546,7 @@ const onMenuRowSelect = (event) => {
 
           <template #footer>
             <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
-            <Button
-              label="Save"
-              icon="pi pi-check"
-              class="p-button-text"
-              @click="saveQrMapping"
-            />
+            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveQrMapping" />
           </template>
         </Dialog>
 
@@ -575,7 +574,6 @@ const onMenuRowSelect = (event) => {
           </template>
         </Dialog>
 
-
         <Dialog
           v-model:visible="qrPreviewDialog"
           :style="{ width: '343px' }"
@@ -584,19 +582,18 @@ const onMenuRowSelect = (event) => {
           class="p-fluid"
         >
           <div class="flex justify-content-start flex-wrap">
-            <div >
+            <div>
               <div
                 :style="[
-              style,
-              {
-                width: '300px',
-                height: '300px'
-              }
-            ]"
+                  style,
+                  {
+                    width: '300px',
+                    height: '300px'
+                  }
+                ]"
               >
-                <div id="qr-code-container" >
+                <div id="qr-code-container">
                   <StyledQRCode
-
                     id="qrContainer"
                     v-if="dataToEncodeInQr"
                     v-bind="{ ...qrCodeProps, width: 300, height: 300 }"
@@ -609,14 +606,21 @@ const onMenuRowSelect = (event) => {
             </div>
           </div>
 
-
           <template #footer>
-            <Button
-              label="Print QR Code"
-              icon="pi pi-print"
-              class="p-button-text"
-              @click="printQRCode"
-            />
+            <div class="grid ">
+              <div class=" field col-6 mb-0">
+                <label for="divCount">Codes count on sheet</label>
+                <InputNumber v-model="divCount" id="divCount" inputId="divCount" show-buttons/>
+              </div>
+              <div class="col-6 flex align-content-end flex-wrap">
+                <Button
+                  label="Print"
+                  icon="pi pi-print"
+                  class=" w-full"
+                  @click="printQRCode"
+                />
+              </div>
+            </div>
           </template>
         </Dialog>
       </div>
