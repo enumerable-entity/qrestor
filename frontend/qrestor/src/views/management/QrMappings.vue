@@ -200,7 +200,7 @@ const onMenuRowSelect = (event) => {
     <div class="col-12">
       <div class="card">
         <Toast />
-        <Toolbar class="mb-4">
+        <Toolbar>
           <template v-slot:start>
             <div class="my-2">
               <Button
@@ -210,23 +210,6 @@ const onMenuRowSelect = (event) => {
                 @click="openNew"
               />
             </div>
-          </template>
-          <template v-slot:end>
-            <FileUpload
-              mode="basic"
-              accept="image/*"
-              url="localhost:8080/menu/management/menu-items"
-              :maxFileSize="1000000"
-              label="Import"
-              chooseLabel="Import"
-              class="mr-2 inline-block"
-            />
-            <Button
-              label="Export"
-              icon="pi pi-upload"
-              class="p-button-help"
-              @click="exportCSV($event)"
-            />
           </template>
         </Toolbar>
 
@@ -244,7 +227,7 @@ const onMenuRowSelect = (event) => {
           :filters="filters1"
           filterDisplay="menu"
           :rowHover="true"
-          :rows="10"
+          :rows="5"
           :globalFilterFields="['name', 'description', 'restaurantId']"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25]"
@@ -289,7 +272,6 @@ const onMenuRowSelect = (event) => {
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Selling point title</span>
               {{ slotProps.data.restaurantName }}
             </template>
             <template #filter="{ filterModel }">
@@ -309,7 +291,6 @@ const onMenuRowSelect = (event) => {
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Menu title</span>
               {{ slotProps.data.menuName }}
             </template>
             <template #filter="{ filterModel }">
@@ -357,9 +338,6 @@ const onMenuRowSelect = (event) => {
                   'text-pink-500 pi-times-circle': !data.isActive
                 }"
               ></i>
-            </template>
-            <template #filter="{ filterModel }">
-              <TriStateCheckbox v-model="filterModel.value" />
             </template>
           </Column>
 
