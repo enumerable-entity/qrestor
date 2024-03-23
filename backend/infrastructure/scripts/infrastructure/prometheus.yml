@@ -31,8 +31,8 @@ scrape_configs:
     static_configs:
       - targets: [ 'host.docker.internal:8095' ]
 
-  - job_name: "importer-service"
-    metrics_path: /importer/api/v1/actuator/prometheus
+  - job_name: "exporter-service"
+    metrics_path: /exporter/api/v1/actuator/prometheus
     static_configs:
       - targets: [ 'host.docker.internal:8094' ]
 

@@ -10,7 +10,7 @@ frontend/qrestor/dist
 backend/domain/auth/target
 backend/domain/commons/target
 backend/domain/feedback/target
-backend/domain/importer/target
+backend/domain/exporter/target
 backend/domain/kitchenboard/target
 backend/domain/mailer/target
 backend/domain/menu/target
