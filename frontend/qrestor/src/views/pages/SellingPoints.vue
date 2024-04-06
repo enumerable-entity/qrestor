@@ -246,7 +246,7 @@ const initFilters = () => {
               <Button
                 text
                 icon="pi pi-trash"
-                class="p-button-rounded p-button-warning mt-2"
+                class="p-button-rounded p-button-danger mt-2"
                 @click="confirmDeletePoint(slotProps.data)"
               />
             </template>

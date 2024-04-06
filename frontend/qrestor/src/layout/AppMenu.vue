@@ -40,7 +40,7 @@ const model = ref([
           },
           {
             label: 'Ingredients',
-            icon: 'pi pi-fw pi-server',
+            icon: 'pi pi-fw pi-apple',
             to: '/management/menus/ingredients',
           }
         ]
@@ -62,12 +62,12 @@ const model = ref([
         ]
       },
       {
-        label: 'Kitchen Board',
-        icon: 'pi pi-fw pi-pencil',
+        label: 'Waiter Board',
+        icon: 'pi pi-fw pi-desktop',
         items: [
           {
             label: 'Live Board',
-            icon: 'pi pi-fw pi-server',
+            icon: 'pi pi-fw pi-caret-right',
             to: '/kitchen/live-board',
           }
         ]
