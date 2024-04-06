@@ -4,11 +4,6 @@ export default class SellingPointsService {
     constructor() {
         this.url = '/restaurant/management/restaurant'
     }
-    getProductsSmall() {
-        return fetch('/demo/data/products-small.json')
-            .then((res) => res.json())
-            .then((d) => d);
-    }
     getSellingPointsDictionary() {
         return fetchWrapper.get('/restaurant/dictionary/restaurantCombo')
     }

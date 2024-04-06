@@ -107,7 +107,6 @@ function onSubmit() {
       >
         <div class="w-full surface-card py-5 px-2 sm:px-5" style="border-radius: 53px 53px 0 0">
           <div class="text-center mb-5">
-            <!-- <img src="/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3" /> -->
             <div class="text-900 text-3xl font-medium mb-3">Sign Up</div>
             <span class="text-600 font-medium">Sign up to continue</span>
           </div>
