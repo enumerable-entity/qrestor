@@ -13,7 +13,7 @@ const router = createRouter({
         {
           path: '/pages/spoints',
           name: 'selling-points',
-          component: () => import('@/views/pages/SellingPoints.vue')
+          component: () => import('@/views/management/SellingPoints.vue')
         },
         {
           path: '/management/menus',
