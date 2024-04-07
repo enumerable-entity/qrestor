@@ -11,9 +11,7 @@ export const fetchWrapper = {
 
 function request(method) {
   return async (url, body) => {
-
     const requestUrl = apiUrl + url
-     
     const requestOptions = {
       method,
       mode: 'cors',
@@ -37,10 +35,7 @@ function request(method) {
     return { data: data, status: status }
   }
 
-  // helper functions
-
   function authHeader(url) {
-    // return auth header with jwt if user is logged in and request is to the api url
     const { tokens: user } = useAuthStore()
     const isLoggedIn = !!user?.accessToken
     const isApiUrl = url.startsWith(apiUrl)

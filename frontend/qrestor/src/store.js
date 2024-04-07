@@ -10,11 +10,7 @@ export const useUserStore = defineStore({
   actions: {
     async getLoggedUserInfo() {
       const { data } = await fetchWrapper.get('/auth/authentication/me')
-
-      // update pinia state
       this.userInfo = await data
-
-      // store user details and jwt in local storage to keep user logged in between page refreshes
       localStorage.setItem('authUserInfo', JSON.stringify(data))
     },
     getUserLocale() {
