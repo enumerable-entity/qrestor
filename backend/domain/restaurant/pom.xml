@@ -10,8 +10,8 @@
 
     <artifactId>restaurant</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>restaurant</name>
-    <description>restaurant</description>
+    <name>sellpoint</name>
+    <description>sellpoint</description>
     <properties>
     </properties>
     <dependencies>
