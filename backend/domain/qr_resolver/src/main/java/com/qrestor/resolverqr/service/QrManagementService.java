@@ -49,7 +49,7 @@ public class QrManagementService extends AbstractCrudService<QrCodeMappingDTO, Q
         Map<UUID, String> menuMap = getSellingPointMap(menuServiceClient.getMenuCombo());
 
         dto.forEach(d -> {
-            d.setRestaurantName(restaurantsMap.get(d.getRestaurantId()));
+            d.setRestaurantName(restaurantsMap.get(d.getSellingPointId()));
             d.setMenuName(menuMap.get(d.getMenuId()));
         });
         return dto;
@@ -86,7 +86,7 @@ public class QrManagementService extends AbstractCrudService<QrCodeMappingDTO, Q
     private QrCodeMappingDTO fillTitles(QrCodeMappingDTO response) {
         Map<UUID, String> restaurantsMap = getSellingPointMap(restaurantHttpClient.getRestaurantsDict());
         Map<UUID, String> menuMap = getSellingPointMap(menuServiceClient.getMenuCombo());
-        response.setRestaurantName(restaurantsMap.get(response.getRestaurantId()));
+        response.setRestaurantName(restaurantsMap.get(response.getSellingPointId()));
         response.setMenuName(menuMap.get(response.getMenuId()));
         return response;
     }

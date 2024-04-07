@@ -1,9 +1,9 @@
-package com.qrestor.exporter.export.service;
+package com.qrestor.exporter.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.qrestor.exporter.ExportType;
 import com.qrestor.exporter.client.MenuServiceClient;
-import com.qrestor.exporter.export.ExportType;
 import com.qrestor.models.dto.menu.eximport.MenuAgregateDTO;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,9 @@ public class JsonExporter implements ExportStrategy {
     }
 
     @Override
-    public void exportData(UUID restaurantId, ExportType format, HttpServletResponse response) throws IOException {
+    public void exportData(UUID restaurantId,
+                           ExportType format,
+                           HttpServletResponse response) throws IOException {
         setupResponseHeaders(response);
         MenuAgregateDTO allMenusForRestaurant = menuServiceClient.getMenuAggregate(restaurantId);
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);

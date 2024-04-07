@@ -200,9 +200,10 @@ public class PaymentService {
     }
 
     private CompletableFuture<Map<UUID, Pair<String, Long>>> getMenuItemsOptionsPriceMap(List<ItemOrderDetails> items) {
-        Set<UUID> menuItemOptionPositionsIds = items.stream()
+        var menuItemOptionPositionsIds = items.stream()
                 .flatMap(item -> item.getMenuItemOptions().stream())
                 .flatMap(menuOptions -> menuOptions.getOptionPositions().stream())
+                .map(AbstractPublicDTO::getPublicId)
                 .collect(Collectors.toSet());
         return CompletableFuture.supplyAsync(() -> menuHttpClient.getMenuItemOptionsPositionsPricesMap(menuItemOptionPositionsIds));
     }

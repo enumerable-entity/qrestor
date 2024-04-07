@@ -1,4 +1,4 @@
-package com.qrestor.exporter.export;
+package com.qrestor.exporter;
 
 public enum ExportType {
     JSON,

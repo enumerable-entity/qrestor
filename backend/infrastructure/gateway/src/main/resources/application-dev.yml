@@ -28,8 +28,8 @@ spring:
             - Path=/qr/**, /qresolver/**
           filters:
             - RewritePath=/qresolver/(?<segment>.*), /${segment}
-        - id: restaurant
-          uri: lb://restaurant
+        - id: sell-points
+          uri: lb://sell-points
           predicates:
             - Path=/restaurant/**
           filters:

@@ -1,7 +1,7 @@
-package com.qrestor.exporter.export.api.controller;
+package com.qrestor.exporter.api.controller;
 
-import com.qrestor.exporter.export.ExportType;
-import com.qrestor.exporter.export.service.ExportService;
+import com.qrestor.exporter.ExportType;
+import com.qrestor.exporter.service.ExportService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +19,8 @@ public class ExportController {
     private final ExportService exporterService;
 
     @GetMapping("/restaurant/{restaurantId}")
-    public void exportAllMenusForRestaurant(@PathVariable UUID restaurantId, @RequestParam ExportType format,
+    public void exportAllMenusForRestaurant(@PathVariable UUID restaurantId,
+                                            @RequestParam ExportType format,
                                             HttpServletResponse response) throws IOException {
         exporterService.exportData(restaurantId, format, response);
     }

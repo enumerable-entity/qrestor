@@ -6,7 +6,7 @@ create database kitchenboard;
 create database mailer;
 create database menu;
 create database orders;
-create database restaurant;
+create database sell_points;
 create database paymentor;
 
 
@@ -18,7 +18,7 @@ create user kitchenboard with encrypted password 'kitchenboard';
 create user mailer with encrypted password 'mailer';
 create user menu with encrypted password 'menu';
 create user orders with encrypted password 'orders';
-create user restaurant with encrypted password 'restaurant';
+create user sell_points with encrypted password 'sell_points';
 create user paymentor with encrypted password 'paymentor';
 
 grant all privileges on database qresolver to qresolver;
@@ -29,7 +29,7 @@ grant all privileges on database kitchenboard to kitchenboard;
 grant all privileges on database mailer to mailer;
 grant all privileges on database menu to menu;
 grant all privileges on database orders to orders;
-grant all privileges on database restaurant to restaurant;
+grant all privileges on database sell_points to sell_points;
 grant all privileges on database paymentor to paymentor;
 
 
@@ -65,9 +65,9 @@ grant all privileges on schema menu to menu;
 create schema orders;
 grant all privileges on schema orders to orders;
 
-\connect restaurant restaurant;
-create schema restaurant;
-grant all privileges on schema restaurant to restaurant;
+\connect sell_points sell_points;
+create schema sell_points;
+grant all privileges on schema sell_points to sell_points;
 
 \connect paymentor paymentor;
 create schema paymentor;

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Collection;
 
-@FeignClient(name = "restaurant", configuration = FeignClientConfig.class)
+@FeignClient(name = "sell-points", configuration = FeignClientConfig.class)
 public interface RestaurantHttpClient {
 
     @GetMapping("/integration/getRestaurantsDict")

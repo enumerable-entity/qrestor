@@ -1,6 +1,6 @@
-package com.qrestor.exporter.export.service;
+package com.qrestor.exporter.service;
 
-import com.qrestor.exporter.export.ExportType;
+import com.qrestor.exporter.ExportType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +11,7 @@ import java.util.List;
 public class ExportStrategyFactory {
 
     private final List<ExportStrategy> exportStrategies;
+
     public ExportStrategy getExportStrategy(ExportType type) {
         return exportStrategies.stream()
                 .filter(strategy -> strategy.support(type))

@@ -28,8 +28,8 @@ public class QrCodeMappingEntity extends OwnedEntity implements PublicEntity {
     @Column(name = "table_id")
     private Integer tableId;
 
-    @Column(name = "restaurant_id", nullable = false)
-    private UUID restaurantId;
+    @Column(name = "sell_point_id", nullable = false)
+    private UUID sellingPointId;
 
     @Column(name = "menu_id", nullable = false)
     private UUID menuId;

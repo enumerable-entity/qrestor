@@ -1,7 +1,7 @@
-package com.qrestor.exporter.export.service;
+package com.qrestor.exporter.service;
 
+import com.qrestor.exporter.ExportType;
 import com.qrestor.exporter.client.MenuServiceClient;
-import com.qrestor.exporter.export.ExportType;
 import com.qrestor.models.dto.menu.eximport.MenuAgregateDTO;
 import com.qrestor.models.dto.menu.eximport.MenuDTO;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,7 +38,9 @@ public class XlsExporter implements ExportStrategy {
     }
 
     @Override
-    public void exportData(UUID restaurantId, ExportType format, HttpServletResponse response) throws IOException {
+    public void exportData(UUID restaurantId,
+                           ExportType format,
+                           HttpServletResponse response) throws IOException {
         setupResponseHeaders(response);
         MenuAgregateDTO allMenusForRestaurant = menuServiceClient.getMenuAggregate(restaurantId);
 
@@ -92,7 +94,11 @@ public class XlsExporter implements ExportStrategy {
         createCell(sheet, row, MENU_HEADER_COLUMN, "Menu ID", style);
     }
 
-    private void createCell(XSSFSheet singleMenuSheet, Row row, int columnCount, Object value, CellStyle style) {
+    private void createCell(XSSFSheet singleMenuSheet,
+                            Row row,
+                            int columnCount,
+                            Object value,
+                            CellStyle style) {
         sheet.autoSizeColumn(columnCount);
         Cell cell = row.createCell(columnCount);
         switch (value) {

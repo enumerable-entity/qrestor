@@ -5,7 +5,7 @@ import com.qrestor.models.dto.RestaurantBasicInfoDTO;
 import com.qrestor.models.dto.order.ItemOrderDetails;
 import com.qrestor.models.dto.order.OrderDTO;
 import com.qrestor.models.dto.order.OrderStatus;
-import com.qrestor.orders.client.RestaurantHttpClient;
+import com.qrestor.orders.client.SellPointHttpClient;
 import com.qrestor.orders.entity.OrderEntity;
 import com.qrestor.orders.event.OrderEvent;
 import com.qrestor.models.dto.kafka.OrderEventType;
@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final ApplicationEventPublisher eventPublisher;
-    private final RestaurantHttpClient restaurantHttpClient;
+    private final SellPointHttpClient sellPointHttpClient;
 
     @Override
     @Transactional
@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
     public void changeOrderStatus(UUID orderId, OrderStatus status) {
         OrderEntity order = orderRepository.findByUuid(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
-        Optional<List<RestaurantBasicInfoDTO>> waiterRestaurants = Optional.ofNullable(restaurantHttpClient.getWaiterRestaurantId());
+        Optional<List<RestaurantBasicInfoDTO>> waiterRestaurants = Optional.ofNullable(sellPointHttpClient.getWaiterRestaurantId());
         Map<UUID, RestaurantBasicInfoDTO> map = waiterRestaurants.get().stream().collect(Collectors.toMap(RestaurantBasicInfoDTO::getPublicId, res -> res));
         if (!waiterRestaurants.get().isEmpty() && !map.containsKey(order.getRestaurantId())) {
             throw new RuntimeException("Order not found");
@@ -83,7 +83,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<OrderDTO> getOrdersHistory(LocalDate dateFrom, LocalDate dateTo, Pageable pageable) {
-        Optional<List<RestaurantBasicInfoDTO>> userRestaurants = Optional.ofNullable(restaurantHttpClient.getWaiterRestaurantId());
+        Optional<List<RestaurantBasicInfoDTO>> userRestaurants = Optional.ofNullable(sellPointHttpClient.getWaiterRestaurantId());
         if (userRestaurants.isPresent() && !userRestaurants.get().isEmpty()) {
             var restInfoList = userRestaurants.get();
             Map<UUID, RestaurantBasicInfoDTO> map = restInfoList.stream().collect(Collectors.toMap(RestaurantBasicInfoDTO::getPublicId, res -> res));
@@ -97,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<OrderDTO> active(LocalDate dateFrom, LocalDate dateTo, Pageable pageable) {
-        Optional<List<RestaurantBasicInfoDTO>> userRestaurants = Optional.ofNullable(restaurantHttpClient.getWaiterRestaurantId());
+        Optional<List<RestaurantBasicInfoDTO>> userRestaurants = Optional.ofNullable(sellPointHttpClient.getWaiterRestaurantId());
         Set<OrderStatus> completed = Set.of(OrderStatus.PENDING, OrderStatus.PAYMENT_IN_PROGRESS, OrderStatus.IN_PROGRESS);
         if (userRestaurants.isPresent() && !userRestaurants.get().isEmpty()) {
             var restInfoList = userRestaurants.get();

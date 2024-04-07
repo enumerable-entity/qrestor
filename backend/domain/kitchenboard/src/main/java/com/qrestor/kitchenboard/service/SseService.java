@@ -2,9 +2,8 @@ package com.qrestor.kitchenboard.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qrestor.kitchenboard.client.OrdersHttpClient;
-import com.qrestor.kitchenboard.client.RestaurantHttpClient;
+import com.qrestor.kitchenboard.client.SellPointHttpClient;
 import com.qrestor.models.dto.kafka.OrderEventDTO;
-import com.qrestor.models.dto.order.OrderDTO;
 import com.qrestor.models.dto.order.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,13 +30,13 @@ import static com.qrestor.models.dto.order.OrderStatus.*;
 @RequiredArgsConstructor
 public class SseService {
 
-    private final RestaurantHttpClient restaurantHttpClient;
+    private final SellPointHttpClient sellPointHttpClient;
     private final OrdersHttpClient ordersHttpClient;
     private final ObjectMapper objectMapper;
     private final Map<UUID, SseEmitter> restaurantIdToEmitter = new ConcurrentHashMap<>();
 
     public void addNewActiveSSEmitter(SseEmitter emitter) {
-        String waiterRestaurantId = restaurantHttpClient.getWaiterRestaurantId().stream()
+        String waiterRestaurantId = sellPointHttpClient.getWaiterRestaurantId().stream()
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("Waiter is not assigned to any restaurant"))
                 .getPublicId()
