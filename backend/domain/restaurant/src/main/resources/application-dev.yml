@@ -5,9 +5,9 @@ app:
       secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
 spring:
   datasource:
-    url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
-    username: ${AUTH_SERVICE_DB_USER:${spring.application.name}}
-    password: ${AUTH_SERVICE_DB_PASSWORD:${spring.application.name}}
+    url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/sell_points}
+    username: ${AUTH_SERVICE_DB_USER:sell_points}
+    password: ${AUTH_SERVICE_DB_PASSWORD:sell_points}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

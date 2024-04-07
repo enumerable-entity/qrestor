@@ -2,7 +2,7 @@ server:
   port: 8098
 spring:
   application:
-    name: restaurant
+    name: sell-points
   kafka:
     admin:
       properties:

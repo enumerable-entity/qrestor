@@ -11,6 +11,6 @@ public interface SyncUserMapper {
     UserKafkaSyncDTO toDto(SyncUser syncUser);
 
     @Mapping(target = "ownedRestaurants", ignore = true)
-    @Mapping(target = "restaurant", ignore = true)
+    @Mapping(target = "sellingPoint", ignore = true)
     SyncUser toEntity(UserKafkaSyncDTO userKafkaSyncDTO);
 }

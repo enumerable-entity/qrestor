@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "addresses", schema = "restaurant")
+@Table(name = "addresses", schema = "sell_points")
 public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

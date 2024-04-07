@@ -1,12 +1,12 @@
 package com.qrestor.restaurant.api.dto;
 
 import com.qrestor.models.dto.BasicDTO;
-import com.qrestor.restaurant.entity.RestaurantSettingsEntity;
+import com.qrestor.restaurant.entity.SellingPointSettingsEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * DTO for {@link RestaurantSettingsEntity}
+ * DTO for {@link SellingPointSettingsEntity}
  */
 @EqualsAndHashCode(callSuper = false)
 @Data

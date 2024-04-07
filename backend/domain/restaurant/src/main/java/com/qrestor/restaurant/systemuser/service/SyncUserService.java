@@ -30,9 +30,9 @@ public class SyncUserService {
 
     private List<RestaurantBasicInfoDTO> toRestaurantBasicInfoDTO(SyncUser syncUser) {
         RestaurantBasicInfoDTO restaurantBasicInfoDTO = new RestaurantBasicInfoDTO();
-        restaurantBasicInfoDTO.setPublicId(syncUser.getRestaurant().getPublicId());
-        restaurantBasicInfoDTO.setName(syncUser.getRestaurant().getName());
-        restaurantBasicInfoDTO.setTitle(syncUser.getRestaurant().getTitle());
+        restaurantBasicInfoDTO.setPublicId(syncUser.getSellingPoint().getPublicId());
+        restaurantBasicInfoDTO.setName(syncUser.getSellingPoint().getName());
+        restaurantBasicInfoDTO.setTitle(syncUser.getSellingPoint().getTitle());
         return List.of(restaurantBasicInfoDTO);
     }
 }

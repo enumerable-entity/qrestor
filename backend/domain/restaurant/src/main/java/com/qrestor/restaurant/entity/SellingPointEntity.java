@@ -16,10 +16,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "restaurants", schema = "restaurant", indexes = {
-        @Index(name = "restaurants_public_id_idx", columnList = "public_id", unique = true)
+@Table(name = "sell_points", schema = "sell_points", indexes = {
+        @Index(name = "sell_points_public_id_idx", columnList = "public_id", unique = true)
 })
-public class RestaurantEntity extends OwnedEntity implements PublicEntity {
+public class SellingPointEntity extends OwnedEntity implements PublicEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
@@ -40,8 +40,8 @@ public class RestaurantEntity extends OwnedEntity implements PublicEntity {
     @Column(name = "phone")
     private String phone;
 
-    @OneToOne(mappedBy = "restaurant", cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
-    private RestaurantSettingsEntity settings;
+    @OneToOne(mappedBy = "sellingPoint", cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
+    private SellingPointSettingsEntity settings;
 
     @Column(name = "user_id", updatable = false)
     private UUID userId;
@@ -50,8 +50,8 @@ public class RestaurantEntity extends OwnedEntity implements PublicEntity {
     @JoinColumn(name = "user_id", nullable = false, updatable = false, insertable = false)
     private SyncUser user;
 
-    @OneToMany(mappedBy = "restaurant", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<SyncUser> restaurantWaiters = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "sellingPoint", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<SyncUser> sellingPointWaiters = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = true)
     @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ID")
@@ -64,7 +64,7 @@ public class RestaurantEntity extends OwnedEntity implements PublicEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy hibernateProxy ? hibernateProxy.getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy hibernateProxy ? hibernateProxy.getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        RestaurantEntity that = (RestaurantEntity) o;
+        SellingPointEntity that = (SellingPointEntity) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

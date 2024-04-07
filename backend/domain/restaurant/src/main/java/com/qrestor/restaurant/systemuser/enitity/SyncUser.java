@@ -1,6 +1,6 @@
 package com.qrestor.restaurant.systemuser.enitity;
 
-import com.qrestor.restaurant.entity.RestaurantEntity;
+import com.qrestor.restaurant.entity.SellingPointEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "sync_users", schema = "restaurant", indexes = {
+@Table(name = "sync_users", schema = "sell_points", indexes = {
         @Index(name = "system_users_uuid_idx", columnList = "uuid", unique = true)
 })
 public class SyncUser {
@@ -27,11 +27,11 @@ public class SyncUser {
     private String username;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RestaurantEntity> ownedRestaurants = new LinkedHashSet<>();
+    private Set<SellingPointEntity> ownedRestaurants = new LinkedHashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_waiters_id")
-    private RestaurantEntity restaurant;
+    @JoinColumn(name = "sell_point_waiters_id")
+    private SellingPointEntity sellingPoint;
 
     @Override
     public final boolean equals(Object o) {

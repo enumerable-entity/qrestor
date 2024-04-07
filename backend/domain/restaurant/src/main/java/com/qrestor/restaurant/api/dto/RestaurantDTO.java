@@ -2,12 +2,12 @@ package com.qrestor.restaurant.api.dto;
 
 import com.qrestor.models.dto.AbstractPublicDTO;
 import com.qrestor.models.dto.auth.AddressDTO;
-import com.qrestor.restaurant.entity.RestaurantEntity;
+import com.qrestor.restaurant.entity.SellingPointEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * DTO for {@link RestaurantEntity}
+ * DTO for {@link SellingPointEntity}
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
