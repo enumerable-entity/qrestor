@@ -14,11 +14,13 @@ import java.util.UUID;
 
 @Repository
 public interface OrderRepository extends PublicRepository<OrderEntity, Long> {
-    List<OrderEntity> findAllByRestaurantIdAndStatusIn(UUID restaurantId, Set<OrderStatus> orderStatus);
+    List<OrderEntity> findAllByRestaurantIdAndStatusIn(UUID restaurantId,
+                                                       Set<OrderStatus> orderStatus);
 
     Page<OrderEntity> findAllByRestaurantIdInAndStatusInAndOrderDateBetween(
             Set<UUID> restaurantId,
             Set<OrderStatus> statuses,
             LocalDateTime dateFrom,
-            LocalDateTime dateTo, Pageable pageable);
+            LocalDateTime dateTo,
+            Pageable pageable);
 }

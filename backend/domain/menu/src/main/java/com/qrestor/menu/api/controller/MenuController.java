@@ -6,7 +6,6 @@ import com.qrestor.menu.service.MenuPublicService;
 import com.qrestor.models.dto.menu.MenuItemOptionDTO;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,13 +29,13 @@ public class MenuController {
     }
 
     @GetMapping("/{menuId}/{menuItemId}")
-    public ResponseEntity<List<MenuItemOptionDTO>> getMenuItemOptions(@PathVariable UUID menuId, @PathVariable UUID menuItemId) {
+    public ResponseEntity<List<MenuItemOptionDTO>> getMenuItemOptions(@PathVariable UUID menuId,
+                                                                      @PathVariable UUID menuItemId) {
         return new ResponseEntity<>(menuPublicService.getMenuItemOptions(menuId, menuItemId), HttpStatus.OK);
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file)
-    {
+    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) {
 
         String extension = "";
         int lastIndex = file.getOriginalFilename().lastIndexOf(".");

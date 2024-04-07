@@ -4,7 +4,6 @@ package com.qrestor.commons.kafka;
 import com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO;
 import com.qrestor.models.dto.kafka.OrderEventDTO;
 import com.qrestor.models.dto.kafka.UserKafkaSyncDTO;
-import com.qrestor.models.dto.order.OrderDTO;
 import lombok.Getter;
 
 import java.util.Map;
@@ -21,5 +20,6 @@ public class KafkaTopics {
             OrderEventDTO.class, ORDERS_TOPIC
     );
 
-    private KafkaTopics() {}
+    private KafkaTopics() {
+    }
 }

@@ -48,7 +48,9 @@ public class MenuItemOptionPositionsServiceImpl extends
     }
 
     @Override
-    public List<MenuItemOptionPositionDTO> findAllByOptionId(Pageable pageable, UUID optionId, boolean publicRequest) {
+    public List<MenuItemOptionPositionDTO> findAllByOptionId(Pageable pageable,
+                                                             UUID optionId,
+                                                             boolean publicRequest) {
         Specification<MenuItemOptionPositionEntity> spec;
         if (optionId != null) {
             spec = Specification.where((root, query, criteriaBuilder) ->

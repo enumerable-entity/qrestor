@@ -39,17 +39,21 @@ VALUES (nextval('menu.menu_items_seq'), 'Item(dish) description', 'htttp:/image.
         '9cbbee7d-b026-469d-903f-3429fd0b4fc2', 1,
         currval('menu.menu_seq'));
 INSERT INTO menu.menu_items_to_ingredients
-VALUES(101, 101);
+VALUES (101, 101);
 INSERT INTO menu.menu_items_to_ingredients
-VALUES(51, 51);
+VALUES (51, 51);
 
 
 INSERT iNTO menu.menu_items_options
-VALUES (nextval('menu.menu_items_options_seq'), true, true, true, '78429de1-71cd-4014-8d97-c32a00e2b89e', 'Size', '9cbbee7d-b026-469d-903f-3429fd0b4fc2', currval('menu.menu_items_seq'));
+VALUES (nextval('menu.menu_items_options_seq'), true, true, true, '78429de1-71cd-4014-8d97-c32a00e2b89e', 'Size',
+        '9cbbee7d-b026-469d-903f-3429fd0b4fc2', currval('menu.menu_items_seq'));
 INSERT iNTO menu.menu_items_options
-VALUES (nextval('menu.menu_items_options_seq'), true, true, true, '88bb0ec5-4cf8-4b6d-96d6-77acdf40debc', 'Color', '9cbbee7d-b026-469d-903f-3429fd0b4fc2', currval('menu.menu_items_seq'));
+VALUES (nextval('menu.menu_items_options_seq'), true, true, true, '88bb0ec5-4cf8-4b6d-96d6-77acdf40debc', 'Color',
+        '9cbbee7d-b026-469d-903f-3429fd0b4fc2', currval('menu.menu_items_seq'));
 
 INSERT INTO menu.menu_items_options_positions
-VALUES (nextval('menu.menu_items_options_positions_seq'), true, 33.33,'57afc93f-f2de-4595-92d4-4cc4c1930bd0','35 inch','9cbbee7d-b026-469d-903f-3429fd0b4fc2', currval('menu.menu_items_options_seq'));
+VALUES (nextval('menu.menu_items_options_positions_seq'), true, 33.33, '57afc93f-f2de-4595-92d4-4cc4c1930bd0',
+        '35 inch', '9cbbee7d-b026-469d-903f-3429fd0b4fc2', currval('menu.menu_items_options_seq'));
 INSERT INTO menu.menu_items_options_positions
-VALUES (nextval('menu.menu_items_options_positions_seq'), true, 33.33,'b11cc723-cdb6-4704-bcd9-64d7414e66c8','15 inch','9cbbee7d-b026-469d-903f-3429fd0b4fc2', currval('menu.menu_items_options_seq'));
+VALUES (nextval('menu.menu_items_options_positions_seq'), true, 33.33, 'b11cc723-cdb6-4704-bcd9-64d7414e66c8',
+        '15 inch', '9cbbee7d-b026-469d-903f-3429fd0b4fc2', currval('menu.menu_items_options_seq'));

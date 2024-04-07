@@ -1,7 +1,6 @@
 package com.qrestor.orders.event;
 
 import com.qrestor.models.dto.kafka.OrderEventDTO;
-import com.qrestor.models.dto.order.OrderDTO;
 import com.qrestor.orders.kafka.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -19,7 +19,6 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Account;
 import com.stripe.model.AccountLink;
-import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.RequestOptions;
 import com.stripe.param.AccountCreateParams;
@@ -35,7 +34,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-import static com.qrestor.models.EmailRequestType.EMAIL_VERIFICATION;
 import static com.qrestor.models.EmailRequestType.ORDER_SUCCESS_CONFIRMATION;
 import static com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO.USER_NAME_PARAM;
 
@@ -52,9 +50,13 @@ public class PaymentService {
 
     private final KafkaProducer<KafkaEmailSendRequestDTO> mailerProducer;
 
-    public PaymentService(AuthHttpClient authHttpClient, SyncUserRepository syncUserRepository, RestaurantHttpClient restaurantHttpClient,
-                          MenuHttpClient menuHttpClient, PaymentDetailsRepository repository,
-                          @Value("${app.stripe.secret}") String stripeApiKey, KafkaProducer<KafkaEmailSendRequestDTO> mailerProducer){
+    public PaymentService(AuthHttpClient authHttpClient,
+                          SyncUserRepository syncUserRepository,
+                          RestaurantHttpClient restaurantHttpClient,
+                          MenuHttpClient menuHttpClient,
+                          PaymentDetailsRepository repository,
+                          @Value("${app.stripe.secret}") String stripeApiKey,
+                          KafkaProducer<KafkaEmailSendRequestDTO> mailerProducer) {
         this.repository = repository;
         this.mailerProducer = mailerProducer;
         Stripe.apiKey = stripeApiKey;
@@ -67,11 +69,11 @@ public class PaymentService {
     private static List<SessionCreateParams.LineItem> mapOrderToLineItems(OrderDTO order,
                                                                           CompletableFuture<Map<UUID, Pair<String, Long>>> menuItemsPriceMapF,
                                                                           CompletableFuture<Map<UUID, Pair<String, Long>>> menuItemsOptionsPriceMapF) {
-        Map<UUID, Pair<String, Long>> uuidPairMap =null;
-        Map<UUID, Pair<String, Long>> menuItemsOptionsPriceMap =null;
+        Map<UUID, Pair<String, Long>> uuidPairMap = null;
+        Map<UUID, Pair<String, Long>> menuItemsOptionsPriceMap = null;
         try {
             menuItemsOptionsPriceMap = menuItemsOptionsPriceMapF.get();
-            uuidPairMap= menuItemsPriceMapF.get();
+            uuidPairMap = menuItemsPriceMapF.get();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } catch (ExecutionException e) {

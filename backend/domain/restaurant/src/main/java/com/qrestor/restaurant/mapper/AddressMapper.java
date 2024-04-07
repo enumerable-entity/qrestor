@@ -11,6 +11,7 @@ public interface AddressMapper {
     @Mapping(target = "number", ignore = true)
     @Mapping(target = "country", ignore = true)
     AddressDTO toDto(AddressEntity entity);
+
     AddressEntity toEntity(AddressDTO dto);
 
 }

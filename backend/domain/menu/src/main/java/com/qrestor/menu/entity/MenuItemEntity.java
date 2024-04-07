@@ -9,7 +9,6 @@ import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Getter
@@ -100,7 +99,7 @@ public class MenuItemEntity extends OwnedEntity implements PublicEntity {
     @Column(name = "is_soy")
     private Boolean isSoy;
 
-    @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<MenuItemOptionEntity> menuItemOptions = new ArrayList<>();
 
     @Override

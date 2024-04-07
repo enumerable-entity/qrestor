@@ -14,5 +14,7 @@ public interface MenuItemOptionPositionsService extends CrudService<MenuItemOpti
 
     Map<UUID, Pair<String, Long>> getMenuItemsOptionsPositionsPriceMap(Set<UUID> menuItemsOptionsPositionsUUIDs);
 
-    public List<MenuItemOptionPositionDTO> findAllByOptionId(Pageable pageable, UUID optionId, boolean b);
+    List<MenuItemOptionPositionDTO> findAllByOptionId(Pageable pageable,
+                                                      UUID optionId,
+                                                      boolean b);
 }

@@ -1,7 +1,7 @@
 package com.qrestor.auth.token.service;
 
-import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.entity.TokenEntity;
+import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.repository.TokenRepository;
 import com.qrestor.auth.user.entity.SystemUserEntity;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,8 @@ public class TokenService {
     }
 
 
-    public TokenEntity getNewTokenFor(SystemUserEntity user, TokenType tokenType) {
+    public TokenEntity getNewTokenFor(SystemUserEntity user,
+                                      TokenType tokenType) {
         return tokenRepository.save(TokenEntity.builder()
                 .value(generateToken())
                 .type(tokenType)
@@ -42,7 +43,8 @@ public class TokenService {
         return uuid + ":" + uuid2;
     }
 
-    public Optional<TokenEntity> getToken(String emailConfirmationToken, TokenType tokenType) {
+    public Optional<TokenEntity> getToken(String emailConfirmationToken,
+                                          TokenType tokenType) {
         return tokenRepository.findByValueAndType(emailConfirmationToken, tokenType);
     }
 }

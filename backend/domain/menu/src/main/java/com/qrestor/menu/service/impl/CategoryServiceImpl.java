@@ -17,7 +17,8 @@ import java.util.UUID;
  */
 @Service
 public class CategoryServiceImpl extends AbstractCrudService<ItemCategoryDTO, ItemCategoryEntity> implements CategoryService {
-    public CategoryServiceImpl(CategoryMapper mapper, CategoryRepository repository) {
+    public CategoryServiceImpl(CategoryMapper mapper,
+                               CategoryRepository repository) {
         super(mapper, repository);
     }
 

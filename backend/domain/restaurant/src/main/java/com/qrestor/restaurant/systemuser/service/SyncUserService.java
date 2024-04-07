@@ -25,7 +25,7 @@ public class SyncUserService {
 
     public List<RestaurantBasicInfoDTO> getRestaurantIdForWaiter(UUID waiterId) {
         Optional<SyncUser> waiter = syncUserRepository.getByUuid(waiterId);
-        return waiter.map(this::toRestaurantBasicInfoDTO).orElseThrow(()-> new RuntimeException("Waiter not found"));
+        return waiter.map(this::toRestaurantBasicInfoDTO).orElseThrow(() -> new RuntimeException("Waiter not found"));
     }
 
     private List<RestaurantBasicInfoDTO> toRestaurantBasicInfoDTO(SyncUser syncUser) {

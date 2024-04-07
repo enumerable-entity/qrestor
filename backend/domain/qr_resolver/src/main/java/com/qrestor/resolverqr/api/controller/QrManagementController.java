@@ -2,7 +2,6 @@ package com.qrestor.resolverqr.api.controller;
 
 import com.qrestor.commons.CrudController;
 import com.qrestor.resolverqr.api.dto.QrCodeMappingDTO;
-import com.qrestor.commons.CrudService;
 import com.qrestor.resolverqr.service.QrManagementService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;

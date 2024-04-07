@@ -4,7 +4,6 @@ import com.qrestor.auth.user.entity.SystemUserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
-import org.springframework.data.redis.core.RedisHash;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -24,17 +23,15 @@ public class SystemRoleEntity implements GrantedAuthority {
 
     @Column(name = "authority", nullable = false, length = 20)
     private String authority;
-
-    @Override
-    public String getAuthority() {
-        return authority;
-    }
-
     @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Collection<SystemUserEntity> systemUserEntities;
 
+    @Override
+    public String getAuthority() {
+        return authority;
+    }
 
     @Override
     public final boolean equals(Object o) {

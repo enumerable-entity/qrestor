@@ -1,7 +1,6 @@
 package com.qrestor.kitchenboard.service;
 
 import com.qrestor.models.dto.kafka.OrderEventDTO;
-import com.qrestor.models.dto.order.OrderDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

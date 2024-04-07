@@ -64,7 +64,7 @@ public class TokenEntity {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "value = " + value + ")";
+               "id = " + id + ", " +
+               "value = " + value + ")";
     }
 }

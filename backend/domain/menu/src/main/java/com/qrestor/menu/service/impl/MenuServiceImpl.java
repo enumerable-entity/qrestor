@@ -1,21 +1,22 @@
 package com.qrestor.menu.service.impl;
 
 import com.qrestor.commons.AbstractCrudService;
-import com.qrestor.menu.mapper.export.MenuExportMapper;
-import com.qrestor.models.Pair;
-import com.qrestor.models.dto.DictionaryDTO;
-import com.qrestor.models.dto.menu.eximport.MenuAgregateDTO;
-import com.qrestor.security.SecurityUtils;
 import com.qrestor.menu.api.dto.MenuDTO;
 import com.qrestor.menu.entity.MenuEntity;
 import com.qrestor.menu.mapper.MenuMapper;
+import com.qrestor.menu.mapper.export.MenuExportMapper;
 import com.qrestor.menu.repository.MenuRepository;
 import com.qrestor.menu.service.MenuService;
 import com.qrestor.menu.validator.MenuValidator;
+import com.qrestor.models.dto.DictionaryDTO;
+import com.qrestor.models.dto.menu.eximport.MenuAgregateDTO;
+import com.qrestor.security.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class MenuServiceImpl extends AbstractCrudService<MenuDTO, MenuEntity> implements MenuService {
@@ -23,8 +24,10 @@ public class MenuServiceImpl extends AbstractCrudService<MenuDTO, MenuEntity> im
     private final MenuExportMapper exportMapper;
     private final MenuRepository repository;
 
-    public MenuServiceImpl(MenuMapper mapper, MenuRepository repository,
-                           MenuValidator validator, MenuExportMapper exportMapper) {
+    public MenuServiceImpl(MenuMapper mapper,
+                           MenuRepository repository,
+                           MenuValidator validator,
+                           MenuExportMapper exportMapper) {
         super(mapper, repository);
         this.validator = validator;
         this.exportMapper = exportMapper;
@@ -45,7 +48,7 @@ public class MenuServiceImpl extends AbstractCrudService<MenuDTO, MenuEntity> im
     @Override
     @Transactional(readOnly = true)
     public MenuAgregateDTO getMenuAggregateForRestaurant(UUID restaurantId) {
-        Collection<MenuEntity> allRestaurantMenus = ((MenuRepository) repository).findAllByUserIdAndRestaurantId(SecurityUtils.getPrincipalUUID(), restaurantId);
+        Collection<MenuEntity> allRestaurantMenus = repository.findAllByUserIdAndRestaurantId(SecurityUtils.getPrincipalUUID(), restaurantId);
         if (!allRestaurantMenus.isEmpty()) {
             MenuAgregateDTO menuAgregateDTO = new MenuAgregateDTO();
             menuAgregateDTO.setMenus(exportMapper.toDTOs(allRestaurantMenus));

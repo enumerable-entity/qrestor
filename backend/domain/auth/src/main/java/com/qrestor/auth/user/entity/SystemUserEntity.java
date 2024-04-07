@@ -92,13 +92,13 @@ public class SystemUserEntity implements UserDetails {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "uuid = " + uuid + ", " +
-                "username = " + username + ", " +
-                "email = " + email + ", " +
-                "accountNonExpired = " + accountNonExpired + ", " +
-                "accountNonLocked = " + accountNonLocked + ", " +
-                "credentialsNonExpired = " + credentialsNonExpired + ", " +
-                "enabled = " + enabled + ")";
+               "id = " + id + ", " +
+               "uuid = " + uuid + ", " +
+               "username = " + username + ", " +
+               "email = " + email + ", " +
+               "accountNonExpired = " + accountNonExpired + ", " +
+               "accountNonLocked = " + accountNonLocked + ", " +
+               "credentialsNonExpired = " + credentialsNonExpired + ", " +
+               "enabled = " + enabled + ")";
     }
 }

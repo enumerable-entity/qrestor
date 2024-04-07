@@ -5,21 +5,20 @@ import com.qrestor.auth.api.dto.LoginResponseDTO;
 import com.qrestor.auth.api.dto.PasswordChangeDTO;
 import com.qrestor.auth.api.dto.PasswordResetDTO;
 import com.qrestor.auth.security.JwtService;
-import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.entity.TokenEntity;
+import com.qrestor.auth.token.enums.TokenType;
 import com.qrestor.auth.token.service.TokenService;
-import com.qrestor.models.dto.auth.UserDescriptorDTO;
 import com.qrestor.auth.user.entity.SystemUserEntity;
 import com.qrestor.auth.user.enums.UserEventType;
 import com.qrestor.auth.user.events.UserEvent;
 import com.qrestor.auth.user.mapper.UserDescriptorMapper;
 import com.qrestor.auth.user.repository.SystemUserRepository;
 import com.qrestor.auth.user.service.interfaces.UserAuthenticationService;
+import com.qrestor.models.dto.auth.UserDescriptorDTO;
 import com.qrestor.security.QrestorPrincipal;
 import com.qrestor.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -78,7 +77,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
         boolean isOldPasswordCorrect = passwordEncoder.matches(changeDTO.oldPassword(), credentials.toString());
         if (!isOldPasswordCorrect) {
             throw new RuntimeException("Old password is incorrect");
-        }else{
+        } else {
             String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             SystemUserEntity loggedUser = userRepository.findOneByUsername(username).orElseThrow();
             loggedUser.setPassword(passwordEncoder.encode(changeDTO.newPassword()));

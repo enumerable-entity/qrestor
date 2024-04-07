@@ -5,7 +5,6 @@ import com.qrestor.menu.api.dto.MenuDTO;
 import com.qrestor.menu.entity.MenuEntity;
 import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.models.dto.menu.eximport.MenuAgregateDTO;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Collection;
 import java.util.Optional;

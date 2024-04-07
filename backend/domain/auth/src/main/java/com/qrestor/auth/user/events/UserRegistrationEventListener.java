@@ -68,14 +68,17 @@ public class UserRegistrationEventListener implements ApplicationListener<UserEv
                 prepareParams(newUser, REGISTRATION + VERIFY_EMAIL, activationEmailToken)));
     }
 
-    private Map<String, String> prepareParams(SystemUserEntity newUser, String path, TokenEntity token) {
+    private Map<String, String> prepareParams(SystemUserEntity newUser,
+                                              String path,
+                                              TokenEntity token) {
         return Map.of(
                 USER_NAME_PARAM, newUser.getUsername(),
                 URL_PARAM, prepareUrl(path, token)
         );
     }
 
-    private String prepareUrl(String path, TokenEntity token) {
+    private String prepareUrl(String path,
+                              TokenEntity token) {
         return domain + path + token.getValue();
     }
 

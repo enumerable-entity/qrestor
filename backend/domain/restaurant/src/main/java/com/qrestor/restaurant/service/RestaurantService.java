@@ -18,7 +18,9 @@ import java.util.UUID;
 public class RestaurantService extends AbstractCrudService<RestaurantDTO, SellingPointEntity> implements CrudService<RestaurantDTO> {
 
     private final RestaurantRepository restaurantRepository;
-    public RestaurantService(RestaurantMapper mapper, RestaurantRepository repository) {
+
+    public RestaurantService(RestaurantMapper mapper,
+                             RestaurantRepository repository) {
         super(mapper, repository);
         this.restaurantRepository = repository;
     }

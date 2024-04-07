@@ -28,18 +28,18 @@ public class IntegrationController {
 
     @GetMapping("/getWaiterRestaurantId")
     @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
-    public List<RestaurantBasicInfoDTO> getUserRestaurants(){
+    public List<RestaurantBasicInfoDTO> getUserRestaurants() {
         return integrationService.getUserRestaurants();
     }
 
     @PostMapping("/getRestaurantOwnerId")
-    public UUID getRestaurantOwnerId(@RequestBody UUID restaurantId){
+    public UUID getRestaurantOwnerId(@RequestBody UUID restaurantId) {
         return integrationService.getRestaurantOwnerId(restaurantId);
     }
 
     @GetMapping("/getRestaurantsDict")
     @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
-    public Collection<DictionaryDTO<String>> getRestaurantsDict(){
+    public Collection<DictionaryDTO<String>> getRestaurantsDict() {
         return integrationService.getRestaurantsDict();
     }
 }

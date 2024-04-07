@@ -12,5 +12,5 @@ public record RegistrationRequestDTO(@Size(min = 4, max = 20) String username,
                                      UserInformationDTO information,
                                      UserSettingsDTO settings,
                                      AddressDTO address
-                                     ) {
+) {
 }

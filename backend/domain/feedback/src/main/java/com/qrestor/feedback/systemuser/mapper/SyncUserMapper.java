@@ -1,7 +1,7 @@
 package com.qrestor.feedback.systemuser.mapper;
 
-import com.qrestor.models.dto.kafka.UserKafkaSyncDTO;
 import com.qrestor.feedback.systemuser.enitity.SyncUser;
+import com.qrestor.models.dto.kafka.UserKafkaSyncDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -9,5 +9,6 @@ import org.mapstruct.Mapping;
 public interface SyncUserMapper {
     @Mapping(target = "id", ignore = true)
     UserKafkaSyncDTO toDto(SyncUser syncUser);
+
     SyncUser toEntity(UserKafkaSyncDTO userKafkaSyncDTO);
 }

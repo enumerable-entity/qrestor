@@ -4,7 +4,6 @@ import com.qrestor.commons.CrudController;
 import com.qrestor.menu.api.RestEndpoints;
 import com.qrestor.menu.api.dto.MenuItemDTO;
 import com.qrestor.menu.service.MenuItemsService;
-import com.qrestor.models.dto.menu.MenuItemOptionDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,7 @@ public class MenuItemsManController extends CrudController<MenuItemDTO> {
 
     @GetMapping("/menu/{menuId}")
     public ResponseEntity<List<MenuItemDTO>> findAllByMenuId(@PageableDefault(size = 30) Pageable pageable,
-                                                                   @PathVariable UUID menuId) {
+                                                             @PathVariable UUID menuId) {
         return ResponseEntity.ok(menuItemsService.findAllByMenuId(pageable, menuId, false));
     }
 

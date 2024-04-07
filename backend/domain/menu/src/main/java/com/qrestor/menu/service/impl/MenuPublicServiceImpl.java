@@ -1,12 +1,12 @@
 package com.qrestor.menu.service.impl;
 
-import com.qrestor.models.dto.menu.MenuItemOptionDTO;
 import com.qrestor.menu.api.dto.list.MenuListDTO;
 import com.qrestor.menu.entity.MenuEntity;
 import com.qrestor.menu.mapper.PublicMenuMapper;
 import com.qrestor.menu.repository.MenuRepository;
 import com.qrestor.menu.service.MenuItemOptionsService;
 import com.qrestor.menu.service.MenuPublicService;
+import com.qrestor.models.dto.menu.MenuItemOptionDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -32,8 +32,9 @@ public class MenuPublicServiceImpl implements MenuPublicService {
     }
 
     @Override
-    public List<MenuItemOptionDTO> getMenuItemOptions(UUID menuId, UUID menuItemId) {
-        return menuItemOptionsService.findAllByMenuItemId(PageRequest.of(0,99999), menuItemId, true);
+    public List<MenuItemOptionDTO> getMenuItemOptions(UUID menuId,
+                                                      UUID menuItemId) {
+        return menuItemOptionsService.findAllByMenuItemId(PageRequest.of(0, 99999), menuItemId, true);
     }
 
 }

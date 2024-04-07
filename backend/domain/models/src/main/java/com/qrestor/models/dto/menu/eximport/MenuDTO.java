@@ -1,4 +1,5 @@
 package com.qrestor.models.dto.menu.eximport;
+
 import com.qrestor.models.dto.AbstractPublicDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

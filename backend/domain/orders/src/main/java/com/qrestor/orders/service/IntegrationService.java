@@ -1,7 +1,7 @@
 package com.qrestor.orders.service;
 
-import com.qrestor.models.dto.order.OrderStatus;
 import com.qrestor.models.dto.order.OrderDTO;
+import com.qrestor.models.dto.order.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,8 @@ public class IntegrationService {
 
     private final OrderService orderService;
 
-    public List<OrderDTO> getOrdersForRestaurant(UUID restaurantId, Set<OrderStatus> orderStatus) {
+    public List<OrderDTO> getOrdersForRestaurant(UUID restaurantId,
+                                                 Set<OrderStatus> orderStatus) {
         return orderService.getOrdersForRestaurant(restaurantId, orderStatus);
     }
 }

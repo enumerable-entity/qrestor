@@ -1,7 +1,7 @@
 package com.qrestor.mailer.kafka;
 
-import com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO;
 import com.qrestor.mailer.sendgrid.EmailMessageSender;
+import com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

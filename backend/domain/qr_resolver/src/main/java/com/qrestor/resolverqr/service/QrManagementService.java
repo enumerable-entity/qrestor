@@ -5,6 +5,7 @@ import com.qrestor.commons.CrudService;
 import com.qrestor.commons.PublicRepository;
 import com.qrestor.commons.Utils;
 import com.qrestor.commons.mapper.CrudMapper;
+import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.resolverqr.api.dto.QrCodeMappingDTO;
 import com.qrestor.resolverqr.client.MenuServiceClient;
 import com.qrestor.resolverqr.client.RestaurantHttpClient;
@@ -12,7 +13,6 @@ import com.qrestor.resolverqr.entity.QrCodeMappingEntity;
 import com.qrestor.security.SecurityUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import com.qrestor.models.dto.DictionaryDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +31,7 @@ public class QrManagementService extends AbstractCrudService<QrCodeMappingDTO, Q
 
     public QrManagementService(
             CrudMapper<QrCodeMappingDTO,
-            QrCodeMappingEntity> mapper,
+                    QrCodeMappingEntity> mapper,
             PublicRepository<QrCodeMappingEntity, Long> repository,
             RestaurantHttpClient restaurantHttpClient,
             MenuServiceClient menuServiceClient) {

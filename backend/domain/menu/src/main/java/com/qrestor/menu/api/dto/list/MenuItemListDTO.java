@@ -4,7 +4,6 @@ import com.qrestor.models.dto.BasicDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 

@@ -16,7 +16,10 @@ public class UserEvent extends ApplicationEvent {
     private final TokenEntity token;
 
 
-    public UserEvent(Object source, UserEventType userEventType, SystemUserEntity newUser, TokenEntity token) {
+    public UserEvent(Object source,
+                     UserEventType userEventType,
+                     SystemUserEntity newUser,
+                     TokenEntity token) {
         super(source);
         this.userEventType = userEventType;
         this.newUser = newUser;

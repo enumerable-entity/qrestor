@@ -14,9 +14,11 @@ public interface FeedbackMapper {
     @Mapping(target = "publishedAt", ignore = true)
     @Mapping(target = "id", ignore = true)
     FeedbackEntity toEntity(FeedbackDTO feedback);
+
     List<FeedbackEntity> toEntities(List<FeedbackDTO> feedback);
 
 
     FeedbackDTO toDTO(FeedbackEntity feedback);
+
     List<FeedbackDTO> toDTOs(List<FeedbackEntity> feedback);
 }

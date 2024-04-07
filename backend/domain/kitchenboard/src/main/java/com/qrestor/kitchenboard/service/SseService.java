@@ -74,7 +74,8 @@ public class SseService {
     }
 
     @Async
-    public void emitWaiterRequest(UUID restaurantId, int tableNr) {
+    public void emitWaiterRequest(UUID restaurantId,
+                                  int tableNr) {
         SseEmitter restaurantEmitter = restaurantIdToEmitter.get(restaurantId);
         if (restaurantEmitter != null) {
             try {
@@ -113,7 +114,9 @@ public class SseService {
         }
     }
 
-    private void emitStatusUpdate(OrderEventDTO message, SseEmitter emitter, UUID targetEmitterId) {
+    private void emitStatusUpdate(OrderEventDTO message,
+                                  SseEmitter emitter,
+                                  UUID targetEmitterId) {
         try {
             Set<ResponseBodyEmitter.DataWithMediaType> newOrderSSEvent =
                     SseEmitter
@@ -123,7 +126,7 @@ public class SseService {
                             .reconnectTime(10000L)
                             .comment("Order status changed")
                             .data(objectMapper.writeValueAsString(
-                                    new OrderStatusSSEResponse(message.getOrder().getPublicId(),message.getOrder().getStatus())),
+                                            new OrderStatusSSEResponse(message.getOrder().getPublicId(), message.getOrder().getStatus())),
                                     MediaType.APPLICATION_JSON)
                             .build();
             emitter.send(newOrderSSEvent);
@@ -133,7 +136,9 @@ public class SseService {
         }
     }
 
-    private void emitNewOrder(OrderEventDTO message, SseEmitter emitter, UUID targetEmitterId) {
+    private void emitNewOrder(OrderEventDTO message,
+                              SseEmitter emitter,
+                              UUID targetEmitterId) {
         try {
             Set<ResponseBodyEmitter.DataWithMediaType> newOrderSSEvent =
                     SseEmitter

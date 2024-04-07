@@ -1,7 +1,7 @@
 package com.qrestor.mailer.sendgrid;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO;
+import com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO;
 import com.sendgrid.helpers.mail.objects.Personalization;
 
 import java.util.Collections;
@@ -18,7 +18,8 @@ public class CustomPersonalization extends Personalization {
         return Objects.requireNonNullElse(dynamic_template_data, Collections.emptyMap());
     }
 
-    public void addTemplateData(String key, String value) {
+    public void addTemplateData(String key,
+                                String value) {
         if (dynamic_template_data == null) {
             dynamic_template_data = new HashMap<>();
             dynamic_template_data.put(key, value);

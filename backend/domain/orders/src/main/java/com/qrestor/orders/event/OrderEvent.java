@@ -10,7 +10,9 @@ public class OrderEvent extends ApplicationEvent {
     private final OrderEventType orderEventType;
     private final OrderDTO orderData;
 
-    public OrderEvent(Object source, OrderEventType orderEventType, OrderDTO orderData) {
+    public OrderEvent(Object source,
+                      OrderEventType orderEventType,
+                      OrderDTO orderData) {
         super(source);
         this.orderEventType = orderEventType;
         this.orderData = orderData;

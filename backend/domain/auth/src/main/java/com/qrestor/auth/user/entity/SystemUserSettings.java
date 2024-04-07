@@ -49,10 +49,10 @@ public class SystemUserSettings {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "theme = " + theme + ", " +
-                "language = " + language + ", " +
-                "currency = " + currency + ", " +
-                "timezone = " + timezone;
+               "id = " + id + ", " +
+               "theme = " + theme + ", " +
+               "language = " + language + ", " +
+               "currency = " + currency + ", " +
+               "timezone = " + timezone;
     }
 }

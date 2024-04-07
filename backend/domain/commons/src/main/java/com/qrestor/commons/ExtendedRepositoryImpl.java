@@ -21,7 +21,8 @@ public class ExtendedRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> im
 
     private final EntityManager entityManager;
 
-    public ExtendedRepositoryImpl(JpaEntityInformation<T, ?> information, EntityManager entityManager) {
+    public ExtendedRepositoryImpl(JpaEntityInformation<T, ?> information,
+                                  EntityManager entityManager) {
         super(information, entityManager);
         this.entityManager = entityManager;
     }
@@ -37,7 +38,8 @@ public class ExtendedRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> im
     }
 
     @Transactional
-    public Optional<T> findByUuidSecure(UUID uuid, UUID userId) {
+    public Optional<T> findByUuidSecure(UUID uuid,
+                                        UUID userId) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> cQuery = builder.createQuery(getDomainClass());
         Root<T> root = cQuery.from(getDomainClass());
@@ -49,7 +51,8 @@ public class ExtendedRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> im
 
     @Override
     @Transactional
-    public void deleteByUuid(UUID uuid, UUID userId) {
+    public void deleteByUuid(UUID uuid,
+                             UUID userId) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaDelete<T> criteriaDelete = builder.createCriteriaDelete(getDomainClass());
         Root<T> root = criteriaDelete.from(getDomainClass());

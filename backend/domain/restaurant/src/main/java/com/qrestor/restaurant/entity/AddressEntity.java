@@ -50,9 +50,9 @@ public class AddressEntity {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "address = " + address + ", " +
-                "city = " + city + ", " +
-                "zip = " + zip;
+               "id = " + id + ", " +
+               "address = " + address + ", " +
+               "city = " + city + ", " +
+               "zip = " + zip;
     }
 }

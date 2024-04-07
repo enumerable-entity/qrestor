@@ -19,7 +19,8 @@ public interface RestaurantRepository extends PublicRepository<SellingPointEntit
 
     @EntityGraph(attributePaths = {"settings", "address"})
     @Override
-    Page<SellingPointEntity> findAll(Specification<SellingPointEntity> specification, Pageable pageable);
+    Page<SellingPointEntity> findAll(Specification<SellingPointEntity> specification,
+                                     Pageable pageable);
 
     @Query("""
             select new com.qrestor.models.dto.DictionaryDTO(r.publicId, r.name)
@@ -28,7 +29,8 @@ public interface RestaurantRepository extends PublicRepository<SellingPointEntit
             """)
     Collection<DictionaryDTO<String>> getRestaurantCombo(UUID principalUUID);
 
-    boolean existsByPublicIdAndUserId(UUID publicId, UUID userId);
+    boolean existsByPublicIdAndUserId(UUID publicId,
+                                      UUID userId);
 
     List<SellingPointEntity> findAllByUserUuid(UUID userUuid);
 }

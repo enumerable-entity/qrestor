@@ -12,7 +12,8 @@ public class KafkaMessageSender<T> {
 
     private final KafkaTemplate<String, T> kafkaTemplate;
 
-    public void send(String topic, T message) {
+    public void send(String topic,
+                     T message) {
         log.debug("SENDING_MESSAGE_TO_TOPIC {}: {}", topic, message);
         kafkaTemplate.send(topic, message);
     }

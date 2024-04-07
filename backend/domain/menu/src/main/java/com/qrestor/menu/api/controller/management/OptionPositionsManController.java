@@ -30,7 +30,7 @@ public class OptionPositionsManController extends CrudController<MenuItemOptionP
 
     @GetMapping("/all")
     public ResponseEntity<List<MenuItemOptionPositionDTO>> findAllByMenuItemId(@PageableDefault(size = 30) Pageable pageable,
-                                                                                @RequestParam(required = false) UUID optionId) {
+                                                                               @RequestParam(required = false) UUID optionId) {
         return ResponseEntity.ok(positionsService.findAllByOptionId(pageable, optionId, false));
     }
 }

@@ -20,7 +20,7 @@ import java.util.UUID;
 @FieldNameConstants
 @NamedEntityGraph(name = "MenuItemOptionEntity.menuItemOptionPositions",
         attributeNodes = {
-        @NamedAttributeNode("menuItemOptionPositions"), @NamedAttributeNode("menuItem")})
+                @NamedAttributeNode("menuItemOptionPositions"), @NamedAttributeNode("menuItem")})
 @Table(name = "menu_items_options", schema = "menu", indexes = {
         @Index(name = "menu_items_options_public_id_idx", columnList = "public_id", unique = true)
 })

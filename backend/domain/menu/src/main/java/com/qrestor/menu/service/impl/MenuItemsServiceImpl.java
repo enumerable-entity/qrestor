@@ -4,16 +4,17 @@ import com.qrestor.commons.AbstractCrudService;
 import com.qrestor.commons.Utils;
 import com.qrestor.menu.api.dto.IngredientDTO;
 import com.qrestor.menu.api.dto.MenuItemDTO;
-import com.qrestor.menu.entity.*;
+import com.qrestor.menu.entity.IngredientEntity;
+import com.qrestor.menu.entity.ItemCategoryEntity;
+import com.qrestor.menu.entity.MenuEntity;
+import com.qrestor.menu.entity.MenuItemEntity;
 import com.qrestor.menu.mapper.MenuItemMapper;
 import com.qrestor.menu.repository.MenuItemsRepository;
-import com.qrestor.menu.repository.projections.MenuItemProj;
 import com.qrestor.menu.service.CategoryService;
 import com.qrestor.menu.service.IngredientService;
 import com.qrestor.menu.service.MenuItemsService;
 import com.qrestor.menu.service.MenuService;
 import com.qrestor.models.Pair;
-import com.qrestor.models.dto.menu.MenuItemOptionDTO;
 import com.qrestor.security.SecurityUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -30,8 +31,11 @@ public class MenuItemsServiceImpl extends AbstractCrudService<MenuItemDTO, MenuI
     private final CategoryService categoryService;
     private final MenuService menuService;
 
-    public MenuItemsServiceImpl(MenuItemMapper mapper, MenuItemsRepository repository, IngredientService ingredientService,
-                                CategoryService categoryService, MenuService menuService) {
+    public MenuItemsServiceImpl(MenuItemMapper mapper,
+                                MenuItemsRepository repository,
+                                IngredientService ingredientService,
+                                CategoryService categoryService,
+                                MenuService menuService) {
         super(mapper, repository);
         this.ingredientService = ingredientService;
         this.categoryService = categoryService;
@@ -88,7 +92,9 @@ public class MenuItemsServiceImpl extends AbstractCrudService<MenuItemDTO, MenuI
     }
 
     @Override
-    public List<MenuItemDTO> findAllByMenuId(Pageable pageable, UUID menuId, boolean publicRequest) {
+    public List<MenuItemDTO> findAllByMenuId(Pageable pageable,
+                                             UUID menuId,
+                                             boolean publicRequest) {
         Specification<MenuItemEntity> spec;
         if (menuId != null) {
             spec = Specification.where((root, query, criteriaBuilder) ->

@@ -1,8 +1,8 @@
 package com.qrestor.feedback.systemuser.service;
 
-import com.qrestor.models.dto.kafka.UserKafkaSyncDTO;
 import com.qrestor.feedback.systemuser.mapper.SyncUserMapper;
 import com.qrestor.feedback.systemuser.repository.SyncUserRepository;
+import com.qrestor.models.dto.kafka.UserKafkaSyncDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -29,9 +29,9 @@ public class IntegrationService {
 
     public List<RestaurantBasicInfoDTO> getUserRestaurants() {
         List<String> roles = SecurityUtils.getPrincipalRoles();
-        if(roles.contains("WAITER")) {
+        if (roles.contains("WAITER")) {
             return syncUserService.getRestaurantIdForWaiter(SecurityUtils.getPrincipalUUID());
-        } else{
+        } else {
             return restaurantService.getRestaurantsInfoForUser();
         }
     }
@@ -41,6 +41,6 @@ public class IntegrationService {
     }
 
     public Collection<DictionaryDTO<String>> getRestaurantsDict() {
-            return comboServiceImpl.getRestaurantCombo();
+        return comboServiceImpl.getRestaurantCombo();
     }
 }

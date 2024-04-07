@@ -53,12 +53,12 @@ public class AddressEntity {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "number = " + number + ", " +
-                "address = " + address + ", " +
-                "city = " + city + ", " +
-                "state = " + state + ", " +
-                "zip = " + zip + ", " +
-                "country = " + country + ")";
+               "id = " + id + ", " +
+               "number = " + number + ", " +
+               "address = " + address + ", " +
+               "city = " + city + ", " +
+               "state = " + state + ", " +
+               "zip = " + zip + ", " +
+               "country = " + country + ")";
     }
 }

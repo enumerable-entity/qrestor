@@ -19,7 +19,8 @@ public interface MenuRepository extends PublicRepository<MenuEntity, Long> {
 
 
     @EntityGraph(attributePaths = {"menuItems.itemCategory", "menuItems.menuItemOptions"})
-    Collection<MenuEntity> findAllByUserIdAndRestaurantId(UUID userId, UUID restaurantId);
+    Collection<MenuEntity> findAllByUserIdAndRestaurantId(UUID userId,
+                                                          UUID restaurantId);
 
     @Query("""
             select new com.qrestor.models.dto.DictionaryDTO(o.publicId, o.name)

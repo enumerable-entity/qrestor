@@ -44,7 +44,7 @@ public class IntegrationController {
     }
 
     @GetMapping("/getMenuCombo")
-    Collection<DictionaryDTO<String>> getMenuCombo(){
+    Collection<DictionaryDTO<String>> getMenuCombo() {
         return menuService.getMenuCombo();
     }
 

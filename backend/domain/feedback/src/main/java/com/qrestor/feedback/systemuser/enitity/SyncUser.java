@@ -42,7 +42,7 @@ public class SyncUser {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "uuid = " + uuid + ", " +
-                "username = " + username + ")";
+               "uuid = " + uuid + ", " +
+               "username = " + username + ")";
     }
 }

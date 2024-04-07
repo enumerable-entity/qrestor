@@ -1,6 +1,6 @@
 package com.qrestor.mailer.sendgrid;
 
-import com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO;
+import com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import static com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO.USER_NAME_PARAM;
+import static com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO.USER_NAME_PARAM;
 
 
 @Slf4j
@@ -25,6 +25,7 @@ public class EmailMessageSender {
 
     @Value("${app.sendgrid.enabled}")
     private Boolean isSendGridEnabled;
+
     public void sendEmail(KafkaEmailSendRequestDTO emailSendRequestDTO) {
         if (Boolean.FALSE.equals(isSendGridEnabled)) {
             log.info("SENDGRID IS DISABLED! MOCK EMAIL SENT TO {}", emailSendRequestDTO.params().get(USER_NAME_PARAM));
