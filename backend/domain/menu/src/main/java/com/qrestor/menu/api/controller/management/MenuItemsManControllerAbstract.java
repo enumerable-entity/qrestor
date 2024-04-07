@@ -1,6 +1,6 @@
 package com.qrestor.menu.api.controller.management;
 
-import com.qrestor.commons.CrudController;
+import com.qrestor.commons.AbstractCrudController;
 import com.qrestor.menu.api.RestEndpoints;
 import com.qrestor.menu.api.dto.MenuItemDTO;
 import com.qrestor.menu.service.MenuItemsService;
@@ -19,11 +19,11 @@ import java.util.UUID;
 @RestController
 @RequestMapping(RestEndpoints.MENU_ITEMS_MANAGEMENT)
 @PreAuthorize("hasRole('RESTAURATEUR')")
-public class MenuItemsManController extends CrudController<MenuItemDTO> {
+public class MenuItemsManControllerAbstract extends AbstractCrudController<MenuItemDTO> {
 
     private final MenuItemsService menuItemsService;
 
-    public MenuItemsManController(MenuItemsService crudService) {
+    public MenuItemsManControllerAbstract(MenuItemsService crudService) {
         super(crudService);
         this.menuItemsService = crudService;
     }

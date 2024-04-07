@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public abstract class CrudController<D extends AbstractPublicDTO> {
+public abstract class AbstractCrudController<D extends AbstractPublicDTO> {
 
     protected final CrudService<D> crudService;
 
