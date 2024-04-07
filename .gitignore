@@ -16,7 +16,7 @@ backend/domain/mailer/target
 backend/domain/menu/target
 backend/domain/orders/target
 backend/domain/qr_resolver/target
-backend/domain/restaurant/target
+backend/domain/sellpoint/target
 backend/domain/security-commons/target
 backend/domain/models/target
 backend/domain/paymentor/target

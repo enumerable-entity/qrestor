@@ -8,7 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>restaurant</artifactId>
+    <artifactId>sellpoint</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>sellpoint</name>
     <description>sellpoint</description>
