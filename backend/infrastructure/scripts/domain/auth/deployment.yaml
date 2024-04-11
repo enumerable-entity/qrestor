@@ -14,11 +14,26 @@ spec:
         app: auth
     spec:
       containers:
-      - name: auth
-        image: motherdock/qrestor:auth
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8097
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: prod
+        - name: auth
+          image: motherdock/qrestor:auth
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8097
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_DB
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
