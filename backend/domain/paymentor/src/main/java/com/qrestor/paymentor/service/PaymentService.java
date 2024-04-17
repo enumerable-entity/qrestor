@@ -119,31 +119,45 @@ public class PaymentService {
     @Transactional
     public void performStripeAccountCreation() throws StripeException {
         UserDescriptorDTO userInfo = authHttpClient.getUserInfo();
-        AccountCreateParams params =
-                AccountCreateParams.builder()
-                        .setType(AccountCreateParams.Type.STANDARD)
-                        .setBusinessType(AccountCreateParams.BusinessType.INDIVIDUAL)
-                        .setCountry(userInfo.address().country())
-                        .setEmail(userInfo.user().email())
-                        .setCompany(AccountCreateParams.Company.builder()
-                                .setName(userInfo.information().businessName())
-                                .setPhone(userInfo.information().phone())
-                                .setAddress(AccountCreateParams.Company.Address.builder()
-                                        .setCity(userInfo.address().city())
-                                        .setCountry(userInfo.address().country())
-                                        .setLine1(userInfo.address().address())
-                                        .setPostalCode(userInfo.address().zip())
-                                        .setState(userInfo.address().state())
-                                        .build())
-                                .build())
-                        .build();
+        AccountCreateParams params = prepareNewSubContractorAccount(userInfo);
         Account account = Account.create(params);
         syncUserRepository.getByUuid(SecurityUtils.getPrincipalUUID())
-                .ifPresent(syncUser -> {
-                    syncUser.setStripeAccountId(account.getId());
-                    syncUserRepository.save(syncUser);
-                });
+                .ifPresent(syncUser -> saveUserStripeAccountId(syncUser, account));
         log.info("Stripe Account created: {}", account);
+    }
+
+    private void saveUserStripeAccountId(SyncUser syncUser,
+                                         Account account) {
+        syncUser.setStripeAccountId(account.getId());
+        syncUserRepository.save(syncUser);
+    }
+
+    private AccountCreateParams prepareNewSubContractorAccount(UserDescriptorDTO userInfo) {
+        return AccountCreateParams.builder()
+                .setType(AccountCreateParams.Type.STANDARD)
+                .setBusinessType(AccountCreateParams.BusinessType.INDIVIDUAL)
+                .setCountry(userInfo.address().country())
+                .setEmail(userInfo.user().email())
+                .setCompany(getBasicUserFiels(userInfo))
+                .build();
+    }
+
+    private AccountCreateParams.Company getBasicUserFiels(UserDescriptorDTO userInfo) {
+        return AccountCreateParams.Company.builder()
+                .setName(userInfo.information().businessName())
+                .setPhone(userInfo.information().phone())
+                .setAddress(getUserAddress(userInfo))
+                .build();
+    }
+
+    private AccountCreateParams.Company.Address getUserAddress(UserDescriptorDTO userInfo) {
+        return AccountCreateParams.Company.Address.builder()
+                .setCity(userInfo.address().city())
+                .setCountry(userInfo.address().country())
+                .setLine1(userInfo.address().address())
+                .setPostalCode(userInfo.address().zip())
+                .setState(userInfo.address().state())
+                .build();
     }
 
     public String getStripeOnboardRedirectUrl() throws StripeException {

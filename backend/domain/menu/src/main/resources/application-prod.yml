@@ -1,4 +1,9 @@
-#PostgreSQL
+app:
+  minio:
+    server:
+      url: ${MIN_IO_HOST:https://minio:9000}
+      access-key: ${MIN_IO_ACCESS_KEY:qrestor123}
+      secret-key: ${MIN_IO_SECRET_KEY:qrestor123}
 spring:
   datasource:
     url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
