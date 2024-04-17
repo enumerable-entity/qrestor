@@ -5,10 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="1712500582975-1" author="Toni (generated)">
-        <createSequence incrementBy="50" sequenceName="menu_item_ingredients_seq" startValue="1"/>
-    </changeSet>
-    <changeSet id="1712500583420-12" author="Toni (generated)">
+    <changeSet id="1713384505258-12" author="Toni (generated)">
         <createTable schemaName="menu" tableName="sync_users">
             <column name="uuid" type="UUID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_sync_users"/>
@@ -18,7 +15,11 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1712500582975-2" author="Toni (generated)">
+
+    <changeSet id="1713384505111-1" author="Toni (generated)">
+        <createSequence incrementBy="50" sequenceName="menu_item_ingredients_seq" startValue="1"/>
+    </changeSet>
+    <changeSet id="1713384505111-2" author="Toni (generated)">
         <createTable tableName="menu_item_ingredients">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_menu_item_ingredients"/>
@@ -35,32 +36,32 @@
             <column name="user_id" type="UUID"/>
         </createTable>
     </changeSet>
-    <changeSet id="1712500582975-3" author="Toni (generated)">
+    <changeSet id="1713384505111-3" author="Toni (generated)">
         <addUniqueConstraint columnNames="public_id" constraintName="uc_menu_item_ingredients_public"
                              tableName="menu_item_ingredients"/>
     </changeSet>
-    <changeSet id="1712500582975-4" author="Toni (generated)">
+    <changeSet id="1713384505111-4" author="Toni (generated)">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="menu_item_ingredients"
                                  constraintName="FK_MENU_ITEM_INGREDIENTS_ON_USER" referencedColumnNames="uuid"
                                  referencedTableName="sync_users" referencedTableSchemaName="menu"/>
     </changeSet>
-    <changeSet id="1712500583420-1" author="Toni (generated)">
+    <changeSet id="1713384505258-1" author="Toni (generated)">
         <createSequence incrementBy="50" schemaName="menu" sequenceName="menu_item_categories_seq" startValue="1"/>
     </changeSet>
-    <changeSet id="1712500583420-2" author="Toni (generated)">
+    <changeSet id="1713384505258-2" author="Toni (generated)">
         <createSequence incrementBy="50" schemaName="menu" sequenceName="menu_items_options_positions_seq"
                         startValue="1"/>
     </changeSet>
-    <changeSet id="1712500583420-3" author="Toni (generated)">
+    <changeSet id="1713384505258-3" author="Toni (generated)">
         <createSequence incrementBy="50" schemaName="menu" sequenceName="menu_items_options_seq" startValue="1"/>
     </changeSet>
-    <changeSet id="1712500583420-4" author="Toni (generated)">
+    <changeSet id="1713384505258-4" author="Toni (generated)">
         <createSequence incrementBy="50" schemaName="menu" sequenceName="menu_items_seq" startValue="1"/>
     </changeSet>
-    <changeSet id="1712500583420-5" author="Toni (generated)">
+    <changeSet id="1713384505258-5" author="Toni (generated)">
         <createSequence incrementBy="50" schemaName="menu" sequenceName="menu_seq" startValue="1"/>
     </changeSet>
-    <changeSet id="1712500583420-6" author="Toni (generated)">
+    <changeSet id="1713384505258-6" author="Toni (generated)">
         <createTable schemaName="menu" tableName="menu">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_menu"/>
@@ -81,7 +82,7 @@
             <column name="user_id" type="UUID"/>
         </createTable>
     </changeSet>
-    <changeSet id="1712500583420-7" author="Toni (generated)">
+    <changeSet id="1713384505258-7" author="Toni (generated)">
         <createTable schemaName="menu" tableName="menu_item_categories">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_menu_item_categories"/>
@@ -99,7 +100,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1712500583420-8" author="Toni (generated)">
+    <changeSet id="1713384505258-8" author="Toni (generated)">
         <createTable schemaName="menu" tableName="menu_items">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_menu_items"/>
@@ -139,7 +140,7 @@
             <column name="is_soy" type="BOOLEAN"/>
         </createTable>
     </changeSet>
-    <changeSet id="1712500583420-9" author="Toni (generated)">
+    <changeSet id="1713384505258-9" author="Toni (generated)">
         <createTable schemaName="menu" tableName="menu_items_options">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_menu_items_options"/>
@@ -165,7 +166,7 @@
             <column name="user_id" type="UUID"/>
         </createTable>
     </changeSet>
-    <changeSet id="1712500583420-10" author="Toni (generated)">
+    <changeSet id="1713384505258-10" author="Toni (generated)">
         <createTable schemaName="menu" tableName="menu_items_options_positions">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_menu_items_options_positions"/>
@@ -188,7 +189,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1712500583420-11" author="Toni (generated)">
+    <changeSet id="1713384505258-11" author="Toni (generated)">
         <createTable schemaName="menu" tableName="menu_items_to_ingredients">
             <column name="ingredient_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_menu_items_to_ingredients"/>
@@ -198,109 +199,108 @@
             </column>
         </createTable>
     </changeSet>
-
-    <changeSet id="1712500583420-13" author="Toni (generated)">
+    <changeSet id="1713384505258-13" author="Toni (generated)">
         <addUniqueConstraint columnNames="nls_key" constraintName="uc_menu_item_categories_nls_key" schemaName="menu"
                              tableName="menu_item_categories"/>
     </changeSet>
-    <changeSet id="1712500583420-14" author="Toni (generated)">
+    <changeSet id="1713384505258-14" author="Toni (generated)">
         <addUniqueConstraint columnNames="public_id" constraintName="uc_menu_item_categories_public" schemaName="menu"
                              tableName="menu_item_categories"/>
     </changeSet>
-    <changeSet id="1712500583420-15" author="Toni (generated)">
+    <changeSet id="1713384505258-15" author="Toni (generated)">
         <addUniqueConstraint columnNames="public_id" constraintName="uc_menu_items_options_positions_public"
                              schemaName="menu" tableName="menu_items_options_positions"/>
     </changeSet>
-    <changeSet id="1712500583420-16" author="Toni (generated)">
+    <changeSet id="1713384505258-16" author="Toni (generated)">
         <addUniqueConstraint columnNames="public_id" constraintName="uc_menu_items_options_public" schemaName="menu"
                              tableName="menu_items_options"/>
     </changeSet>
-    <changeSet id="1712500583420-17" author="Toni (generated)">
+    <changeSet id="1713384505258-17" author="Toni (generated)">
         <addUniqueConstraint columnNames="public_id" constraintName="uc_menu_items_public" schemaName="menu"
                              tableName="menu_items"/>
     </changeSet>
-    <changeSet id="1712500583420-18" author="Toni (generated)">
+    <changeSet id="1713384505258-18" author="Toni (generated)">
         <addUniqueConstraint columnNames="public_id" constraintName="uc_menu_public" schemaName="menu"
                              tableName="menu"/>
     </changeSet>
-    <changeSet id="1712500583420-19" author="Toni (generated)">
+    <changeSet id="1713384505258-19" author="Toni (generated)">
         <addUniqueConstraint columnNames="username" constraintName="uc_sync_users_username" schemaName="menu"
                              tableName="sync_users"/>
     </changeSet>
-    <changeSet id="1712500583420-20" author="Toni (generated)">
+    <changeSet id="1713384505258-20" author="Toni (generated)">
         <createIndex indexName="menu_item_categories_public_id_idx" schemaName="menu" tableName="menu_item_categories"
                      unique="true">
             <column name="public_id"/>
         </createIndex>
     </changeSet>
-    <changeSet id="1712500583420-21" author="Toni (generated)">
+    <changeSet id="1713384505258-21" author="Toni (generated)">
         <createIndex indexName="menu_items_options_position_public_id_idx" schemaName="menu"
                      tableName="menu_items_options_positions" unique="true">
             <column name="public_id"/>
         </createIndex>
     </changeSet>
-    <changeSet id="1712500583420-22" author="Toni (generated)">
+    <changeSet id="1713384505258-22" author="Toni (generated)">
         <createIndex indexName="menu_items_options_public_id_idx" schemaName="menu" tableName="menu_items_options"
                      unique="true">
             <column name="public_id"/>
         </createIndex>
     </changeSet>
-    <changeSet id="1712500583420-23" author="Toni (generated)">
+    <changeSet id="1713384505258-23" author="Toni (generated)">
         <createIndex indexName="menu_items_public_id_idx" schemaName="menu" tableName="menu_items" unique="true">
             <column name="public_id"/>
         </createIndex>
     </changeSet>
-    <changeSet id="1712500583420-24" author="Toni (generated)">
+    <changeSet id="1713384505258-24" author="Toni (generated)">
         <addForeignKeyConstraint baseColumnNames="item_category_id" baseTableName="menu_items"
                                  baseTableSchemaName="menu" constraintName="FK_MENU_ITEMS_ON_ITEM_CATEGORY"
                                  referencedColumnNames="id" referencedTableName="menu_item_categories"
                                  referencedTableSchemaName="menu"/>
     </changeSet>
-    <changeSet id="1712500583420-25" author="Toni (generated)">
+    <changeSet id="1713384505258-25" author="Toni (generated)">
         <addForeignKeyConstraint baseColumnNames="menu_id" baseTableName="menu_items" baseTableSchemaName="menu"
                                  constraintName="FK_MENU_ITEMS_ON_MENU" referencedColumnNames="id"
                                  referencedTableName="menu" referencedTableSchemaName="menu"/>
     </changeSet>
-    <changeSet id="1712500583420-26" author="Toni (generated)">
+    <changeSet id="1713384505258-26" author="Toni (generated)">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="menu_items" baseTableSchemaName="menu"
                                  constraintName="FK_MENU_ITEMS_ON_USER" referencedColumnNames="uuid"
                                  referencedTableName="sync_users" referencedTableSchemaName="menu"/>
     </changeSet>
-    <changeSet id="1712500583420-27" author="Toni (generated)">
+    <changeSet id="1713384505258-27" author="Toni (generated)">
         <addForeignKeyConstraint baseColumnNames="menu_item_id" baseTableName="menu_items_options"
                                  baseTableSchemaName="menu" constraintName="FK_MENU_ITEMS_OPTIONS_ON_MENU_ITEM"
                                  referencedColumnNames="id" referencedTableName="menu_items"
                                  referencedTableSchemaName="menu"/>
     </changeSet>
-    <changeSet id="1712500583420-28" author="Toni (generated)">
+    <changeSet id="1713384505258-28" author="Toni (generated)">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="menu_items_options" baseTableSchemaName="menu"
                                  constraintName="FK_MENU_ITEMS_OPTIONS_ON_USER" referencedColumnNames="uuid"
                                  referencedTableName="sync_users" referencedTableSchemaName="menu"/>
     </changeSet>
-    <changeSet id="1712500583420-29" author="Toni (generated)">
+    <changeSet id="1713384505258-29" author="Toni (generated)">
         <addForeignKeyConstraint baseColumnNames="menu_item_option_id" baseTableName="menu_items_options_positions"
                                  baseTableSchemaName="menu"
                                  constraintName="FK_MENU_ITEMS_OPTIONS_POSITIONS_ON_MENU_ITEM_OPTION"
                                  referencedColumnNames="id" referencedTableName="menu_items_options"
                                  referencedTableSchemaName="menu"/>
     </changeSet>
-    <changeSet id="1712500583420-30" author="Toni (generated)">
+    <changeSet id="1713384505258-30" author="Toni (generated)">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="menu_items_options_positions"
                                  baseTableSchemaName="menu" constraintName="FK_MENU_ITEMS_OPTIONS_POSITIONS_ON_USER"
                                  referencedColumnNames="uuid" referencedTableName="sync_users"
                                  referencedTableSchemaName="menu"/>
     </changeSet>
-    <changeSet id="1712500583420-31" author="Toni (generated)">
+    <changeSet id="1713384505258-31" author="Toni (generated)">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="menu" baseTableSchemaName="menu"
                                  constraintName="FK_MENU_ON_USER" referencedColumnNames="uuid"
                                  referencedTableName="sync_users" referencedTableSchemaName="menu"/>
     </changeSet>
-    <changeSet id="1712500583420-32" author="Toni (generated)">
+    <changeSet id="1713384505258-32" author="Toni (generated)">
         <addForeignKeyConstraint baseColumnNames="ingredient_id" baseTableName="menu_items_to_ingredients"
                                  baseTableSchemaName="menu" constraintName="fk_menitetoing_on_ingredient_entity"
                                  referencedColumnNames="id" referencedTableName="menu_item_ingredients"/>
     </changeSet>
-    <changeSet id="1712500583420-33" author="Toni (generated)">
+    <changeSet id="1713384505258-33" author="Toni (generated)">
         <addForeignKeyConstraint baseColumnNames="menu_item_id" baseTableName="menu_items_to_ingredients"
                                  baseTableSchemaName="menu" constraintName="fk_menitetoing_on_menu_item_entity"
                                  referencedColumnNames="id" referencedTableName="menu_items"

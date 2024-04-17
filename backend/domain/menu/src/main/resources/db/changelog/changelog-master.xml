@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
 
-    <include file="/db/changelog/2024/04/database-init.xml"/>
     <include file="2024012812331034-uuid-extension-initialization.xml" relativeToChangelogFile="true"/>
+    <include file="db/changelog/2024/04/17-01-changelog.xml"/>
     <include file="2024012812331234-default-item-categories-initialization.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
