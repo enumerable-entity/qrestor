@@ -12,9 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "qr_codes", schema = "qresolver", indexes = {
-        @Index(name = "IDX_QR_CODE_URL", columnList = "qr_code", unique = true)
-})
+@Table(name = "qr_codes", schema = "qresolver")
 public class QrCodeMappingEntity extends OwnedEntity implements PublicEntity {
     @Id
     @SequenceGenerator(name = "qr_codes_id_seq", sequenceName = "qr_codes_id_seq", allocationSize = 1, schema = "qresolver", initialValue = 1)
