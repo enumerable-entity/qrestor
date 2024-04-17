@@ -6,5 +6,6 @@
                       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
 
 
+    <include file="db/changelog/2024/04/17-02-changelog.xml"/>
     <include file="/db/changelog/2024011312331234-default-roles-initialization.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>
