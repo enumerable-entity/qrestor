@@ -1,7 +1,7 @@
 app:
   domain: https://wanted-talented-peacock.ngrok-free.app
   sendgrid:
-    enabled: false
+    enabled: true
     api-key: SG.V4up34hDQYeKaU2AwhoHpA.Su8Tr2NZpU5oC4KKXVKoO4bbEK2pKAN7iDDXkLeIehA
     from-email: qrestor@qrestor.com
 spring:

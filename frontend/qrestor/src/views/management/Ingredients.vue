@@ -261,7 +261,7 @@ const exportCSV = () => {
         <Dialog
           v-model:visible="menuDialog"
           :style="{ width: '450px' }"
-          header="Option position details"
+          header="Ingredient details"
           :modal="true"
           class="p-fluid"
         >

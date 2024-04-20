@@ -27,8 +27,8 @@ var renderAnswer = ref({ header1: '', header2: '' })
 var showLoginButton = ref(false)
 
 onMounted(async () => {
-  const status = await tokenVerificationService.verifyToken(token)
-  if (status == 200) {
+  const { status } = await tokenVerificationService.verifyToken(token)
+  if (status === 200) {
     renderAnswer.value.header1 = positveAnswer.header1
     renderAnswer.value.header2 = positveAnswer.header2
     showLoginButton.value = true

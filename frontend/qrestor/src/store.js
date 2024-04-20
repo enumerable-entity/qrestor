@@ -31,21 +31,23 @@ export const useAuthStore = defineStore({
   }),
   actions: {
     async login(email, password) {
-      const { data } = await fetchWrapper.post(`/auth/authentication/login`, {
+      const { data, status } = await fetchWrapper.post(`/auth/authentication/login`, {
         email,
         password
       })
 
-      // update pinia state
-      this.tokens = data
+      if (status === 200) {
+        // update pinia state
+        this.tokens = data
 
-      // store user details and jwt in local storage to keep user logged in between page refreshes
-      localStorage.setItem('tokens', JSON.stringify(data))
-      var useUserStor = useUserStore()
-      useUserStor.getLoggedUserInfo()
+        // store user details and jwt in local storage to keep user logged in between page refreshes
+        localStorage.setItem('tokens', JSON.stringify(data))
+        var useUserStor = useUserStore()
+        useUserStor.getLoggedUserInfo()
 
-      // redirect to previous url or default to home page
-      router.push(this.returnUrl || '/management')
+        // redirect to previous url or default to home page
+        router.push(this.returnUrl || '/management')
+      }
     },
     logout() {
       this.tokens = null

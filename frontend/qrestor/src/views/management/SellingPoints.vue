@@ -108,6 +108,18 @@ const deletePoint = async () => {
   }
 }
 
+const getUploadURL = () => {
+  return import.meta.env.VITE_ROOT_API + '/restaurant/upload'
+}
+
+const onUpload = (event) => {
+  emptyPointModel.value.settings.backgroundImageUrl = 'backgrounds/' + event.xhr.response
+}
+
+const getImageURL = (path) => {
+  return import.meta.env.VITE_ROOT_API + '/files/' + path
+}
+
 const makeIdShorter = (id) => {
   return id.substring(0, 8) + ' ...'
 }
@@ -228,7 +240,7 @@ const initFilters = () => {
             <template #body="slotProps">
               <span class="p-column-title">Menu background</span>
               <Image
-                :src="slotProps.data.settings.backgroundImageUrl"
+                :src="getImageURL(slotProps.data.settings.backgroundImageUrl)"
                 :alt="slotProps.data.settings.backgroundImageUrl"
                 class="shadow-2"
                 height="75"
@@ -336,10 +348,22 @@ const initFilters = () => {
                 :class="{ 'p-invalid': submitted && !point.phone }"
               />
             </div>
-            <!--                      <div class="field col-12 md:col-12">-->
-            <!--                        <label for="file">Background image</label>-->
-            <!--                        <FileUpload id="file" mode="basic" name="demo[]" accept="image/*" url="localhost:8080/fileupload" :maxFileSize="1000000" @uploader="onUpload" customUpload />-->
-            <!--                      </div>-->
+            <div class="field col-12 md:col-12">
+              <label for="file">Background image</label>
+              <FileUpload
+                class="w-full"
+                mode="basic"
+                id="imageUrl"
+                ref="fileUpload"
+                name="file"
+                :url="getUploadURL()"
+                accept="image/*"
+                @upload="onUpload"
+                :auto="false"
+                :maxFileSize="1000000"
+                choose-label="Select Image"
+              />
+            </div>
           </div>
           <template #footer>
             <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />

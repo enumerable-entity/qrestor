@@ -6,4 +6,5 @@ import lombok.experimental.UtilityClass;
 public class Constants {
     public static final String USER_PROPERTY = "userId";
     public static final String MIN_IO_BUCKET_MENU_ITEMS = "menu-items-pics";
+    public static final String MIN_IO_BUCKET_BACKGROUND = "backgrounds";
 }

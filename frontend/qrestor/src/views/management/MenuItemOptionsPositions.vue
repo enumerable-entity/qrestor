@@ -169,8 +169,8 @@ const formatCurrencyForAPI = (value) => {
   return value * 10
 }
 const formatCurrency = (value) => {
-  const price = value / 10
-  return price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+  //const price = value / 10
+  return value.toLocaleString(useUserStore().getUserLocale(), { style: 'currency', currency: useUserStore().getUserCurrency() })
 }
 </script>
 

@@ -38,7 +38,7 @@ public class SendGridConfig {
         this.sendGridClient = sendGridClient;
         this.objectMapper = objectMapper;
         this.from = new Email(fromEmail, globalName);
-        //initDynamicTemplateIds();
+        initDynamicTemplateIds();
     }
 
 

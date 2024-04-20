@@ -3,6 +3,11 @@ app:
   auth:
     jwt:
       secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
+  minio:
+    server:
+      url: ${MIN_IO_HOST:https://127.0.0.1:9000}
+      access-key: ${MIN_IO_ACCESS_KEY:qrestor123}
+      secret-key: ${MIN_IO_SECRET_KEY:qrestor123}
 spring:
   datasource:
     url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/sell_points}

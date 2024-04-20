@@ -236,7 +236,7 @@ const exportCSV = () => {
 
 const formatCurrency = (value) => {
   const price = value / 10
-  return price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+  return price.toLocaleString(useUserStore().getUserLocale(), { style: 'currency', currency: useUserStore().getUserCurrency() })
 }
 
 const formatCurrencyForAPI = (value) => {

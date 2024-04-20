@@ -169,7 +169,7 @@ const initFilters1 = () => {
       operator: FilterOperator.AND,
       constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
     },
-    restaurantId: {
+    sellingPointId: {
       operator: FilterOperator.AND,
       constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
     },
@@ -216,7 +216,7 @@ const clearFilter1 = () => {
 
 const openNew = () => {
   qrMapping.value = {
-    restaurantId: '',
+    sellingPointId: '',
     menuId: '',
     tableId: '',
     isActive: false
@@ -232,7 +232,7 @@ const hideDialog = () => {
 
 const saveQrMapping = async () => {
   submitted.value = true
-  qrMapping.value.restaurantId = selectedAutoValueSellingPoints.value.id
+  qrMapping.value.sellingPointId = selectedAutoValueSellingPoints.value.id
   qrMapping.value.menuId = selectedAutoValueSMenu.value.id
 
   if (qrMapping.value.publicId) {
@@ -260,7 +260,7 @@ const saveQrMapping = async () => {
 }
 const editMenuItem = (editMenu) => {
   selectedAutoValueSellingPoints.value = {
-    id: editMenu.restaurantId,
+    id: editMenu.sellingPointId,
     name: editMenu.restaurantName
   }
   selectedAutoValueSMenu.value = { id: editMenu.menuId, name: editMenu.menuName }
@@ -343,7 +343,7 @@ const onMenuRowSelect = (event) => {
           filterDisplay="menu"
           :rowHover="true"
           :rows="5"
-          :globalFilterFields="['name', 'description', 'restaurantId']"
+          :globalFilterFields="['name', 'description', 'sellingPointId']"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25]"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} menus"
@@ -496,7 +496,7 @@ const onMenuRowSelect = (event) => {
             <label for="ingredientsSelect">Select selling point</label>
             <AutoComplete
               class="w-full"
-              :class="{ 'p-invalid': submitted && !qrMapping.restaurantId }"
+              :class="{ 'p-invalid': submitted && !qrMapping.sellingPointId }"
               required="true"
               autofocus
               placeholder="Search"
@@ -508,7 +508,7 @@ const onMenuRowSelect = (event) => {
               @complete="searchSellingPoints($event)"
               field="name"
             />
-            <small class="p-invalid" v-if="submitted && !qrMapping.restaurantId"
+            <small class="p-invalid" v-if="submitted && !qrMapping.sellingPointId"
               >Selling point required</small
             >
           </div>

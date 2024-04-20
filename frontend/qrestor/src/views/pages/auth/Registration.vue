@@ -53,6 +53,8 @@ const searchCurrency = (event) => {
   }, 250)
 }
 
+const repeatedPassword = ref('')
+
 const registrationRequest = ref({
   email: '',
   password: '',
@@ -94,10 +96,10 @@ function onSubmit() {
 
 <template>
   <div
-    class="surface-ground grid align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
+    class="surface-ground align-items-center justify-content-center min-w-screen grid min-h-screen overflow-hidden"
   >
-    <div class="flex flex-column align-items-center md:w-9 sm:w-11 pl-4 pr-2">
-      <img :src="logoUrl" alt="Qrestor logo" class="mb-5 mt-8 w-6rem flex-shrink-0"  @click="$router.push('/')" />
+    <div class="flex-column align-items-center flex pl-4 pr-2 sm:w-11 md:w-9">
+      <img :src="logoUrl" alt="Qrestor logo" class="w-6rem mb-5 mt-8 shrink-0"  @click="$router.push('/')" />
       <div
         style="
           border-radius: 56px;
@@ -105,12 +107,12 @@ function onSubmit() {
           background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);
         "
       >
-        <div class="w-full surface-card py-5 px-2 sm:px-5" style="border-radius: 53px 53px 0 0">
-          <div class="text-center mb-5">
-            <div class="text-900 text-3xl font-medium mb-3">Sign Up</div>
+        <div class="surface-card w-full px-2 py-5 sm:px-5" style="border-radius: 53px 53px 0 0">
+          <div class="mb-5 text-center">
+            <div class="text-900 mb-3 text-3xl font-medium">Sign Up</div>
             <span class="text-600 font-medium">Sign up to continue</span>
           </div>
-          <div class="grid p-fluid">
+          <div class="p-fluid grid">
             <div class="col-12 md:col-6">
               <div class="card p-fluid">
                 <div class="field col-12 md:col-12 pb-0">
@@ -124,7 +126,7 @@ function onSubmit() {
                   ></InputText>
                 </div>
 
-                <div class="field col-12 md:col-12 pt-0 pb-0">
+                <div class="field col-12 md:col-12 py-0">
                   <label for="username">Username</label>
                   <InputText
                     id="username"
@@ -135,7 +137,7 @@ function onSubmit() {
                   ></InputText>
                 </div>
 
-                <div class="field col-12 md:col-12 pt-0 pb-0">
+                <div class="field col-12 md:col-12 py-0">
                   <label for="pass">Password</label>
                   <Password
                     id="pass"
@@ -145,10 +147,11 @@ function onSubmit() {
                     class="w-full pb-0"
                   ></Password>
                 </div>
-                <div class="field col-12 md:col-12 pt-0 pb-0">
+                <div class="field col-12 md:col-12 py-0">
                   <label for="pass1">Repeat password</label>
                   <Password
                     id="pass1"
+                    v-model="repeatedPassword"
                     placeholder="Password"
                     :toggleMask="true"
                     class="w-full pb-0"
@@ -185,7 +188,7 @@ function onSubmit() {
               <div class="card p-fluid">
                 <h5>Additional information</h5>
 
-                <div class="field col-12 md:col-12 pt-0 pb-0">
+                <div class="field col-12 md:col-12 py-0">
                   <label for="fname">First name</label>
                   <InputText
                     id="fname"
@@ -195,7 +198,7 @@ function onSubmit() {
                   />
                 </div>
 
-                <div class="field col-12 md:col-12 pt-0 pb-0">
+                <div class="field col-12 md:col-12 py-0">
                   <label for="lname">Last name</label>
                   <InputText
                     id="lname"
@@ -205,7 +208,7 @@ function onSubmit() {
                   />
                 </div>
 
-                <div class="field col-12 md:col-12 pt-0 pb-0">
+                <div class="field col-12 md:col-12 py-0">
                   <label for="lname">Middle name</label>
                   <InputText
                     id="mname"
@@ -215,7 +218,7 @@ function onSubmit() {
                   />
                 </div>
 
-                <div class="field col-12 md:col-12 pt-0 pb-0">
+                <div class="field col-12 md:col-12 py-0">
                   <label for="phone">Phone</label>
                   <InputText
                     id="phone"
@@ -225,7 +228,7 @@ function onSubmit() {
                   />
                 </div>
 
-                <div class="field col-12 md:col-12 pt-0 pb-0">
+                <div class="field col-12 md:col-12 py-0">
                   <label for="trade">Trademark name</label>
                   <InputText
                     id="trade"
@@ -313,7 +316,7 @@ function onSubmit() {
               </div>
             </div>
             <div class="col-12 md:col-6 md:col-offset-10">
-              <Button label="Sign Up" class="md:w-3 p-3 text-xl" :disabled="!isTermsAccepted"  @click="onSubmit"></Button>
+              <Button label="Sign Up" class="p-3 text-xl md:w-3" :disabled="!isTermsAccepted"  @click="onSubmit"></Button>
             </div>
           </div>
         </div>
