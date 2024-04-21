@@ -23,4 +23,12 @@ export default class SellingPointsService {
     deleteSellingPoint(publicId) {
         return fetchWrapper.delete(this.url + '/' + publicId)
     }
+
+    getSellingPointInfo(publicId) {
+        return fetchWrapper.get('/restaurant/restaurant/' + publicId)
+    }
+
+    callWaiter(tableId, sellPointId) {
+        return fetchWrapper.get('/kitchenboard/waiter-request?tableNr=' + tableId + '&restaurantId=' + sellPointId)
+    }
 }

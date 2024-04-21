@@ -9,6 +9,5 @@ import java.util.UUID;
 public interface MenuPublicService {
     List<MenuListDTO> getActiveMenu(UUID restaurantId);
 
-    List<MenuItemOptionDTO> getMenuItemOptions(UUID menuId,
-                                               UUID menuItemId);
+    List<MenuItemOptionDTO> getMenuItemOptions(UUID menuItemId);
 }

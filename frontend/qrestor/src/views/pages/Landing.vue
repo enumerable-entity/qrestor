@@ -83,15 +83,6 @@ const logoUrl = computed(() => {
                 <span>Highlights</span>
               </a>
             </li>
-            <li>
-              <a
-                @click="smoothScroll('#pricing')"
-                class="flex m-0 md:ml-5 px-0 py-3 text-900 font-medium line-height-3 p-ripple"
-                v-ripple
-              >
-                <span>Pricing</span>
-              </a>
-            </li>
           </ul>
           <div
             class="flex justify-content-between lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 mt-3 lg:mt-0"
@@ -135,13 +126,9 @@ const logoUrl = computed(() => {
             a few clicks, ensuring your customers always have the latest offerings at their
             fingertips. Join us now and simplify the way you showcase your culinary creations!
           </p>
-          <Button
-            label="Get Started"
-            class="p-button-rounded text-xl border-none mt-5 bg-blue-500 font-normal text-white line-height-3 px-3"
-          ></Button>
         </div>
         <div class="flex justify-content-center md:justify-content-end">
-          <img src="/images/landing/screen-1.png" alt="Hero Image" class="w-9 md:w-auto" />
+          <img src="/images/landing/screen-1.png" alt="Hero Image" class="w-4 md:w-5" />
         </div>
       </div>
 
@@ -149,7 +136,7 @@ const logoUrl = computed(() => {
         <div class="grid justify-content-center">
           <div class="col-12 text-center mt-8 mb-4">
             <h2 class="text-900 font-normal mb-2">Marvelous Features</h2>
-            <span class="text-600 text-2xl">Placerat in egestas erat...</span>
+            <span class="text-600 text-2xl">QRrestor platform offers wide range of functionality, including:</span>
           </div>
 
           <div class="col-12 md:col-12 lg:col-4 p-0 lg:pr-5 lg:pb-5 mt-4 lg:mt-0">
@@ -394,31 +381,6 @@ const logoUrl = computed(() => {
               </div>
             </div>
           </div>
-
-          <div
-            class="col-12 mt-8 mb-8 p-2 md:p-8"
-            style="
-              border-radius: 20px;
-              background: linear-gradient(0deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)),
-                radial-gradient(77.36% 256.97% at 77.36% 57.52%, #efe1af 0%, #c3dcfa 100%);
-            "
-          >
-            <div
-              class="flex flex-column justify-content-center align-items-center text-center px-3 py-3 md:py-0"
-            >
-              <h3 class="text-gray-900 mb-2">Joséphine Miller</h3>
-              <span class="text-gray-600 text-2xl">Peak Interactive</span>
-              <p
-                class="text-gray-900 sm:line-height-2 md:line-height-4 text-2xl mt-4"
-                style="max-width: 800px"
-              >
-                “Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                qui officia deserunt mollit anim id est laborum.”
-              </p>
-              <img src="/images/landing/peak-logo.svg" class="mt-4" alt="Company logo" />
-            </div>
-          </div>
         </div>
       </div>
 
@@ -433,7 +395,7 @@ const logoUrl = computed(() => {
             class="flex justify-content-center col-12 lg:col-6 bg-purple-100 p-0 flex-order-1 lg:flex-order-0"
             style="border-radius: 8px"
           >
-            <img src="/images/landing/mockup.svg" class="w-11" alt="mockup mobile" />
+            <img src="/images/landing/menu-mobile.jpg" class="w-11" alt="mockup mobile" />
           </div>
 
           <div
@@ -445,11 +407,11 @@ const logoUrl = computed(() => {
             >
               <i class="pi pi-fw pi-mobile text-5xl text-purple-700"></i>
             </div>
-            <h2 class="line-height-1 text-900 text-4xl font-normal">Congue Quisque Egestas</h2>
+            <h2 class="line-height-1 text-900 text-4xl font-normal">Minimalistic and functional Menu</h2>
             <span class="text-700 text-2xl line-height-3 ml-0 md:ml-2" style="max-width: 650px"
-              >Lectus arcu bibendum at varius vel pharetra vel turpis nunc. Eget aliquet nibh
-              praesent tristique magna sit amet purus gravida. Sit amet mattis vulputate enim nulla
-              aliquet.</span
+              >
+              Adipiscing commodo elit at imperdiet dui. Viverra nibh cras pulvinar mattis nunc <sed></sed>
+            </span
             >
           </div>
         </div>

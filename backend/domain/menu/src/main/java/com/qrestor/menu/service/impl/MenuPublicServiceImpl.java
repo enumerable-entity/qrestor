@@ -32,8 +32,7 @@ public class MenuPublicServiceImpl implements MenuPublicService {
     }
 
     @Override
-    public List<MenuItemOptionDTO> getMenuItemOptions(UUID menuId,
-                                                      UUID menuItemId) {
+    public List<MenuItemOptionDTO> getMenuItemOptions(UUID menuItemId) {
         return menuItemOptionsService.findAllByMenuItemId(PageRequest.of(0, 99999), menuItemId, true);
     }
 

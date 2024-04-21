@@ -90,7 +90,7 @@ function loadQRConfigFromLocalStorage() {
 }
 
 const gerQrURL = (path) => {
-  return import.meta.env.VITE_ROOT_API + '/qr/' + path
+  return import.meta.env.VITE_ROOT_DOMAIN + '/qr/' + path
 }
 
 const divCount = ref(1)

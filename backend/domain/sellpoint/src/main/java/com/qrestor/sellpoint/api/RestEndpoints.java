@@ -7,6 +7,7 @@ public interface RestEndpoints {
     String RESTAURANT_COMBO = "/restaurantCombo";
     String DICTIONARY = "/dictionary";
     String MANAGEMENT = "/management" + RESTAURANT;
+    String UPLOAD = "/upload";
 
     String ACTUATOR = "/actuator/**";
     String SWAGGER = "/swagger-ui/**";

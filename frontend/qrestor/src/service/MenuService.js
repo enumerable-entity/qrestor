@@ -24,4 +24,12 @@ export default class MenuService {
     getMenuCombo() {
         return fetchWrapper.get('/menu/dictionary/menusCombo')
     }
+
+    getMenuAggregate(restId) {
+        return fetchWrapper.get('/menu/menu/' + restId)
+    }
+
+    getMenuItemOptionsInfo(itemId) {
+        return fetchWrapper.get('/menu/menu/item/' + itemId)
+    }
 }

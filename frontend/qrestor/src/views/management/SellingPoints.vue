@@ -360,7 +360,7 @@ const initFilters = () => {
                 accept="image/*"
                 @upload="onUpload"
                 :auto="false"
-                :maxFileSize="1000000"
+                :maxFileSize="10000000"
                 choose-label="Select Image"
               />
             </div>

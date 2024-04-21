@@ -30,10 +30,9 @@ public class MenuController {
         return new ResponseEntity<>(menuPublicService.getActiveMenu(restId), HttpStatus.OK);
     }
 
-    @GetMapping("/{menuId}/{menuItemId}")
-    public ResponseEntity<List<MenuItemOptionDTO>> getMenuItemOptions(@PathVariable UUID menuId,
-                                                                      @PathVariable UUID menuItemId) {
-        return new ResponseEntity<>(menuPublicService.getMenuItemOptions(menuId, menuItemId), HttpStatus.OK);
+    @GetMapping("/item/{menuItemId}")
+    public ResponseEntity<List<MenuItemOptionDTO>> getMenuItemOptions(@PathVariable UUID menuItemId) {
+        return new ResponseEntity<>(menuPublicService.getMenuItemOptions(menuItemId), HttpStatus.OK);
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

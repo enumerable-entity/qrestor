@@ -1,6 +1,6 @@
 import { fetchWrapper } from '@/fetchWrapper.js'
 
-export default class MenuItemsService {
+export default class QrService {
     constructor() {
         this.url = '/qresolver/management/qr'
     }
@@ -19,6 +19,10 @@ export default class MenuItemsService {
 
     deleteQrCode(publicId) {
         return fetchWrapper.delete(this.url + '/' + publicId)
+    }
+
+    getQrCodeData(publicId) {
+        return fetchWrapper.get( '/qr/' + publicId)
     }
 
 }

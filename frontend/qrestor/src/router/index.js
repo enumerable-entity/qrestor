@@ -86,7 +86,7 @@ const router = createRouter({
       path: '/qr/:code',
       name: 'qr',
       props: true,
-      component: () => import('@/views/pages/Empty.vue')
+      component: () => import('@/views/pages/SellingPointMenu.vue')
     },
     {
       path: '/',
