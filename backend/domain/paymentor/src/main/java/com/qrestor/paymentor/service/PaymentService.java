@@ -86,7 +86,7 @@ public class PaymentService {
                         .setPriceData(SessionCreateParams.LineItem.PriceData
                                 .builder()
                                 .setCurrency("pln")
-                                .setUnitAmount(finalUuidPairMap.get(menuItem.getMenuItemId()).right())
+                                .setUnitAmount(finalUuidPairMap.get(menuItem.getMenuItemId()).right() * 10)
                                 .setProductData(SessionCreateParams.LineItem.PriceData.ProductData
                                         .builder()
                                         .setName(finalUuidPairMap.get(menuItem.getMenuItemId()).left())
@@ -104,10 +104,10 @@ public class PaymentService {
                         .setPriceData(SessionCreateParams.LineItem.PriceData
                                 .builder()
                                 .setCurrency("pln")
-                                .setUnitAmount(finalMenuItemsOptionsPriceMap.get(menuItemOptionPositionId).right())
+                                .setUnitAmount(finalMenuItemsOptionsPriceMap.get(menuItemOptionPositionId.getPublicId()).right() * 10)
                                 .setProductData(SessionCreateParams.LineItem.PriceData.ProductData
                                         .builder()
-                                        .setName(finalMenuItemsOptionsPriceMap.get(menuItemOptionPositionId).left())
+                                        .setName(finalMenuItemsOptionsPriceMap.get(menuItemOptionPositionId.getPublicId()).left())
                                         .build())
                                 .build())
                         .build())

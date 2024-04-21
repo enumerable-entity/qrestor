@@ -406,7 +406,7 @@ const placeOrderAndGetPaymentUrl = async () => {
                       <div class="field col-9 md:col-9">
                         <h5>{{ sitem.menuItemTitle }}</h5>
                         <span class="text-xl font-semibold"
-                          >{{ formatCurrency(sitem.price) }} x {{ selectedItemCount }}</span
+                          >{{ formatCurrency(sitem.price) }} x {{ sitem.quantity }}</span
                         >
                       </div>
                     </div>
@@ -483,14 +483,14 @@ const placeOrderAndGetPaymentUrl = async () => {
 .floating-button {
   position: fixed;
   right: 20px;
-  bottom: 500px;
+  bottom: 450px;
   z-index: 1000; /* Ensure the button is above other elements */
 }
 
 .floating-button-waiter {
   position: fixed;
   right: 20px;
-  bottom: 450px;
+  bottom: 400px;
   z-index: 1000; /* Ensure the button is above other elements */
 }
 </style>
