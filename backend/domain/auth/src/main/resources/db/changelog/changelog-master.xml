@@ -8,4 +8,5 @@
 
     <include file="db/changelog/2024/04/17-02-changelog.xml"/>
     <include file="/db/changelog/2024011312331234-default-roles-initialization.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/2024/04/22-01-changelog.xml"/>
 </databaseChangeLog>

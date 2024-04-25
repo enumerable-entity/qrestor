@@ -10,7 +10,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "system_user_settings")
+@Table(name = "system_user_settings", schema = "auth")
 public class SystemUserSettings {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

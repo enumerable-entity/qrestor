@@ -202,7 +202,7 @@ public class PaymentService {
                             //.setPaymentIntentData(SessionCreateParams.PaymentIntentData.builder()
                             //        .setApplicationFeeAmount(123L)
                             //        .build())
-                            .setSuccessUrl("http://localhost:8080/paymentor/payment/success")
+                            .setSuccessUrl("http://localhost:8080/paymentor/payment/success") //todo: add order id and use it
                             .setCancelUrl("http://localhost:8080/paymentor/payment/failure")
                             .build();
 

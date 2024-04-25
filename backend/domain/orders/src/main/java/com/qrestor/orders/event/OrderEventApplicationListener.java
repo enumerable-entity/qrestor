@@ -1,7 +1,7 @@
 package com.qrestor.orders.event;
 
 import com.qrestor.models.dto.kafka.OrderEventDTO;
-import com.qrestor.orders.kafka.KafkaProducer;
+import com.qrestor.orders.kafka.IKafkaProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class OrderEventApplicationListener implements ApplicationListener<OrderEvent> {
-    private final KafkaProducer<OrderEventDTO> orderProducer;
+    private final IKafkaProducer<OrderEventDTO> orderProducer;
 
     @Override
     public void onApplicationEvent(OrderEvent event) {

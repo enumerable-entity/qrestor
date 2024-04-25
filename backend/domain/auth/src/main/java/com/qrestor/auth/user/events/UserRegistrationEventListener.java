@@ -1,7 +1,7 @@
 package com.qrestor.auth.user.events;
 
 
-import com.qrestor.auth.kafka.producers.KafkaProducer;
+import com.qrestor.auth.kafka.producers.IKafkaProducer;
 import com.qrestor.auth.token.entity.TokenEntity;
 import com.qrestor.auth.user.entity.SystemUserEntity;
 import com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO;
@@ -25,8 +25,8 @@ import static com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO.USER_NAME_PA
 @RequiredArgsConstructor
 public class UserRegistrationEventListener implements ApplicationListener<UserEvent> {
 
-    private final KafkaProducer<UserKafkaSyncDTO> userProducer;
-    private final KafkaProducer<KafkaEmailSendRequestDTO> mailerProducer;
+    private final IKafkaProducer<UserKafkaSyncDTO> userProducer;
+    private final IKafkaProducer<KafkaEmailSendRequestDTO> mailerProducer;
 
     @Value("${app.domain}")
     private String domain;

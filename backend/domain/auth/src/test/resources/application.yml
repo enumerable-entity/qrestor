@@ -1,0 +1,37 @@
+server:
+  port: 8097
+app:
+  domain: http://localhost:4000
+  auth:
+    jwt:
+      secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
+      expiration: ${AUTH_SERVICE_TOKEN_EXPIRATION:#{1000 * 60 * 60 *24 * 7}}
+      issuer: ${AUTH_SERVICE_TOKEN_ISSUER:${spring.application.name}}
+spring:
+  application:
+    name: auth
+  datasource:
+    url: jdbc:h2:mem:test_mem
+    driver-class-name: org.h2.Driver
+    dbcp2:
+      default-schema: auth
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/changelog-master.xml
+  threads:
+    virtual:
+      enabled: true
+  sql:
+    init:
+      schema-locations: classpath:schema.sql
+eureka:
+  client:
+    enabled: false

@@ -2,11 +2,13 @@ package com.qrestor.orders.kafka;
 
 import com.qrestor.commons.kafka.KafkaTopics;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class KafkaProducer<T> {
+@Profile("!test")
+public class KafkaProducer<T> implements IKafkaProducer<T>{
 
     private final KafkaMessageSender<T> kafkaMessageSender;
 
