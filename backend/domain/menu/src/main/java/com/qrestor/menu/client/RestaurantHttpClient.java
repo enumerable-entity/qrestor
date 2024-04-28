@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
-@FeignClient(name = "restaurant", configuration = FeignClientConfig.class)
+@FeignClient(name = "sell-points", configuration = FeignClientConfig.class)
 public interface RestaurantHttpClient {
 
     @GetMapping("/integration/userOwnershipCheck")

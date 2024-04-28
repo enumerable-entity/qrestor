@@ -1,57 +1,6 @@
 app:
-  domain: https://wanted-talented-peacock.ngrok-free.app
+  domain: http://localhost:8080
   sendgrid:
-    enabled: false
+    enabled: true
     api-key: SG.V4up34hDQYeKaU2AwhoHpA.Su8Tr2NZpU5oC4KKXVKoO4bbEK2pKAN7iDDXkLeIehA
     from-email: qrestor@qrestor.com
-spring:
-  datasource:
-    url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
-    username: ${AUTH_SERVICE_DB_USER:${spring.application.name}}
-    password: ${AUTH_SERVICE_DB_PASSWORD:${spring.application.name}}
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-        show_sql: true
-        use_sql_comments: true
-        jdbc:
-          lob:
-            non_contextual_creation: true
-
-  liquibase:
-    enabled: true
-    change-log: classpath:db/changelog/changelog-master.xml
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
-        cache: DEBUG
-        stat: DEBUG
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-  instance:
-    hostname: localhost
-management:
-  metrics:
-    tags:
-      application: ${spring.application.name}
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  tracing:
-    sampling:
-      probability: 1.0
-  zipkin:
-    tracing:
-      endpoint: http://localhost:9411/api/v2/spans

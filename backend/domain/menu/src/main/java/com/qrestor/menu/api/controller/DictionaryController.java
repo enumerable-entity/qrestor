@@ -44,4 +44,9 @@ public class DictionaryController {
             @RequestParam(required = false) UUID menuItemOptionId) {
         return ResponseEntity.ok(dictionaryService.getMenuItemOptionsPositionsCombo(menuItemOptionId));
     }
+
+    @RequestMapping(MENUS_COMBO)
+    public ResponseEntity<Collection<DictionaryDTO<String>>> getMenusCombo() {
+        return ResponseEntity.ok(dictionaryService.getMenuCombo());
+    }
 }

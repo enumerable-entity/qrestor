@@ -19,7 +19,6 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Account;
 import com.stripe.model.AccountLink;
-import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.RequestOptions;
 import com.stripe.param.AccountCreateParams;
@@ -35,7 +34,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-import static com.qrestor.models.EmailRequestType.EMAIL_VERIFICATION;
 import static com.qrestor.models.EmailRequestType.ORDER_SUCCESS_CONFIRMATION;
 import static com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO.USER_NAME_PARAM;
 
@@ -52,9 +50,13 @@ public class PaymentService {
 
     private final KafkaProducer<KafkaEmailSendRequestDTO> mailerProducer;
 
-    public PaymentService(AuthHttpClient authHttpClient, SyncUserRepository syncUserRepository, RestaurantHttpClient restaurantHttpClient,
-                          MenuHttpClient menuHttpClient, PaymentDetailsRepository repository,
-                          @Value("${app.stripe.secret}") String stripeApiKey, KafkaProducer<KafkaEmailSendRequestDTO> mailerProducer){
+    public PaymentService(AuthHttpClient authHttpClient,
+                          SyncUserRepository syncUserRepository,
+                          RestaurantHttpClient restaurantHttpClient,
+                          MenuHttpClient menuHttpClient,
+                          PaymentDetailsRepository repository,
+                          @Value("${app.stripe.secret}") String stripeApiKey,
+                          KafkaProducer<KafkaEmailSendRequestDTO> mailerProducer) {
         this.repository = repository;
         this.mailerProducer = mailerProducer;
         Stripe.apiKey = stripeApiKey;
@@ -67,11 +69,11 @@ public class PaymentService {
     private static List<SessionCreateParams.LineItem> mapOrderToLineItems(OrderDTO order,
                                                                           CompletableFuture<Map<UUID, Pair<String, Long>>> menuItemsPriceMapF,
                                                                           CompletableFuture<Map<UUID, Pair<String, Long>>> menuItemsOptionsPriceMapF) {
-        Map<UUID, Pair<String, Long>> uuidPairMap =null;
-        Map<UUID, Pair<String, Long>> menuItemsOptionsPriceMap =null;
+        Map<UUID, Pair<String, Long>> uuidPairMap = null;
+        Map<UUID, Pair<String, Long>> menuItemsOptionsPriceMap = null;
         try {
             menuItemsOptionsPriceMap = menuItemsOptionsPriceMapF.get();
-            uuidPairMap= menuItemsPriceMapF.get();
+            uuidPairMap = menuItemsPriceMapF.get();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } catch (ExecutionException e) {
@@ -84,7 +86,7 @@ public class PaymentService {
                         .setPriceData(SessionCreateParams.LineItem.PriceData
                                 .builder()
                                 .setCurrency("pln")
-                                .setUnitAmount(finalUuidPairMap.get(menuItem.getMenuItemId()).right())
+                                .setUnitAmount(finalUuidPairMap.get(menuItem.getMenuItemId()).right() * 10)
                                 .setProductData(SessionCreateParams.LineItem.PriceData.ProductData
                                         .builder()
                                         .setName(finalUuidPairMap.get(menuItem.getMenuItemId()).left())
@@ -102,10 +104,10 @@ public class PaymentService {
                         .setPriceData(SessionCreateParams.LineItem.PriceData
                                 .builder()
                                 .setCurrency("pln")
-                                .setUnitAmount(finalMenuItemsOptionsPriceMap.get(menuItemOptionPositionId).right())
+                                .setUnitAmount(finalMenuItemsOptionsPriceMap.get(menuItemOptionPositionId.getPublicId()).right() * 10)
                                 .setProductData(SessionCreateParams.LineItem.PriceData.ProductData
                                         .builder()
-                                        .setName(finalMenuItemsOptionsPriceMap.get(menuItemOptionPositionId).left())
+                                        .setName(finalMenuItemsOptionsPriceMap.get(menuItemOptionPositionId.getPublicId()).left())
                                         .build())
                                 .build())
                         .build())
@@ -117,31 +119,45 @@ public class PaymentService {
     @Transactional
     public void performStripeAccountCreation() throws StripeException {
         UserDescriptorDTO userInfo = authHttpClient.getUserInfo();
-        AccountCreateParams params =
-                AccountCreateParams.builder()
-                        .setType(AccountCreateParams.Type.STANDARD)
-                        .setBusinessType(AccountCreateParams.BusinessType.INDIVIDUAL)
-                        .setCountry(userInfo.address().country())
-                        .setEmail(userInfo.user().email())
-                        .setCompany(AccountCreateParams.Company.builder()
-                                .setName(userInfo.information().businessName())
-                                .setPhone(userInfo.information().phone())
-                                .setAddress(AccountCreateParams.Company.Address.builder()
-                                        .setCity(userInfo.address().city())
-                                        .setCountry(userInfo.address().country())
-                                        .setLine1(userInfo.address().address())
-                                        .setPostalCode(userInfo.address().zip())
-                                        .setState(userInfo.address().state())
-                                        .build())
-                                .build())
-                        .build();
+        AccountCreateParams params = prepareNewSubContractorAccount(userInfo);
         Account account = Account.create(params);
         syncUserRepository.getByUuid(SecurityUtils.getPrincipalUUID())
-                .ifPresent(syncUser -> {
-                    syncUser.setStripeAccountId(account.getId());
-                    syncUserRepository.save(syncUser);
-                });
+                .ifPresent(syncUser -> saveUserStripeAccountId(syncUser, account));
         log.info("Stripe Account created: {}", account);
+    }
+
+    private void saveUserStripeAccountId(SyncUser syncUser,
+                                         Account account) {
+        syncUser.setStripeAccountId(account.getId());
+        syncUserRepository.save(syncUser);
+    }
+
+    private AccountCreateParams prepareNewSubContractorAccount(UserDescriptorDTO userInfo) {
+        return AccountCreateParams.builder()
+                .setType(AccountCreateParams.Type.STANDARD)
+                .setBusinessType(AccountCreateParams.BusinessType.INDIVIDUAL)
+                .setCountry(userInfo.address().country())
+                .setEmail(userInfo.user().email())
+                .setCompany(getBasicUserFiels(userInfo))
+                .build();
+    }
+
+    private AccountCreateParams.Company getBasicUserFiels(UserDescriptorDTO userInfo) {
+        return AccountCreateParams.Company.builder()
+                .setName(userInfo.information().businessName())
+                .setPhone(userInfo.information().phone())
+                .setAddress(getUserAddress(userInfo))
+                .build();
+    }
+
+    private AccountCreateParams.Company.Address getUserAddress(UserDescriptorDTO userInfo) {
+        return AccountCreateParams.Company.Address.builder()
+                .setCity(userInfo.address().city())
+                .setCountry(userInfo.address().country())
+                .setLine1(userInfo.address().address())
+                .setPostalCode(userInfo.address().zip())
+                .setState(userInfo.address().state())
+                .build();
     }
 
     public String getStripeOnboardRedirectUrl() throws StripeException {
@@ -186,7 +202,7 @@ public class PaymentService {
                             //.setPaymentIntentData(SessionCreateParams.PaymentIntentData.builder()
                             //        .setApplicationFeeAmount(123L)
                             //        .build())
-                            .setSuccessUrl("http://localhost:8080/paymentor/payment/success")
+                            .setSuccessUrl("http://localhost:8080/paymentor/payment/success") //todo: add order id and use it
                             .setCancelUrl("http://localhost:8080/paymentor/payment/failure")
                             .build();
 
@@ -200,9 +216,10 @@ public class PaymentService {
     }
 
     private CompletableFuture<Map<UUID, Pair<String, Long>>> getMenuItemsOptionsPriceMap(List<ItemOrderDetails> items) {
-        Set<UUID> menuItemOptionPositionsIds = items.stream()
+        var menuItemOptionPositionsIds = items.stream()
                 .flatMap(item -> item.getMenuItemOptions().stream())
                 .flatMap(menuOptions -> menuOptions.getOptionPositions().stream())
+                .map(AbstractPublicDTO::getPublicId)
                 .collect(Collectors.toSet());
         return CompletableFuture.supplyAsync(() -> menuHttpClient.getMenuItemOptionsPositionsPricesMap(menuItemOptionPositionsIds));
     }

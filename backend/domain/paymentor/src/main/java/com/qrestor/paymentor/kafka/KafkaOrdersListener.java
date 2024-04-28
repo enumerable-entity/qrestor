@@ -1,6 +1,6 @@
 package com.qrestor.paymentor.kafka;
 
-import com.qrestor.models.dto.order.OrderDTO;
+import com.qrestor.models.dto.kafka.OrderEventDTO;
 import com.qrestor.paymentor.service.OrderConsumerService;
 import com.stripe.exception.StripeException;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +18,8 @@ public class KafkaOrdersListener {
     private final OrderConsumerService orderConsumerService;
 
     @KafkaListener(topics = ORDERS_TOPIC)
-    public void consume(OrderDTO message) throws StripeException {
+    public void consume(OrderEventDTO message) throws StripeException {
         orderConsumerService.process(message);
-        log.info("NEW ORDER CONSUMED: {}", message);
+        log.info("NEW ORDER CONSUMED: {}", message.getOrder());
     }
 }

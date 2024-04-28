@@ -32,4 +32,12 @@ export default class OrdersService {
     changeOrderStatus(orderId, status) {
         return fetchWrapper.post(this.url+'/' + orderId +  '/status?status=' + status)
     }
+
+    placeOrderAndPay(order) {
+        return fetchWrapper.post(this.url, order)
+    }
+
+    getPaymentUrl(orderId) {
+        return fetchWrapper.get('/paymentor/payment/order/' + orderId + '/getPaymentRedirectUrl')
+    }
 }

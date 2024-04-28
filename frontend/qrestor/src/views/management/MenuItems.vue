@@ -42,7 +42,7 @@ const searchMenu = (event) => {
 
 const autoValueIngredient = ref(null)
 const selectedAutoValueIngredients = ref(null)
-const autoFilteredValueIngredient= ref([])
+const autoFilteredValueIngredient = ref([])
 
 const searchIngredients = (event) => {
   setTimeout(() => {
@@ -56,7 +56,6 @@ const searchIngredients = (event) => {
   }, 250)
 }
 
-
 const menuContextId = ref(route.params.menuId)
 const menuContextName = ref(null)
 
@@ -66,7 +65,7 @@ const loading1 = ref(null)
 const initFilters1 = () => {
   filters1.value = {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: {
+    title: {
       operator: FilterOperator.AND,
       constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
     },
@@ -74,9 +73,9 @@ const initFilters1 = () => {
       operator: FilterOperator.AND,
       constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
     },
-    restaurantId: {
+    itemCategory: {
       operator: FilterOperator.AND,
-      constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
+      constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
     },
 
     isActive: { value: null, matchMode: FilterMatchMode.EQUALS }
@@ -106,10 +105,9 @@ onBeforeMount(async () => {
     const { data: menuData } = await menuService.getMenus()
     menuItems.value = data
     autoValueMenu.value = menuData
-
   }
-   const dictResponse = await ingredientsService.getIngredients()
-   autoValueIngredient.value = dictResponse.data
+  const dictResponse = await ingredientsService.getIngredients()
+  autoValueIngredient.value = dictResponse.data
   loading1.value = false
 })
 
@@ -137,7 +135,7 @@ const hideDialog = () => {
 }
 
 const fillAdditionalProps = () => {
-  const selected = selectedAdditionalItemProps.value.map(el => el.value)
+  const selected = selectedAdditionalItemProps.value.map((el) => el.value)
 
   menuItem.value.isVegetarian = selected.includes('isVegetarian')
   menuItem.value.isVegan = selected.includes('isVegan')
@@ -151,13 +149,12 @@ const fillAdditionalProps = () => {
   menuItem.value.isEggs = selected.includes('isEggs')
   menuItem.value.isShellfish = selected.includes('isShellfish')
   menuItem.value.isSoy = selected.includes('isSoy')
-
 }
 
 const routemenu = ref(null)
 
 const items = [
-  {label: "Manage item options", route: 'menu-item-options', icon: 'pi pi-fw pi-pencil'}
+  { label: 'Manage item options', route: 'menu-item-options', icon: 'pi pi-fw pi-pencil' }
 ]
 
 const onRowContextMenu = (event) => {
@@ -237,26 +234,16 @@ const exportCSV = () => {
   dt.value.exportCSV()
 }
 
-// ROW SELECT
-const onMenuRowSelect = (event) => {
-  toast.add({
-    severity: 'info',
-    summary: 'Menu Selected',
-    detail: event.data.name,
-    life: 3000
-  })
-}
-
 const formatCurrency = (value) => {
   const price = value / 10
-  return price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+  return price.toLocaleString(useUserStore().getUserLocale(), { style: 'currency', currency: useUserStore().getUserCurrency() })
 }
 
 const formatCurrencyForAPI = (value) => {
   return value * 10
 }
 const getImageURL = (path) => {
-  return import.meta.env.VITE_ROOT_API + "/files/" + path
+  return import.meta.env.VITE_ROOT_API + '/files/' + path
 }
 
 const getUploadURL = () => {
@@ -264,7 +251,7 @@ const getUploadURL = () => {
 }
 
 const onUpload = (event) => {
-  menuItem.value.imageUrl = "menu-items-pics/" +event.xhr.response;
+  menuItem.value.imageUrl = 'menu-items-pics/' + event.xhr.response
 }
 
 const options = [
@@ -272,17 +259,15 @@ const options = [
   { name: 'isVegan', value: 'isVegan' },
   { name: 'isGlutenFree', value: 'isGlutenFree' },
   { name: 'isSpicy', value: 'isSpicy' },
-  { name: 'isHalal', value: 'isHalal'},
-  { name: 'isKosher', value: 'isKosher'},
-  { name: 'isPeanuts', value: 'isPeanuts'},
-  { name: 'isTreeNuts', value: 'isTreeNuts'},
-  { name: 'isDairy', value: 'isDairy'},
-  { name: 'isEggs', value: 'isEggs'},
-  { name: 'isShellfish', value: 'isShellfish'},
-  { name: 'isSoy', value: 'isSoy'},
+  { name: 'isHalal', value: 'isHalal' },
+  { name: 'isKosher', value: 'isKosher' },
+  { name: 'isPeanuts', value: 'isPeanuts' },
+  { name: 'isTreeNuts', value: 'isTreeNuts' },
+  { name: 'isDairy', value: 'isDairy' },
+  { name: 'isEggs', value: 'isEggs' },
+  { name: 'isShellfish', value: 'isShellfish' },
+  { name: 'isSoy', value: 'isSoy' }
 ]
-
-
 </script>
 
 <template>
@@ -290,7 +275,7 @@ const options = [
     <div class="col-12">
       <div class="card">
         <Toast />
-        <Toolbar class="mb-4">
+        <Toolbar>
           <template v-slot:start>
             <div class="my-2">
               <Button
@@ -302,15 +287,6 @@ const options = [
             </div>
           </template>
           <template v-slot:end>
-            <FileUpload
-              mode="basic"
-              accept="image/*"
-              url="localhost:8080/menu/management/menu-items"
-              :maxFileSize="1000000"
-              label="Import"
-              chooseLabel="Import"
-              class="mr-2 inline-block"
-            />
             <Button
               label="Export"
               icon="pi pi-upload"
@@ -326,7 +302,6 @@ const options = [
           v-model:selection="selectedMenu"
           v-model:contextMenuSelection="selectedMenu"
           selectionMode="single"
-          @rowSelect="onMenuRowSelect"
           v-model:filters="filters1"
           dataKey="publicId"
           :paginator="true"
@@ -336,8 +311,8 @@ const options = [
           :rowHover="true"
           @row-contextmenu="onRowContextMenu"
           contextMenu
-          :rows="10"
-          :globalFilterFields="['name', 'description', 'restaurantId']"
+          :rows="5"
+          :globalFilterFields="['title', 'description', 'itemCategory']"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25]"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} menus"
@@ -372,10 +347,8 @@ const options = [
           <template #empty> No menu items found.</template>
           <template #loading> Loading menu items data. Please wait.</template>
 
-          <Column headerStyle="width: 3rem"></Column>
           <Column field="publicId" header="Id" headerStyle="width:10%; min-width:10rem;">
             <template #body="slotProps">
-              <span class="p-column-title">Id</span>
               {{ makeIdShorter(slotProps.data.publicId) }}
             </template>
           </Column>
@@ -387,7 +360,6 @@ const options = [
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Title</span>
               {{ slotProps.data.title }}
             </template>
             <template #filter="{ filterModel }">
@@ -406,7 +378,6 @@ const options = [
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Description</span>
               {{ slotProps.data.description }}
             </template>
             <template #filter="{ filterModel }">
@@ -425,7 +396,6 @@ const options = [
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Category</span>
               <Tag
                 class="mr-2"
                 :value="t(slotProps.data.itemCategory.nlsKey)"
@@ -469,7 +439,7 @@ const options = [
             </template>
           </Column>
           <Column
-            field="isActive"
+            field="enabled"
             :sortable="true"
             header="Is Active"
             dataType="boolean"
@@ -485,18 +455,15 @@ const options = [
                 }"
               ></i>
             </template>
-            <template #filter="{ filterModel }">
-              <TriStateCheckbox v-model="filterModel.value" />
-            </template>
           </Column>
           <Column
             field="ingredients"
             header="Ingredients"
+            dataType="array"
             :sortable="false"
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Attributes</span>
               <Tag
                 v-for="attr in slotProps.data.ingredients"
                 class="m-1"
@@ -549,12 +516,16 @@ const options = [
               />
             </template>
           </Column>
-
         </DataTable>
 
         <ContextMenu ref="routemenu" :model="items" @hide="selectedMenu = null" class="w-2">
           <template #item="{ item, props }">
-            <router-link v-if="item.route" v-slot="{ href, navigate }" :to="{name: item.route, params: {menuItemId: selectedMenu.publicId } }" custom>
+            <router-link
+              v-if="item.route"
+              v-slot="{ href, navigate }"
+              :to="{ name: item.route, params: { menuItemId: selectedMenu.publicId } }"
+              custom
+            >
               <a v-ripple :href="href" v-bind="props.action" @click="navigate">
                 <span :class="item.icon" />
                 <span class="ml-2">{{ item.label }}</span>
@@ -562,7 +533,6 @@ const options = [
             </router-link>
           </template>
         </ContextMenu>
-
 
         <Dialog
           v-model:visible="menuDialog"
@@ -572,45 +542,49 @@ const options = [
           class="p-fluid"
         >
           <div class="field">
-            <label for="name">Title</label>
+            <label for="title">Title</label>
             <InputText
-              id="name"
+              id="title"
               v-model.trim="menuItem.title"
               required="true"
               autofocus
-              :class="{ 'p-invalid': submitted && !menuItem.name }"
+              :class="{ 'p-invalid': submitted && !menuItem.title }"
             />
-            <small class="p-invalid" v-if="submitted && !menuItem.name">Name is required.</small>
+            <small class="p-invalid" v-if="submitted && !menuItem.name">Title is required.</small>
           </div>
 
           <div class="field">
-            <label for="name">Description(optional)</label>
-            <InputText id="name" v-model.trim="menuItem.description" required="false" autofocus />
+            <label for="desc">Description</label>
+            <InputText id="desc" v-model.trim="menuItem.description" required="false" autofocus />
           </div>
 
-          <div class = "field w-full">
+          <div class="field w-full">
             <label for="imageUrl">Image</label>
-            <FileUpload class = "w-full"
-                        mode="basic"
-                        id="imageUrl"
-                        ref="fileUpload"
-                        name="file"
-                        :url="getUploadURL()"
-                        accept="image/*"
-                        @upload="onUpload"
-                        :auto="false"
-                        :maxFileSize="1000000"
-                        choose-label="Select Image"/>
+            <FileUpload
+              class="w-full"
+              mode="basic"
+              id="imageUrl"
+              ref="fileUpload"
+              name="file"
+              :url="getUploadURL()"
+              accept="image/*"
+              @upload="onUpload"
+              :auto="false"
+              :maxFileSize="1000000"
+              choose-label="Select Image"
+            />
           </div>
           <div class="field">
             <label for="price">Price</label>
-            <InputNumber v-model="menuItem.price"
-                         id = "price"
-                         inputId="currency-us"
-                         mode="currency"
-                         showButtons
-                         :currency="useUserStore().getUserCurrency()"
-                         :locale="useUserStore().getUserLocale()" />
+            <InputNumber
+              v-model="menuItem.price"
+              id="price"
+              inputId="currency-us"
+              mode="currency"
+              showButtons
+              :currency="useUserStore().getUserCurrency()"
+              :locale="useUserStore().getUserLocale()"
+            />
           </div>
 
           <div class="field">
@@ -643,9 +617,9 @@ const options = [
               @complete="searchIngredients"
             />
             <small class="p-invalid" v-if="submitted && !menuItem.ingredients"
-            >Few ingredients are required.</small>
+              >Few ingredients are required.</small
+            >
           </div>
-
 
           <div class="field" v-if="!menuContextId">
             <label for="currency">Select Menu for this Menu Item</label>
@@ -664,14 +638,29 @@ const options = [
               field="name"
             />
             <small class="p-invalid" v-if="submitted && !menuItem.restaurantId"
-              >Selling point is required.</small>
+              >Selling point is required.</small
+            >
           </div>
           <div class="field">
             <label for="additionalItemProps">Additional properties</label>
-            <SelectButton id = "additionalItemProps" v-model="selectedAdditionalItemProps" :options="options.slice(0, 4)" optionLabel="name" multiple aria-labelledby="multiple" />
+            <SelectButton
+              id="additionalItemProps"
+              v-model="selectedAdditionalItemProps"
+              :options="options.slice(0, 4)"
+              optionLabel="name"
+              multiple
+              aria-labelledby="multiple"
+            />
           </div>
-          <div class = "field">
-            <SelectButton id = "additionalItemProps" v-model="selectedAdditionalItemProps" :options="options.slice(5, 9)" optionLabel="name" multiple aria-labelledby="multiple" />
+          <div class="field">
+            <SelectButton
+              id="additionalItemProps"
+              v-model="selectedAdditionalItemProps"
+              :options="options.slice(5, 9)"
+              optionLabel="name"
+              multiple
+              aria-labelledby="multiple"
+            />
           </div>
           <div class="field-checkbox mb-0">
             <Checkbox

@@ -10,7 +10,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "system_user_settings")
+@Table(name = "system_user_settings", schema = "auth")
 public class SystemUserSettings {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -49,10 +49,10 @@ public class SystemUserSettings {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "theme = " + theme + ", " +
-                "language = " + language + ", " +
-                "currency = " + currency + ", " +
-                "timezone = " + timezone;
+               "id = " + id + ", " +
+               "theme = " + theme + ", " +
+               "language = " + language + ", " +
+               "currency = " + currency + ", " +
+               "timezone = " + timezone;
     }
 }

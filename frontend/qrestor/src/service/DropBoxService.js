@@ -1,6 +1,6 @@
 export class CountryService {
   getCountries() {
-    return fetch('/demo/data/countries.json')
+    return fetch('/data/countries.json')
       .then((res) => res.json())
       .then((d) => d.data)
   }
@@ -8,7 +8,7 @@ export class CountryService {
 
 export class CurrencyService {
   getCurencies() {
-    return fetch('/demo/data/curencies.json')
+    return fetch('/data/curencies.json')
       .then((res) => res.json())
       .then((d) => d.data)
   }

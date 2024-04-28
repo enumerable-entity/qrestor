@@ -60,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private List<SimpleGrantedAuthority> mapRolesToAuthorities(List<String> claims) {
         return claims.stream()
-                .map(string-> "ROLE_" + string)
+                .map(string -> "ROLE_" + string)
                 .map(SimpleGrantedAuthority::new)
                 .toList();
     }

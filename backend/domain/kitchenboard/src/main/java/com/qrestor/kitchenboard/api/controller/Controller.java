@@ -24,7 +24,7 @@ public class Controller {
     private final SseService sseService;
 
     @GetMapping(path = SSE_SUBSCRIBE, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    @PreAuthorize("hasRole('WAITER')")
+    @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
     public SseEmitter subscribe() {
         log.info("SSE subscribe request");
         SseEmitter eventEmitter = new SseEmitter(Long.MAX_VALUE);
@@ -34,8 +34,9 @@ public class Controller {
     }
 
     @GetMapping(path = WAITER_REQUEST)
-    public ResponseEntity<Void> waiterRequest(@RequestParam UUID restaurantId, @RequestParam int tableNr) {
-        log.info("Waiter request for restaurant id {} and table nr {}" , restaurantId.toString(), tableNr);
+    public ResponseEntity<Void> waiterRequest(@RequestParam UUID restaurantId,
+                                              @RequestParam int tableNr) {
+        log.info("Waiter request for restaurant id {} and table nr {}", restaurantId.toString(), tableNr);
         sseService.emitWaiterRequest(restaurantId, tableNr);
         return ResponseEntity.ok().build();
     }

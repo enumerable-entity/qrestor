@@ -26,7 +26,7 @@ public class OrderEntity implements PublicEntity {
     @Column(name = "public_id", nullable = false, updatable = false, unique = true)
     private UUID publicId;
 
-    @Column(name = "restaurant_id", nullable = false)
+    @Column(name = "sell_point_id", nullable = false)
     private UUID restaurantId;
 
     @Column(name = "table_number", nullable = false)

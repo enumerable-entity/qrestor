@@ -1,9 +1,8 @@
 package com.qrestor.menu.repository;
 
 import com.qrestor.commons.PublicRepository;
-import com.qrestor.menu.repository.projections.MenuItemProj;
-import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.menu.entity.MenuItemOptionPositionEntity;
+import com.qrestor.models.dto.DictionaryDTO;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -23,7 +22,8 @@ public interface MenuItemOptionPositionsRepository extends PublicRepository<Menu
             and o.userId = :userId
             and (cast(:menuItemOptionId as uuid) is null OR o.menuItemOption.publicId = :menuItemOptionId)
             """)
-    Collection<DictionaryDTO<String>> getMenuItemOptionsPositionsCombo(UUID userId, @Nullable UUID menuItemOptionId);
+    Collection<DictionaryDTO<String>> getMenuItemOptionsPositionsCombo(UUID userId,
+                                                                       @Nullable UUID menuItemOptionId);
 
     @Query("""
             select r

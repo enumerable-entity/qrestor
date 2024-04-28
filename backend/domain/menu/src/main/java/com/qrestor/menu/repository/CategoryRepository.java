@@ -1,8 +1,8 @@
 package com.qrestor.menu.repository;
 
 import com.qrestor.commons.PublicRepository;
-import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.menu.entity.ItemCategoryEntity;
+import com.qrestor.models.dto.DictionaryDTO;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 

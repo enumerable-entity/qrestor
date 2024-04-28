@@ -11,64 +11,80 @@ const model = ref([
     items: [
       {
         label: 'Selling points',
-        icon: 'pi pi-fw pi-pencil',
-        to: {name: 'selling-points'},
+        icon: 'pi pi-fw pi-home',
+        to: '/pages/spoints',
       },
       {
         label: 'Menus',
-        icon: 'pi pi-fw pi-bars',
+        icon: 'pi pi-fw pi-book',
         items: [
           {
-            label: 'Menus',
-            icon: 'pi pi-fw pi-book',
-            to: {name: 'menus'},
+            label: 'All Menus',
+            icon: 'pi pi-fw pi-list',
+            to: '/management/menus',
           },
           {
             label: 'Menu items',
-            icon: 'pi pi-fw pi-pencil',
-            to: {name: 'menu-items-all'},
+            icon: 'pi pi-fw pi-bars',
+            to: '/management/menus/menu-items',
           },
           {
             label: 'Menu items options',
-            icon: 'pi pi-fw pi-server',
-            to: {name: 'menu-item-options-all'},
+            icon: 'pi pi-fw pi-align-center',
+            to: '/management/menus/menu-items/menu-item-options',
           },
           {
             label: 'Options positions',
             icon: 'pi pi-fw pi-server',
-            to: {name: 'menu-item-options-positions-all'},
+            to: '/management/menus/menu-item-options/options-positions',
           },
           {
             label: 'Ingredients',
-            icon: 'pi pi-fw pi-server',
-            to: {name: 'ingredients-all'},
+            icon: 'pi pi-fw pi-apple',
+            to: '/management/menus/ingredients',
           }
         ]
       },
       {
         label: 'Orders',
-        icon: 'pi pi-fw pi-pencil',
+        icon: 'pi pi-fw pi-shopping-cart',
         items: [
           {
             label: 'Active orders',
-            icon: 'pi pi-fw pi-book',
-            to: {name: 'active-orders'},
+            icon: 'pi pi-fw pi-clock',
+            to: '/management/orders/active',
           },
           {
             label: 'History',
-            icon: 'pi pi-fw pi-pencil',
-            to: {name: 'orders-history'},
+            icon: 'pi pi-fw pi-history',
+            to: '/management/orders/history',
           }
         ]
       },
       {
-        label: 'Kitchen Board',
-        icon: 'pi pi-fw pi-pencil',
+        label: 'Waiter Board',
+        icon: 'pi pi-fw pi-desktop',
         items: [
           {
             label: 'Live Board',
-            icon: 'pi pi-fw pi-server',
-            to: {name: 'live-board'},
+            icon: 'pi pi-fw pi-caret-right',
+            to: '/kitchen/live-board',
+          }
+        ]
+      },
+      {
+        label: 'QR codes',
+        icon: 'pi pi-fw pi-qrcode',
+        items: [
+          {
+            label: 'Mappings',
+            icon: 'pi pi-fw pi-arrow-right-arrow-left',
+            to: '/qr-codes-management'
+          },
+          {
+            label: 'Configuration',
+            icon: 'pi pi-fw pi-wrench',
+            to: '/qr-codes-config'
           }
         ]
       }

@@ -46,13 +46,7 @@ const initFilters1 = () => {
     description: {
       operator: FilterOperator.AND,
       constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
-    },
-    restaurantId: {
-      operator: FilterOperator.AND,
-      constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
-    },
-
-    isActive: { value: null, matchMode: FilterMatchMode.EQUALS }
+    }
   }
 }
 
@@ -167,7 +161,7 @@ const onRowSelect = (event) => {
     <div class="col-12">
       <div class="card">
         <Toast />
-        <Toolbar class="mb-4">
+        <Toolbar >
           <template v-slot:start>
             <div class="my-2">
               <Button
@@ -179,14 +173,6 @@ const onRowSelect = (event) => {
             </div>
           </template>
           <template v-slot:end>
-            <FileUpload
-              mode="basic"
-              accept="image/*"
-              :maxFileSize="1000000"
-              label="Import"
-              chooseLabel="Import"
-              class="mr-2 inline-block"
-            />
             <Button
               label="Export"
               icon="pi pi-upload"
@@ -209,8 +195,8 @@ const onRowSelect = (event) => {
           :filters="filters1"
           filterDisplay="menu"
           :rowHover="true"
-          :rows="10"
-          :globalFilterFields="['name', 'description', 'restaurantId']"
+          :rows="5"
+          :globalFilterFields="['name', 'description']"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25]"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} menus"
@@ -236,8 +222,6 @@ const onRowSelect = (event) => {
           </template>
           <template #empty> No menus found. </template>
           <template #loading> Loading menus data. Please wait. </template>
-
-          <Column headerStyle="width: 3rem"></Column>
           <Column
             field="publicId"
             header="Id"
@@ -250,12 +234,11 @@ const onRowSelect = (event) => {
           </Column>
           <Column
             field="name"
-            header="Name"
+            header="Title"
             :sortable="true"
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Name</span>
               {{ slotProps.data.name }}
             </template>
             <template #filter="{ filterModel }">
@@ -263,7 +246,7 @@ const onRowSelect = (event) => {
                 type="text"
                 v-model="filterModel.value"
                 class="p-column-filter"
-                placeholder="Search by name"
+                placeholder="Search by title"
               />
             </template>
           </Column>
@@ -292,16 +275,7 @@ const onRowSelect = (event) => {
             headerStyle="width:23%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Selling Point ID</span>
               {{ slotProps.data.restaurantId }}
-            </template>
-            <template #filter="{ filterModel }">
-              <InputText
-                type="text"
-                v-model="filterModel.value"
-                class="p-column-filter"
-                placeholder="Search by restaurant"
-              />
             </template>
           </Column>
           <Column
@@ -309,7 +283,6 @@ const onRowSelect = (event) => {
             :sortable="true"
             header="Is Active"
             dataType="boolean"
-            bodyClass=""
             style="min-width: 3rem"
           >
             <template #body="{ data }">
@@ -320,9 +293,6 @@ const onRowSelect = (event) => {
                   'text-pink-500 pi-times-circle': !data.isActive
                 }"
               ></i>
-            </template>
-            <template #filter="{ filterModel }">
-              <TriStateCheckbox v-model="filterModel.value" />
             </template>
           </Column>
           <Column headerStyle="min-width:10rem;" header="Actions">
@@ -362,7 +332,7 @@ const onRowSelect = (event) => {
             <small class="p-invalid" v-if="submitted && !menu.name">Name is required.</small>
           </div>
           <div class="field">
-            <label for="name">Description(optional)</label>
+            <label for="name">Description</label>
             <InputText
               id="name"
               v-model.trim="menu.description"
@@ -372,7 +342,7 @@ const onRowSelect = (event) => {
 
           </div>
           <div class="field ">
-            <label for="currency">Select selling point for this menu</label>
+            <label for="currency">Select selling point for this Menu</label>
             <AutoComplete
               class="w-full"
               :class="{ 'p-invalid': submitted && !menu.restaurantId }"
@@ -423,32 +393,6 @@ const onRowSelect = (event) => {
               @click="deleteMenuDialog = false"
             />
             <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteMenu" />
-          </template>
-        </Dialog>
-
-        <Dialog
-          v-model:visible="deleteMenusDialog"
-          :style="{ width: '450px' }"
-          header="Confirm"
-          :modal="true"
-        >
-          <div class="flex align-items-center justify-content-center">
-            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="menu">Are you sure you want to delete the selected menus?</span>
-          </div>
-          <template #footer>
-            <Button
-              label="No"
-              icon="pi pi-times"
-              class="p-button-text"
-              @click="deleteMenusDialog = false"
-            />
-            <Button
-              label="Yes"
-              icon="pi pi-check"
-              class="p-button-text"
-              @click="deleteSelectedMenus"
-            />
           </template>
         </Dialog>
       </div>

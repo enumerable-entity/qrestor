@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.qrestor.auth.api.RestEndpoints.VERIFY_EMAIL;
 import static com.qrestor.auth.api.RestEndpoints.REGISTRATION;
+import static com.qrestor.auth.api.RestEndpoints.VERIFY_EMAIL;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController

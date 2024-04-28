@@ -26,7 +26,7 @@ public class TokenEntity {
     @Enumerated(EnumType.STRING)
     private TokenType type;
 
-    @Column(name = "value", nullable = false)
+    @Column(name = "token_value", nullable = false)
     private String value;
 
     @Column(name = "user_id", nullable = false, updatable = false, insertable = false)
@@ -64,7 +64,7 @@ public class TokenEntity {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "value = " + value + ")";
+               "id = " + id + ", " +
+               "value = " + value + ")";
     }
 }

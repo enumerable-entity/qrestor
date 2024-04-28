@@ -11,7 +11,7 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 @AllArgsConstructor
 @NoArgsConstructor
-public class RestaurantBasicInfoDTO extends AbstractPublicDTO{
+public class RestaurantBasicInfoDTO extends AbstractPublicDTO {
     private String title;
     private String name;
 

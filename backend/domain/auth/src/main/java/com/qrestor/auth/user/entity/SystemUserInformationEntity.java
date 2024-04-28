@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.Locale;
 import java.util.Objects;
 
 @Getter
@@ -55,11 +54,11 @@ public class SystemUserInformationEntity {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "firstName = " + firstName + ", " +
-                "lastName = " + lastName + ", " +
-                "middleName = " + middleName + ", " +
-                "phone = " + phone + ", " +
-                "profilePictureUrl = " + profilePictureUrl + ")";
+               "id = " + id + ", " +
+               "firstName = " + firstName + ", " +
+               "lastName = " + lastName + ", " +
+               "middleName = " + middleName + ", " +
+               "phone = " + phone + ", " +
+               "profilePictureUrl = " + profilePictureUrl + ")";
     }
 }

@@ -1,7 +1,7 @@
 package com.qrestor.orders.api.controller;
 
-import com.qrestor.models.dto.order.OrderStatus;
 import com.qrestor.models.dto.order.OrderDTO;
+import com.qrestor.models.dto.order.OrderStatus;
 import com.qrestor.orders.service.IntegrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class IntegrationController {
 
     private final IntegrationService integrationService;
 
-    @PreAuthorize("hasRole('WAITER')")
+    @PreAuthorize("hasAnyRole('WAITER', 'RESTAURATEUR')")
     @GetMapping("/{restaurantId}/getOrders")
     ResponseEntity<List<OrderDTO>> getOrdersForRestaurant(@PathVariable UUID restaurantId,
                                                           @RequestParam Set<OrderStatus> orderStatus) {

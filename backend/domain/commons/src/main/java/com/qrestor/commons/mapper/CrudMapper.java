@@ -20,6 +20,7 @@ public interface CrudMapper<DTO extends AbstractPublicDTO, ENTITY extends Public
     List<ENTITY> toEntity(Iterable<DTO> dto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE)
-    ENTITY partialUpdate(DTO dto, @MappingTarget ENTITY entity);
+    ENTITY partialUpdate(DTO dto,
+                         @MappingTarget ENTITY entity);
 }
 

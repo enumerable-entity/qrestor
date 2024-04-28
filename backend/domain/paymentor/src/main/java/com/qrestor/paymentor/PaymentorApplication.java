@@ -16,8 +16,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableJpaRepositories(basePackages = {"com.qrestor"}, repositoryBaseClass = com.qrestor.commons.ExtendedRepositoryImpl.class)
 public class PaymentorApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PaymentorApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PaymentorApplication.class, args);
+    }
 
 }

@@ -1,5 +1,5 @@
 app:
-  domain: https://qrestor.com
+  domain: https://www.qrestor.com
   auth:
     jwt:
       secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}

@@ -1,6 +1,7 @@
 # Getting Started
 
 ### Reference Documentation
+
 For further reference, please consider the following sections:
 
 * [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
@@ -17,6 +18,7 @@ For further reference, please consider the following sections:
 * [Prometheus](https://docs.spring.io/spring-boot/docs/3.2.1/reference/htmlsingle/index.html#actuator.metrics.export.prometheus)
 
 ### Guides
+
 The following guides illustrate how to use some features concretely:
 
 * [Service Registration and Discovery with Eureka and Spring Cloud](https://spring.io/guides/gs/service-registration-and-discovery/)

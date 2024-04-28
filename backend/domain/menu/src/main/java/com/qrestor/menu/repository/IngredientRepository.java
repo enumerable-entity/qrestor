@@ -1,8 +1,8 @@
 package com.qrestor.menu.repository;
 
 import com.qrestor.commons.PublicRepository;
-import com.qrestor.models.dto.DictionaryDTO;
 import com.qrestor.menu.entity.IngredientEntity;
+import com.qrestor.models.dto.DictionaryDTO;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -20,5 +20,6 @@ public interface IngredientRepository extends PublicRepository<IngredientEntity,
             """)
     Collection<DictionaryDTO<String>> getIngredientsCombo(UUID userId);
 
-    List<IngredientEntity> findByUserIdAndPublicIdIn(UUID userId, List<UUID> publicIds);
+    List<IngredientEntity> findByUserIdAndPublicIdIn(UUID userId,
+                                                     List<UUID> publicIds);
 }

@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @UtilityClass
 public class SecurityUtils {

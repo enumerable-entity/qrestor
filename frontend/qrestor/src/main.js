@@ -105,7 +105,7 @@ import TreeTable from 'primevue/treetable'
 import TriStateCheckbox from 'primevue/tristatecheckbox'
 import VirtualScroller from 'primevue/virtualscroller'
 
-import BlockViewer from '@/components/BlockViewer.vue'
+// import BlockViewer from '@/components/BlockViewer.vue'
 
 const app = createApp(App)
 
@@ -134,7 +134,7 @@ app.directive('styleclass', StyleClass)
 
 
 
-app.component('BlockViewer', BlockViewer)
+// app.component('BlockViewer', BlockViewer)
 
 app.component('Accordion', Accordion)
 app.component('AccordionTab', AccordionTab)

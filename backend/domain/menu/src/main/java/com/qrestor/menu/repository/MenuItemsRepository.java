@@ -2,7 +2,6 @@ package com.qrestor.menu.repository;
 
 import com.qrestor.commons.PublicRepository;
 import com.qrestor.menu.entity.MenuItemEntity;
-import com.qrestor.menu.repository.projections.MenuItemProj;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,7 +18,8 @@ public interface MenuItemsRepository extends PublicRepository<MenuItemEntity, Lo
 
     @EntityGraph(attributePaths = {"itemCategory", "ingredients"})
     @Override
-    Page<MenuItemEntity> findAll(Specification<MenuItemEntity> spec, Pageable pageable);
+    Page<MenuItemEntity> findAll(Specification<MenuItemEntity> spec,
+                                 Pageable pageable);
 
     @Query("""
             select r

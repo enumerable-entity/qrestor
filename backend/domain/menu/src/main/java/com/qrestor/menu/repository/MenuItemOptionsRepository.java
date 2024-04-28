@@ -25,11 +25,14 @@ public interface MenuItemOptionsRepository extends PublicRepository<MenuItemOpti
             and o.userId = :userId
             and (cast(:menuItemId as uuid) is null OR o.menuItem.publicId = :menuItemId)
             """)
-    Collection<DictionaryDTO<String>> getMenuItemOptionsCombo(UUID userId, @Nullable UUID menuItemId);
+    Collection<DictionaryDTO<String>> getMenuItemOptionsCombo(UUID userId,
+                                                              @Nullable UUID menuItemId);
 
-    Optional<MenuItemOptionEntity> findByUserIdAndPublicId(UUID userId, UUID publicId);
+    Optional<MenuItemOptionEntity> findByUserIdAndPublicId(UUID userId,
+                                                           UUID publicId);
 
     @EntityGraph(attributePaths = {"menuItem", "menuItemOptionPositions"})
     @Override
-    Page<MenuItemOptionEntity> findAll(Specification<MenuItemOptionEntity> spec, Pageable pageable);
+    Page<MenuItemOptionEntity> findAll(Specification<MenuItemOptionEntity> spec,
+                                       Pageable pageable);
 }

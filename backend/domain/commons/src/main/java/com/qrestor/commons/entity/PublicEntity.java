@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public interface PublicEntity {
 
-    void setPublicId(UUID publicId);
     UUID getPublicId();
+
+    void setPublicId(UUID publicId);
 }

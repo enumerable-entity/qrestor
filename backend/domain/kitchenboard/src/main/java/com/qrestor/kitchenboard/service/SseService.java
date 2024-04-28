@@ -2,8 +2,12 @@ package com.qrestor.kitchenboard.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qrestor.kitchenboard.client.OrdersHttpClient;
-import com.qrestor.kitchenboard.client.RestaurantHttpClient;
-import com.qrestor.models.dto.order.OrderDTO;
+import com.qrestor.kitchenboard.client.SellPointHttpClient;
+import com.qrestor.models.dto.kafka.OrderEventDTO;
+import com.qrestor.models.dto.order.OrderStatus;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -26,13 +30,13 @@ import static com.qrestor.models.dto.order.OrderStatus.*;
 @RequiredArgsConstructor
 public class SseService {
 
-    private final RestaurantHttpClient restaurantHttpClient;
+    private final SellPointHttpClient sellPointHttpClient;
     private final OrdersHttpClient ordersHttpClient;
     private final ObjectMapper objectMapper;
     private final Map<UUID, SseEmitter> restaurantIdToEmitter = new ConcurrentHashMap<>();
 
     public void addNewActiveSSEmitter(SseEmitter emitter) {
-        String waiterRestaurantId = restaurantHttpClient.getWaiterRestaurantId().stream()
+        String waiterRestaurantId = sellPointHttpClient.getWaiterRestaurantId().stream()
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("Waiter is not assigned to any restaurant"))
                 .getPublicId()
@@ -70,7 +74,8 @@ public class SseService {
     }
 
     @Async
-    public void emitWaiterRequest(UUID restaurantId, int tableNr) {
+    public void emitWaiterRequest(UUID restaurantId,
+                                  int tableNr) {
         SseEmitter restaurantEmitter = restaurantIdToEmitter.get(restaurantId);
         if (restaurantEmitter != null) {
             try {
@@ -91,25 +96,71 @@ public class SseService {
         }
     }
 
-    public void emitOrderToWaiterDashboard(OrderDTO message) {
-        UUID targetEmitterId = message.getRestaurantId();
+    public void emitOrderToWaiterDashboard(OrderEventDTO message) {
+        UUID targetEmitterId = message.getOrder().getRestaurantId();
         SseEmitter emitter = restaurantIdToEmitter.get(targetEmitterId);
         if (emitter != null) {
-            try {
-                Set<ResponseBodyEmitter.DataWithMediaType> newOrderSSEvent =
-                        SseEmitter
-                                .event()
-                                .id(message.getPublicId().toString())
-                                .name(NEW_ORDER.name())
-                                .reconnectTime(10000L)
-                                .comment("New order has been placed.")
-                                .data(objectMapper.writeValueAsString(message), MediaType.APPLICATION_JSON)
-                                .build();
-                emitter.send(newOrderSSEvent);
-            } catch (IOException e) {
-                emitter.completeWithError(e);
-                restaurantIdToEmitter.remove(targetEmitterId);
+            switch (message.getEventType()) {
+                case NEW:
+                    log.info("New order has been placed: {}", message.getOrder().getPublicId());
+                    emitNewOrder(message, emitter, targetEmitterId);
+                    break;
+                case UPDATE:
+                    log.info("Order status has been updated for order id: {}. New Status: {}",
+                            message.getOrder().getPublicId(), message.getOrder().getStatus());
+                    emitStatusUpdate(message, emitter, targetEmitterId);
+                    break;
             }
         }
+    }
+
+    private void emitStatusUpdate(OrderEventDTO message,
+                                  SseEmitter emitter,
+                                  UUID targetEmitterId) {
+        try {
+            Set<ResponseBodyEmitter.DataWithMediaType> newOrderSSEvent =
+                    SseEmitter
+                            .event()
+                            .id(message.getOrder().getPublicId().toString())
+                            .name(ORDER_STATUS_CHANGE.name())
+                            .reconnectTime(10000L)
+                            .comment("Order status changed")
+                            .data(objectMapper.writeValueAsString(
+                                            new OrderStatusSSEResponse(message.getOrder().getPublicId(), message.getOrder().getStatus())),
+                                    MediaType.APPLICATION_JSON)
+                            .build();
+            emitter.send(newOrderSSEvent);
+        } catch (IOException e) {
+            emitter.completeWithError(e);
+            restaurantIdToEmitter.remove(targetEmitterId);
+        }
+    }
+
+    private void emitNewOrder(OrderEventDTO message,
+                              SseEmitter emitter,
+                              UUID targetEmitterId) {
+        try {
+            Set<ResponseBodyEmitter.DataWithMediaType> newOrderSSEvent =
+                    SseEmitter
+                            .event()
+                            .id(message.getOrder().getPublicId().toString())
+                            .name(NEW_ORDER.name())
+                            .reconnectTime(10000L)
+                            .comment("New order has been placed.")
+                            .data(objectMapper.writeValueAsString(message.getOrder()), MediaType.APPLICATION_JSON)
+                            .build();
+            emitter.send(newOrderSSEvent);
+        } catch (IOException e) {
+            emitter.completeWithError(e);
+            restaurantIdToEmitter.remove(targetEmitterId);
+        }
+    }
+
+    @AllArgsConstructor
+    @Data
+    @NoArgsConstructor
+    private class OrderStatusSSEResponse {
+        private UUID orderId;
+        private OrderStatus orderStatus;
     }
 }

@@ -16,8 +16,6 @@ const selectedMenu = ref(null)
 const dt = ref(null)
 const submitted = ref(false)
 
-
-
 const filters1 = ref(null)
 const loading1 = ref(null)
 
@@ -28,15 +26,6 @@ const initFilters1 = () => {
       operator: FilterOperator.AND,
       constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
     },
-    description: {
-      operator: FilterOperator.AND,
-      constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
-    },
-    restaurantId: {
-      operator: FilterOperator.AND,
-      constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
-    },
-
     isActive: { value: null, matchMode: FilterMatchMode.EQUALS }
   }
 }
@@ -111,9 +100,7 @@ const openDetailsDialog = (menuItem) => {
 }
 
 const deleteMenuItem = async () => {
-  const { status } = await ingredientsService.deleteIngredients(
-    optionPosition.value.publicId
-  )
+  const { status } = await ingredientsService.deleteIngredients(optionPosition.value.publicId)
   if (status === 204) {
     menuItemOptions.value = menuItemOptions.value.filter(
       (val) => val.publicId !== optionPosition.value.publicId
@@ -143,7 +130,7 @@ const exportCSV = () => {
     <div class="col-12">
       <div class="card">
         <Toast />
-        <Toolbar class="mb-4">
+        <Toolbar>
           <template v-slot:start>
             <div class="my-2">
               <Button
@@ -155,15 +142,6 @@ const exportCSV = () => {
             </div>
           </template>
           <template v-slot:end>
-            <FileUpload
-              mode="basic"
-              accept="image/*"
-              url="localhost:8080/menu/management/menu-items"
-              :maxFileSize="1000000"
-              label="Import"
-              chooseLabel="Import"
-              class="mr-2 inline-block"
-            />
             <Button
               label="Export"
               icon="pi pi-upload"
@@ -178,7 +156,6 @@ const exportCSV = () => {
           :value="menuItemOptions"
           v-model:selection="selectedMenu"
           v-model:contextMenuSelection="selectedMenu"
-          selectionMode="single"
           v-model:filters="filters1"
           dataKey="publicId"
           :paginator="true"
@@ -186,7 +163,7 @@ const exportCSV = () => {
           :filters="filters1"
           filterDisplay="menu"
           :rowHover="true"
-          :rows="10"
+          :rows="5"
           :globalFilterFields="['name']"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25]"
@@ -214,10 +191,8 @@ const exportCSV = () => {
           <template #empty> No ingredients found.</template>
           <template #loading> Loading ingrediets data. Please wait.</template>
 
-
           <Column field="publicId" header="Id" headerStyle="width:15%; min-width:10rem;">
             <template #body="slotProps">
-              <span class="p-column-title">Id</span>
               {{ makeIdShorter(slotProps.data.publicId) }}
             </template>
           </Column>
@@ -229,7 +204,6 @@ const exportCSV = () => {
             headerStyle="width:14%; min-width:10rem;"
           >
             <template #body="slotProps">
-              <span class="p-column-title">Title</span>
               {{ slotProps.data.name }}
             </template>
             <template #filter="{ filterModel }">
@@ -259,12 +233,9 @@ const exportCSV = () => {
                 }"
               ></i>
             </template>
-            <template #filter="{ filterModel }">
-              <TriStateCheckbox v-model="filterModel.value" />
-            </template>
           </Column>
 
-          <Column headerStyle="min-width:12rem; width:25%;" header="Actions" >
+          <Column headerStyle="min-width:12rem; width:25%;" header="Actions">
             <template #body="slotProps">
               <Button
                 text
@@ -290,7 +261,7 @@ const exportCSV = () => {
         <Dialog
           v-model:visible="menuDialog"
           :style="{ width: '450px' }"
-          header="Option position details"
+          header="Ingredient details"
           :modal="true"
           class="p-fluid"
         >

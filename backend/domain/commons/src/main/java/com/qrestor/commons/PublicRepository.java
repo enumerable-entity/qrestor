@@ -11,6 +11,10 @@ import java.util.UUID;
 public interface PublicRepository<E, ID> extends JpaRepository<E, ID>, JpaSpecificationExecutor<E> {
 
     Optional<E> findByUuid(UUID uuid);
-    Optional<E> findByUuidSecure(UUID uuid, UUID userId);
-    void deleteByUuid(UUID id, UUID userId);
+
+    Optional<E> findByUuidSecure(UUID uuid,
+                                 UUID userId);
+
+    void deleteByUuid(UUID id,
+                      UUID userId);
 }

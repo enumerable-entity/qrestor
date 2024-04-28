@@ -4,11 +4,6 @@ export default class SellingPointsService {
     constructor() {
         this.url = '/restaurant/management/restaurant'
     }
-    getProductsSmall() {
-        return fetch('/demo/data/products-small.json')
-            .then((res) => res.json())
-            .then((d) => d);
-    }
     getSellingPointsDictionary() {
         return fetchWrapper.get('/restaurant/dictionary/restaurantCombo')
     }
@@ -27,5 +22,13 @@ export default class SellingPointsService {
 
     deleteSellingPoint(publicId) {
         return fetchWrapper.delete(this.url + '/' + publicId)
+    }
+
+    getSellingPointInfo(publicId) {
+        return fetchWrapper.get('/restaurant/restaurant/' + publicId)
+    }
+
+    callWaiter(tableId, sellPointId) {
+        return fetchWrapper.get('/kitchenboard/waiter-request?tableNr=' + tableId + '&restaurantId=' + sellPointId)
     }
 }

@@ -28,15 +28,13 @@ public class PaymentController {
         if (dataObjectDeserializer.getObject().isPresent()) {
             stripeObject = dataObjectDeserializer.getObject().get();
         } else {
-            // Deserialization failed, probably due to an API version mismatch.
-            // Refer to the Javadoc documentation on `EventDataObjectDeserializer` for
-            // instructions on how to handle this case, or return an error here.
+            log.error("Failed to deserialize stripe object");
         }
         return stripeObject;
     }
 
     @GetMapping("/order/{orderId}/getPaymentRedirectUrl")
-    public ResponseEntity<String> makeOrderPayment(@PathVariable UUID orderId) throws StripeException {
+    public ResponseEntity<String> getPaymentURL(@PathVariable UUID orderId) throws StripeException {
         String redirectUrl = paymentService.getRedirectUrlForOrder(orderId);
         return ResponseEntity.ok().body(redirectUrl);
     }

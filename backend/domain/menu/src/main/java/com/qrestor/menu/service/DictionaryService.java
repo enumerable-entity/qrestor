@@ -14,4 +14,6 @@ public interface DictionaryService {
     Collection<DictionaryDTO<String>> getMenuItemOptionsCombo(UUID menuItemId);
 
     Collection<DictionaryDTO<String>> getMenuItemOptionsPositionsCombo(UUID menuItemOptionId);
+
+    Collection<DictionaryDTO<String>> getMenuCombo();
 }

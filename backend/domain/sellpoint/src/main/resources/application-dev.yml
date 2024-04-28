@@ -1,0 +1,36 @@
+app:
+  domain: https://wanted-talented-peacock.ngrok-free.app
+  auth:
+    jwt:
+      secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
+  minio:
+    server:
+      url: ${MIN_IO_HOST:https://127.0.0.1:9000}
+      access-key: ${MIN_IO_ACCESS_KEY:qrestor123}
+      secret-key: ${MIN_IO_SECRET_KEY:qrestor123}
+spring:
+  datasource:
+    url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/sell_points}
+    username: ${AUTH_SERVICE_DB_USER:sell_points}
+    password: ${AUTH_SERVICE_DB_PASSWORD:sell_points}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog-master.xml
+  threads:
+    virtual:
+      enabled: true
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'

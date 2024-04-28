@@ -10,11 +10,7 @@ export const useUserStore = defineStore({
   actions: {
     async getLoggedUserInfo() {
       const { data } = await fetchWrapper.get('/auth/authentication/me')
-
-      // update pinia state
       this.userInfo = await data
-
-      // store user details and jwt in local storage to keep user logged in between page refreshes
       localStorage.setItem('authUserInfo', JSON.stringify(data))
     },
     getUserLocale() {
@@ -35,21 +31,23 @@ export const useAuthStore = defineStore({
   }),
   actions: {
     async login(email, password) {
-      const { data } = await fetchWrapper.post(`/auth/authentication/login`, {
+      const { data, status } = await fetchWrapper.post(`/auth/authentication/login`, {
         email,
         password
       })
 
-      // update pinia state
-      this.tokens = data
+      if (status === 200) {
+        // update pinia state
+        this.tokens = data
 
-      // store user details and jwt in local storage to keep user logged in between page refreshes
-      localStorage.setItem('tokens', JSON.stringify(data))
-      var useUserStor = useUserStore()
-      useUserStor.getLoggedUserInfo()
+        // store user details and jwt in local storage to keep user logged in between page refreshes
+        localStorage.setItem('tokens', JSON.stringify(data))
+        var useUserStor = useUserStore()
+        useUserStor.getLoggedUserInfo()
 
-      // redirect to previous url or default to home page
-      router.push(this.returnUrl || '/management')
+        // redirect to previous url or default to home page
+        router.push(this.returnUrl || '/management')
+      }
     },
     logout() {
       this.tokens = null
@@ -67,17 +65,18 @@ export const useAuthStore = defineStore({
 export const useWaiterCallsStore = defineStore({
   id: 'waiterCalls',
   state: () => ({
-    waiterCalls: []
+    waiterCalls: new Set()
   }),
   actions: {
     async addWaiterCall(call) {
-      this.waiterCalls.push(call)
+      this.waiterCalls.add(call)
     },
     getCalls() {
       return this.waiterCalls
     },
     remove(tableNr){
-      this.waiterCalls = this.waiterCalls.filter(x => x.tableNr !== tableNr)
+      this.waiterCalls.delete(tableNr)
+      return this.waiterCalls
     }
   }
 })

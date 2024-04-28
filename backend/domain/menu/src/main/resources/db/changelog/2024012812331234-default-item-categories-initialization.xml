@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
 
@@ -12,7 +12,7 @@
             <column name="display_order">1</column>
             <column name="icon_code">#code23</column>
             <column name="is_enabled">true</column>
-            <column name="nls_key">[DRINKS]</column>
+            <column name="nls_key">DRINKS</column>
             <column name="public_id" valueComputed="uuid_generate_v4()"/>
         </insert>
         <insert tableName="menu_item_categories">
@@ -20,7 +20,7 @@
             <column name="display_order">2</column>
             <column name="icon_code">#code4</column>
             <column name="is_enabled">true</column>
-            <column name="nls_key">[CAFE]</column>
+            <column name="nls_key">CAFE</column>
             <column name="public_id" valueComputed="uuid_generate_v4()"/>
         </insert>
         <insert tableName="menu_item_categories">
@@ -28,7 +28,31 @@
             <column name="display_order">3</column>
             <column name="icon_code">#code5</column>
             <column name="is_enabled">true</column>
-            <column name="nls_key">[SNACKS]</column>
+            <column name="nls_key">SNACKS</column>
+            <column name="public_id" valueComputed="uuid_generate_v4()"/>
+        </insert>
+        <insert tableName="menu_item_categories">
+            <column name="id" valueSequenceNext="menu_item_categories_seq"/>
+            <column name="display_order">4</column>
+            <column name="icon_code">#code5</column>
+            <column name="is_enabled">true</column>
+            <column name="nls_key">MAIN</column>
+            <column name="public_id" valueComputed="uuid_generate_v4()"/>
+        </insert>
+        <insert tableName="menu_item_categories">
+            <column name="id" valueSequenceNext="menu_item_categories_seq"/>
+            <column name="display_order">5</column>
+            <column name="icon_code">#code5</column>
+            <column name="is_enabled">true</column>
+            <column name="nls_key">FASTFOOD</column>
+            <column name="public_id" valueComputed="uuid_generate_v4()"/>
+        </insert>
+        <insert tableName="menu_item_categories">
+            <column name="id" valueSequenceNext="menu_item_categories_seq"/>
+            <column name="display_order">6</column>
+            <column name="icon_code">#code5</column>
+            <column name="is_enabled">true</column>
+            <column name="nls_key">PIZZA</column>
             <column name="public_id" valueComputed="uuid_generate_v4()"/>
         </insert>
     </changeSet>

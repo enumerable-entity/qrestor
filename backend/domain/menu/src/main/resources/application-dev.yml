@@ -3,6 +3,11 @@ app:
   auth:
     jwt:
       secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
+  minio:
+    server:
+      url: ${MIN_IO_HOST:https://127.0.0.1:9000}
+      access-key: ${MIN_IO_ACCESS_KEY:qrestor123}
+      secret-key: ${MIN_IO_SECRET_KEY:qrestor123}
 spring:
   datasource:
     url: ${AUTH_SERVICE_CONN_STRING:jdbc:postgresql://localhost:5432/${spring.application.name}}
@@ -11,7 +16,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
@@ -24,11 +29,13 @@ spring:
     enabled: true
     change-log: classpath:db/changelog/changelog-master.xml
   data:
-#    mongodb:
-#      uri: ${MONGODB_CONN_STRING:mongodb://localhost:27017/${spring.application.name}}
-#      database: ${MONGODB_DB_NAME:${spring.application.name}}
-#      username: ${MONGODB_DB_USER:${spring.application.name}}
-#      password: ${MONGODB_DB_PASSWORD:${spring.application.name}}
+    mongodb:
+      host: ${MONGODB_CONN_STRING:localhost}
+      port: 27017
+      database: ${MONGODB_DB_NAME:menu}
+      username: ${MONGODB_DB_USER:menu}
+      password: ${MONGODB_DB_PASSWORD:menu}
+      authentication-database: menu
     redis:
       repositories:
         enabled: false

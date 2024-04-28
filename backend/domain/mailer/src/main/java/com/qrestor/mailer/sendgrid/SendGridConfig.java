@@ -1,9 +1,9 @@
 package com.qrestor.mailer.sendgrid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qrestor.commons.kafka.dto.KafkaEmailSendRequestDTO;
 import com.qrestor.mailer.sendgrid.dto.DynamicTemplate;
 import com.qrestor.mailer.sendgrid.dto.SendGripApiTemplateResponse;
+import com.qrestor.models.dto.kafka.KafkaEmailSendRequestDTO;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -31,17 +31,19 @@ public class SendGridConfig {
     private Map<String, String> dynamicTemplateIds;
 
 
-    public SendGridConfig(SendGrid sendGridClient, ObjectMapper objectMapper,
+    public SendGridConfig(SendGrid sendGridClient,
+                          ObjectMapper objectMapper,
                           @Value("${app.sendgrid.from-email}") String fromEmail,
                           @Value("${app.global-name}") String globalName) {
         this.sendGridClient = sendGridClient;
         this.objectMapper = objectMapper;
         this.from = new Email(fromEmail, globalName);
-        //initDynamicTemplateIds();
+        initDynamicTemplateIds();
     }
 
 
-    public Mail getMail(KafkaEmailSendRequestDTO emailSendRequestDTO, Personalization personalization) {
+    public Mail getMail(KafkaEmailSendRequestDTO emailSendRequestDTO,
+                        Personalization personalization) {
         Mail mail = new Mail();
         mail.setFrom(from);
         mail.setTemplateId(dynamicTemplateIds.get(emailSendRequestDTO.type().name()));

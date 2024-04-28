@@ -21,6 +21,7 @@ public interface QrCodesManagementMapper extends CrudMapper<QrCodeMappingDTO, Qr
     @Mapping(target = "userId", ignore = true)
     @Mapping(target = "user", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE)
-    QrCodeMappingEntity partialUpdate(QrCodeMappingDTO dto, @MappingTarget QrCodeMappingEntity entity);
+    QrCodeMappingEntity partialUpdate(QrCodeMappingDTO dto,
+                                      @MappingTarget QrCodeMappingEntity entity);
 
 }

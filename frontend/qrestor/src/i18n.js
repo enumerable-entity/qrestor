@@ -6,15 +6,15 @@ export const messages = {
     COMPLETED: 'COMPLETED',
     CANCELLED: 'CANCELLED',
 
-
     button: {
       new: 'New'
     },
-    categories: {
-      drinks: 'Drinks',
-      deserts: 'Deserts',
-      other: 'Other'
-    }
+    PIZZA: 'Pizza',
+    SNACKS: 'Snacks',
+    FASTFOOD: 'Fastfood',
+    DRINKS: 'Drinks',
+    CAFE: 'Cafe',
+    MAIN: 'Main',
   },
   pl: {
     PAYMENT_IN_PROGRESS: 'TRWA PŁATNOŚĆ',
@@ -25,10 +25,11 @@ export const messages = {
     button: {
       new: 'Dodaj'
     },
-    categories: {
-      drinks: 'Napoje',
-      deserts: 'Desery',
-      other: 'Inne'
-    }
+    PIZZA: 'Pizza',
+    SNACKS: 'Snacks',
+    FASTFOOD: 'Fastfood',
+    DRINKS: 'Napoje',
+    CAFE: 'Kawiarnia',
+    MAIN: 'Danie główne',
   }
 }

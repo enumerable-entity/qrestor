@@ -64,7 +64,9 @@ public class SpringSecurityConfig {
         return new AccessDeniedHandler() {
             //when user is authenticated but not authorized to access a protected resource
             @Override
-            public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+            public void handle(HttpServletRequest request,
+                               HttpServletResponse response,
+                               AccessDeniedException accessDeniedException) throws IOException, ServletException {
                 response.setContentType("application/json;charset=UTF-8");
                 response.setStatus(403);
                 response.getWriter().write("{\"error\":\"Access Denied for not KELNER\"}");

@@ -23,7 +23,8 @@ import java.util.UUID;
 public class MenuItemOptionsServiceImpl extends AbstractCrudService<MenuItemOptionDTO, MenuItemOptionEntity> implements MenuItemOptionsService {
     private final MenuItemsService menuItemsService;
 
-    public MenuItemOptionsServiceImpl(MenuItemOptionMapper mapper, MenuItemOptionsRepository repository,
+    public MenuItemOptionsServiceImpl(MenuItemOptionMapper mapper,
+                                      MenuItemOptionsRepository repository,
                                       MenuItemsService menuItemsService) {
         super(mapper, repository);
         this.menuItemsService = menuItemsService;
@@ -36,7 +37,9 @@ public class MenuItemOptionsServiceImpl extends AbstractCrudService<MenuItemOpti
 
     @Override
     @Transactional(readOnly = true)
-    public List<MenuItemOptionDTO> findAllByMenuItemId(Pageable pageable, UUID menuItemId, boolean publicRequest) {
+    public List<MenuItemOptionDTO> findAllByMenuItemId(Pageable pageable,
+                                                       UUID menuItemId,
+                                                       boolean publicRequest) {
         Specification<MenuItemOptionEntity> spec;
         if (menuItemId != null) {
             spec = Specification.where((root, query, criteriaBuilder) ->

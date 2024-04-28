@@ -1,6 +1,6 @@
 package com.qrestor.resolverqr.api.dto;
 
-import com.qrestor.commons.enums.AbstractPublicDTO;
+import com.qrestor.models.dto.AbstractPublicDTO;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
@@ -17,9 +17,11 @@ public class QrCodeMappingDTO extends AbstractPublicDTO {
     @PositiveOrZero
     private Integer tableId;
     @NotNull
-    private UUID restaurantId;
+    private UUID sellingPointId;
+    private String restaurantName;
     @NotNull
     private UUID menuId;
+    private String menuName;
     @NotNull
     private Boolean isActive;
 }

@@ -13,7 +13,7 @@ const router = createRouter({
         {
           path: '/pages/spoints',
           name: 'selling-points',
-          component: () => import('@/views/pages/SellingPoints.vue')
+          component: () => import('@/views/management/SellingPoints.vue')
         },
         {
           path: '/management/menus',
@@ -69,6 +69,16 @@ const router = createRouter({
           path: '/kitchen/live-board',
           name: 'live-board',
           component: () => import('@/views/kitchen/KitchenBoard.vue')
+        },
+        {
+          path: '/qr-codes-management',
+          name: 'qr-codes-management',
+          component: () => import('@/views/management/QrMappings.vue')
+        },
+        {
+          path: '/qr-codes-config',
+          name: 'qr-codes-config',
+          component: () => import('@/qr/QrConfiguration.vue')
         }
       ]
     },
@@ -76,7 +86,7 @@ const router = createRouter({
       path: '/qr/:code',
       name: 'qr',
       props: true,
-      component: () => import('@/views/pages/Empty.vue')
+      component: () => import('@/views/pages/SellingPointMenu.vue')
     },
     {
       path: '/',

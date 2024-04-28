@@ -1,7 +1,7 @@
 package com.qrestor.kitchenboard.kafka;
 
 import com.qrestor.kitchenboard.service.OrdersKafkaService;
-import com.qrestor.models.dto.order.OrderDTO;
+import com.qrestor.models.dto.kafka.OrderEventDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -17,7 +17,7 @@ public class KafkaOrdersListener {
     private final OrdersKafkaService ordersKafkaService;
 
     @KafkaListener(topics = ORDERS_TOPIC)
-    public void consume(OrderDTO message) {
+    public void consume(OrderEventDTO message) {
         ordersKafkaService.handle(message);
         log.info("MESSAGE CONSUMED: {}", message);
     }

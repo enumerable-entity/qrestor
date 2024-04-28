@@ -24,7 +24,6 @@ const logoUrl = computed(() => {
       >
         <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 22px">
           <div class="text-center mb-5">
-            <!-- <img src="/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3" /> -->
             <div class="text-900 text-3xl font-medium mb-3">Thank You for joining Us!</div>
             <span class="text-900 text-2xl">Please verify your email address and log in</span>
           </div>

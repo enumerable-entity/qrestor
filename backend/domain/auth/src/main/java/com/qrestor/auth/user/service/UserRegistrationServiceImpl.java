@@ -71,7 +71,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
     public boolean confirmNewUserEmail(String emailConfirmationToken) {
         Optional<TokenEntity> receivedToken = tokenService.getToken(emailConfirmationToken, TokenType.EMAIL_VERIFICATION);
 
-        if(receivedToken.isPresent()){
+        if (receivedToken.isPresent()) {
             if (receivedToken.get().getUsedAt() != null) {
                 return false;
             }
@@ -82,7 +82,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
             eventPublisher.publishEvent(
                     new UserEvent(this, UserEventType.REGISTRATION_CONFIRMATION, receivedToken.get().getUser(), null));
             return true;
-        }else {
+        } else {
             return true;
         }
     }

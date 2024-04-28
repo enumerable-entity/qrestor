@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalAppExceptionHandler {
 
     @ExceptionHandler({ValidationException.class})
-    public ApiErrorResponseDTO handleStudentNotFoundException(ValidationException exception, HttpRequest request) {
+    public ApiErrorResponseDTO handleStudentNotFoundException(ValidationException exception,
+                                                              HttpRequest request) {
         return new ApiErrorResponseDTO(exception.getMessage(), "Custom Validation error", request.getURI().getPath());
     }
 }

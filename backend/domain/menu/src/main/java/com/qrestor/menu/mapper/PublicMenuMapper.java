@@ -19,7 +19,7 @@ import java.util.Set;
 public interface PublicMenuMapper {
 
 
-    default List<MenuListDTO> toListDTO(MenuEntity entity) {
+    default List<MenuListDTO> toAggregateObject(MenuEntity entity) {
         Multimap<ItemCategoryEntity, MenuItemEntity> menuListDTOMultimap = MultimapBuilder.hashKeys().arrayListValues().build();
         entity.getMenuItems()
                 .forEach(item -> menuListDTOMultimap.put(item.getItemCategory(), item));

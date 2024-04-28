@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -17,10 +17,10 @@
 
     <dependencies>
 
-        <!--		<dependency>-->
-        <!--			<groupId>org.springframework.boot</groupId>-->
-        <!--			<artifactId>spring-boot-starter-data-mongodb</artifactId>-->
-        <!--		</dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
@@ -60,21 +60,21 @@
     </dependencies>
 
     <build>
-            <plugins>
-                <plugin>
-                    <groupId>org.liquibase</groupId>
-                    <artifactId>liquibase-maven-plugin</artifactId>
-                    <configuration>
-                        <driver>org.postgresql.Driver</driver>
-                        <url>jdbc:postgresql://localhost:5432/menu</url>
-                        <username>menu</username>
-                        <password>menu</password>
-                        <changeLogDirectory>src/main/resources/db/changelog</changeLogDirectory>
-                        <changeLogFile>changelog-master.xml</changeLogFile>
-                        <contexts>local</contexts>
-                    </configuration>
-                </plugin>
-            </plugins>
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <configuration>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql://localhost:5432/menu</url>
+                    <username>menu</username>
+                    <password>menu</password>
+                    <changeLogDirectory>src/main/resources/db/changelog</changeLogDirectory>
+                    <changeLogFile>changelog-master.xml</changeLogFile>
+                    <contexts>local</contexts>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <distributionManagement>

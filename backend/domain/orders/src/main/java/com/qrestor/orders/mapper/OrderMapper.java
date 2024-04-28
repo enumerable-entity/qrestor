@@ -14,7 +14,8 @@ public interface OrderMapper {
     @Mapping(target = "restaurantTitle", source = "restInfo.title")
     @Mapping(target = "restaurantName", source = "restInfo.name")
     @Mapping(target = "publicId", source = "orderEntity.publicId")
-    OrderDTO toDto(OrderEntity orderEntity, RestaurantBasicInfoDTO restInfo);
+    OrderDTO toDto(OrderEntity orderEntity,
+                   RestaurantBasicInfoDTO restInfo);
 
     List<OrderDTO> toDto(List<OrderEntity> orderEntityList);
 

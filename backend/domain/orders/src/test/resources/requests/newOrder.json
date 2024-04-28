@@ -1,0 +1,52 @@
+{
+  "restaurantId": "75e9a906-ea25-4a6c-8310-f5b493c8b0b3",
+  "restaurantName": "First Selling Point",
+  "restaurantTitle": "Pizzeria Belissimo",
+  "tableNumber": 2,
+  "items": [
+    {
+      "menuItemId": "1d81c8bd-86d6-4899-9bc7-5991a4512c2c",
+      "menuItemTitle": "PIzza Feliciana",
+      "menuItemOptions": [
+        {
+          "optionPositions": [
+            {
+              "publicId": "b904bd5a-131e-440e-ac04-1aa756f251d0",
+              "optionTitle": "S"
+            }
+          ],
+          "optionTitle": "Size",
+          "publicId": "b8888d94-ae0f-423d-bcb0-4a8d74156db1"
+        },
+        {
+          "optionPositions": [
+            {
+              "publicId": "c8147249-84ec-430b-a9c2-771d7038ebe6",
+              "optionTitle": "Additional tomatoes"
+            },
+            {
+              "publicId": "cda2ac28-301f-4a97-bc40-b237fe9f9641",
+              "optionTitle": "Arugula"
+            },
+            {
+              "publicId": "36bee560-0dc4-4fd0-97c5-666d91602c3d",
+              "optionTitle": "Additional cheese"
+            }
+          ],
+          "optionTitle": "Extras",
+          "publicId": "ad31f437-675f-44cb-b8c3-f72f10d96738"
+        }
+      ],
+      "quantity": 2,
+      "specialInstructions": "Poprosze bez oliwek"
+    },
+    {
+      "menuItemId": "1c332ad0-7f00-4e3a-a9e3-b450073ebc45",
+      "menuItemTitle": "Pizza Capricciosa",
+      "menuItemOptions": [],
+      "quantity": 1,
+      "specialInstructions": "Poprosze bez pieczarek"
+    }
+  ],
+  "paymentSelected": true
+}
