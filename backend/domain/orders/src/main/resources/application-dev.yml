@@ -23,16 +23,6 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/changelog-master.xml
-
-  data:
-    redis:
-      repositories:
-        enabled: false
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:qrestor123}
-      database: ${REDIS_DB:2}
-      timeout: 10000
   threads:
     virtual:
       enabled: true

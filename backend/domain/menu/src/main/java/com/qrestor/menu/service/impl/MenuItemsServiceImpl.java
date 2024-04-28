@@ -1,21 +1,23 @@
 package com.qrestor.menu.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qrestor.commons.AbstractCrudService;
 import com.qrestor.commons.Utils;
 import com.qrestor.menu.api.dto.IngredientDTO;
 import com.qrestor.menu.api.dto.MenuItemDTO;
-import com.qrestor.menu.entity.IngredientEntity;
-import com.qrestor.menu.entity.ItemCategoryEntity;
-import com.qrestor.menu.entity.MenuEntity;
-import com.qrestor.menu.entity.MenuItemEntity;
+import com.qrestor.menu.entity.*;
 import com.qrestor.menu.mapper.MenuItemMapper;
+import com.qrestor.menu.mapper.PublicMenuMapper;
 import com.qrestor.menu.repository.MenuItemsRepository;
+import com.qrestor.menu.repository.MenuRepository;
+import com.qrestor.menu.repository.mongo.AggregateMenuRepository;
 import com.qrestor.menu.service.CategoryService;
 import com.qrestor.menu.service.IngredientService;
 import com.qrestor.menu.service.MenuItemsService;
 import com.qrestor.menu.service.MenuService;
 import com.qrestor.models.Pair;
 import com.qrestor.security.SecurityUtils;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -30,16 +32,22 @@ public class MenuItemsServiceImpl extends AbstractCrudService<MenuItemDTO, MenuI
     private final IngredientService ingredientService;
     private final CategoryService categoryService;
     private final MenuService menuService;
+    private final AggregateMenuRepository aggregateMenuRepository;
+    private final PublicMenuMapper publicMenuMapper;
 
     public MenuItemsServiceImpl(MenuItemMapper mapper,
                                 MenuItemsRepository repository,
                                 IngredientService ingredientService,
                                 CategoryService categoryService,
-                                MenuService menuService) {
+                                MenuService menuService,
+                                AggregateMenuRepository aggregateMenuRepository,
+                                PublicMenuMapper publicMenuMapper) {
         super(mapper, repository);
         this.ingredientService = ingredientService;
         this.categoryService = categoryService;
         this.menuService = menuService;
+        this.aggregateMenuRepository = aggregateMenuRepository;
+        this.publicMenuMapper = publicMenuMapper;
     }
 
     @Override
@@ -49,13 +57,24 @@ public class MenuItemsServiceImpl extends AbstractCrudService<MenuItemDTO, MenuI
         MenuItemEntity entity = mapper.toEntity(dto);
         Optional<ItemCategoryEntity> category = categoryService.findByPublicId(dto.getItemCategory().getPublicId());
         entity.setItemCategory(category.orElseThrow(() -> new RuntimeException("Category not found")));
-        if (dto.getMenu() != null && dto.getMenu().getPublicId() != null)
-            entity.setMenu(menuService.findEntityByUuid(dto.getMenu().getPublicId()).orElseThrow(
-                    () -> new RuntimeException("Menu not found")));
+        if (dto.getMenu() != null && dto.getMenu().getPublicId() != null) {
+            MenuEntity menuRef = menuService.findEntityByUuid(dto.getMenu().getPublicId()).orElseThrow(
+                    () -> new RuntimeException("Menu not found"));
+            entity.setMenu(menuRef);
+            menuRef.getMenuItems().add(entity);
+        }
         List<IngredientEntity> ingredientEntities =
                 ingredientService.findEntityByUuidIn(dto.getIngredients().stream().map(IngredientDTO::getPublicId).toList());
         entity.getIngredients().addAll(ingredientEntities);
-        return mapper.toDto(repository.save(entity));
+        MenuItemEntity save = repository.save(entity);
+        MenuItemDTO dto1 = mapper.toDto(save);
+        saveDocument(save.getMenu());
+        return dto1;
+    }
+
+    @SneakyThrows
+    private void saveDocument(MenuEntity menuRef) {
+        aggregateMenuRepository.save(new AggregatedMenuDocumentEntity(menuRef.getRestaurantId(), publicMenuMapper.toAggregateObject(menuRef)));
     }
 
     @Override

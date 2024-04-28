@@ -59,7 +59,7 @@ public class MenuItemEntity extends OwnedEntity implements PublicEntity {
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
     private Set<IngredientEntity> ingredients = new LinkedHashSet<>();
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, targetEntity = MenuEntity.class)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, targetEntity = MenuEntity.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "menu_id")
     private MenuEntity menu;
 

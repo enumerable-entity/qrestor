@@ -29,11 +29,13 @@ spring:
     enabled: true
     change-log: classpath:db/changelog/changelog-master.xml
   data:
-    #    mongodb:
-    #      uri: ${MONGODB_CONN_STRING:mongodb://localhost:27017/${spring.application.name}}
-    #      database: ${MONGODB_DB_NAME:${spring.application.name}}
-    #      username: ${MONGODB_DB_USER:${spring.application.name}}
-    #      password: ${MONGODB_DB_PASSWORD:${spring.application.name}}
+    mongodb:
+      host: ${MONGODB_CONN_STRING:localhost}
+      port: 27017
+      database: ${MONGODB_DB_NAME:menu}
+      username: ${MONGODB_DB_USER:menu}
+      password: ${MONGODB_DB_PASSWORD:menu}
+      authentication-database: menu
     redis:
       repositories:
         enabled: false

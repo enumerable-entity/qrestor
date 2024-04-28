@@ -1,6 +1,7 @@
 package com.qrestor.auth.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qrestor.models.dto.order.OrderStatus;
 import com.qrestor.orders.entity.OrderEntity;
 import com.qrestor.orders.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -30,18 +31,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Slf4j
 @WithMockUser(username = "test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Import(TestConfig.class)
 public class OrderPlacingTest extends AppContextTestAbstract {
-
-    @Autowired
-    ObjectMapper objectMapper;
-
-    @Value("classpath:data/balancingUnitsListPrimengRequest.json")
-    Resource resourceFile;
-
     @Autowired
     private OrderRepository orderRepository;
 
@@ -63,6 +56,8 @@ public class OrderPlacingTest extends AppContextTestAbstract {
                 .andExpect(jsonPath("$.publicId").isNotEmpty());
         List<OrderEntity> allOrdersInDatabase = orderRepository.findAll();
         assertEquals(1, allOrdersInDatabase.size());
+        OrderStatus newOrderStatus = allOrdersInDatabase.stream().findFirst().get().getStatus();
+        assertEquals(OrderStatus.PENDING, newOrderStatus);
     }
 
     @Test
@@ -75,7 +70,6 @@ public class OrderPlacingTest extends AppContextTestAbstract {
                 .andExpect(jsonPath("$[0].menuItemOptions").isArray())
                 .andExpect(jsonPath("$[0].quantity").value(2))
                 .andExpect(jsonPath("$[0].specialInstructions").isNotEmpty());
-
     }
 
     @Test
