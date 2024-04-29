@@ -63,26 +63,12 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-micrometer</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-                <configuration>
-                    <driver>org.postgresql.Driver</driver>
-                    <url>jdbc:postgresql://localhost:5432/feedback</url>
-                    <username>feedback</username>
-                    <password>feedback</password>
-                    <changeLogDirectory>src/main/resources/db/changelog</changeLogDirectory>
-                    <changeLogFile>changelog-master.xml</changeLogFile>
-                    <contexts>local</contexts>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <distributionManagement>
         <repository>
             <id>github</id>

@@ -1,0 +1,21 @@
+server:
+  port: 8097
+app:
+  domain: http://localhost:4000
+  auth:
+    jwt:
+      secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
+      expiration: ${AUTH_SERVICE_TOKEN_EXPIRATION:#{1000 * 60 * 60 *24 * 7}}
+      issuer: ${AUTH_SERVICE_TOKEN_ISSUER:${spring.application.name}}
+spring:
+  application:
+    name: mailer
+  threads:
+    virtual:
+      enabled: true
+  sql:
+    init:
+      schema-locations: classpath:schema.sql
+eureka:
+  client:
+    enabled: false

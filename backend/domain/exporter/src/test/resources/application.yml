@@ -1,0 +1,18 @@
+server:
+  port: 8094
+app:
+  domain: http://localhost:4000
+  auth:
+    jwt:
+      secret: ${AUTH_SERVICE_TOKEN_SECRET:qrestor_secret}
+      expiration: ${AUTH_SERVICE_TOKEN_EXPIRATION:#{1000 * 60 * 60 *24 * 7}}
+      issuer: ${AUTH_SERVICE_TOKEN_ISSUER:${spring.application.name}}
+spring:
+  application:
+    name: exporter
+  threads:
+    virtual:
+      enabled: true
+eureka:
+  client:
+    enabled: false
