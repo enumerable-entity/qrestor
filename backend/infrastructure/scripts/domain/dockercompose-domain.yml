@@ -1,0 +1,138 @@
+version: '3.8'
+
+services:
+  auth:
+    build:
+      context: ../../../domain/auth
+      dockerfile: dockerfile
+    image: motherdock/qrestor:auth
+    container_name: auth_service
+    ports:
+      - "8097:8097"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    networks:
+      - backend_net
+
+  exporter:
+    build:
+      context: ../../../domain/exporter
+      dockerfile: dockerfile
+    image: motherdock/qrestor:exporter
+    container_name: exporter_service
+    ports:
+      - "8098:8098"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    networks:
+      - backend_net
+
+  feedback:
+    build:
+      context: ../../../domain/feedback
+      dockerfile: dockerfile
+    image: motherdock/qrestor:feedback
+    container_name: feedback_service
+    ports:
+      - "8099:8099"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    networks:
+      - backend_net
+
+  kitchenboard:
+    build:
+      context: ../../../domain/kitchenboard
+      dockerfile: dockerfile
+    image: motherdock/qrestor:kitchenboard
+    container_name: kitchenboard_service
+    ports:
+      - "8100:8100"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    networks:
+      - backend_net
+
+  mailer:
+    build:
+      context: ../../../domain/mailer
+      dockerfile: dockerfile
+    image: motherdock/qrestor:mailer
+    container_name: mailer_service
+    ports:
+      - "8101:8101"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    networks:
+      - backend_net
+
+  manu:
+    build:
+      context: ../../../domain/manu
+      dockerfile: dockerfile
+    image: motherdock/qrestor:manu
+    container_name: manu_service
+    ports:
+      - "8102:8102"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    networks:
+      - backend_net
+
+
+  orders:
+    build:
+      context: ../../../domain/orders
+      dockerfile: dockerfile
+    image: motherdock/qrestor:orders
+    container_name: orders_service
+    ports:
+      - "8103:8103"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    networks:
+      - backend_net
+
+  paymentor:
+    build:
+      context: ../../../domain/paymentor
+      dockerfile: dockerfile
+    image: motherdock/qrestor:paymentor
+    container_name: paymentor_service
+    ports:
+      - "8104:8104"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    networks:
+      - backend_net
+
+  qr_resolver:
+    build:
+      context: ../../../domain/qr_resolver
+      dockerfile: dockerfile
+    image: motherdock/qrestor:qr_resolver
+    container_name: qr_resolver_service
+    ports:
+      - "8105:8105"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    networks:
+      - backend_net
+
+  sellpoint:
+    build:
+      context: ../../../domain/sellpoint
+      dockerfile: dockerfile
+    image: motherdock/qrestor:sellpoint
+    container_name: sellpoint_service
+    ports:
+      - "8106:8106"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    networks:
+      - backend_net
+
+networks:
+  backend_net:
+    external: true
+    driver: bridge

@@ -1,5 +1,5 @@
 FROM bellsoft/liberica-openjre-alpine-musl:21.0.2-cds-aarch64
 COPY ./target/feedback-0.0.1-SNAPSHOT.jar /app/feedback-0.0.1-SNAPSHOT.jar
-EXPOSE 8097
-ENV SPRING_PROFILES_ACTIVE=prod
+EXPOSE 8099
+ENV SPRING_PROFILES_ACTIVE=dev
 CMD ["java", "-jar", "/app/feedback-0.0.1-SNAPSHOT.jar"]

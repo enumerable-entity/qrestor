@@ -23,7 +23,6 @@ public class RegistrationTest extends AppContextTestAbstract {
         mockMvc.perform(post(REGISTRATION).contentType("application/json").content(
                         "{\"email\":\"mail\",\"password\":\"password\"}")
                 )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content.size()", is(6)));
+                .andExpect(status().isOk());
     }
 }

@@ -71,14 +71,4 @@ public class OrderPlacingTest extends AppContextTestAbstract {
                 .andExpect(jsonPath("$[0].quantity").value(2))
                 .andExpect(jsonPath("$[0].specialInstructions").isNotEmpty());
     }
-
-    @Test
-    void testGetOrdersHistory() throws Exception {
-        assertTrue(true);
-    }
-
-    @Test
-    void testGetActiveOrders() throws Exception {
-        assertTrue(true);
-    }
 }

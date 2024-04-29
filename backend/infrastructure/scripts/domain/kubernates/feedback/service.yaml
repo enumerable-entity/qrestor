@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: feedback
+  namespace: qrestor-namespace
+spec:
+  selector:
+    app: feedback
+  ports:
+    - protocol: TCP
+      port: 8099
+      targetPort: 8099

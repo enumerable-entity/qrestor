@@ -1,5 +1,5 @@
 FROM bellsoft/liberica-openjre-alpine-musl:21.0.2-cds-aarch64
 COPY ./target/auth-0.0.1-SNAPSHOT.jar /app/auth-0.0.1-SNAPSHOT.jar
 EXPOSE 8097
-ENV SPRING_PROFILES_ACTIVE=prod
+ENV SPRING_PROFILES_ACTIVE=dev
 CMD ["java", "-jar", "/app/auth-0.0.1-SNAPSHOT.jar"]
