@@ -117,7 +117,7 @@ const logoUrl = computed(() => {
       >
         <div class="mx-4 md:mx-8 mt-0 md:mt-4">
           <h1 class="text-6xl font-bold text-gray-900 line-height-2">
-            <span class="font-light block">QRestor platform</span>menu management solutution
+            <span class="font-light block">QRestor platform</span>menu and orders management solution for Your business
           </h1>
           <p class="font-normal text-2xl line-height-3 md:mt-3 text-gray-700">
             Welcome to our QR Platform, where managing restaurant and catering menus is as easy as
@@ -127,7 +127,7 @@ const logoUrl = computed(() => {
             fingertips. Join us now and simplify the way you showcase your culinary creations!
           </p>
         </div>
-        <div class="flex justify-content-center md:justify-content-end">
+        <div class="flex justify-content-center md:justify-content-end md:mt-4">
           <img src="/images/landing/screen-1.png" alt="Hero Image" class="w-4 md:w-5" />
         </div>
       </div>
@@ -386,8 +386,8 @@ const logoUrl = computed(() => {
 
       <div id="highlights" class="py-4 px-4 lg:px-8 mx-0 my-6 lg:mx-8">
         <div class="text-center">
-          <h2 class="text-900 font-normal mb-2">Powerful Everywhere</h2>
-          <span class="text-600 text-2xl">Amet consectetur adipiscing elit...</span>
+          <h2 class="text-900 font-normal mb-2">Digital menu management</h2>
+          <span class="text-600 text-2xl">Customers will be exited...</span>
         </div>
 
         <div class="grid mt-8 pb-2 md:pb-8">
@@ -410,7 +410,7 @@ const logoUrl = computed(() => {
             <h2 class="line-height-1 text-900 text-4xl font-normal">Minimalistic and functional Menu</h2>
             <span class="text-700 text-2xl line-height-3 ml-0 md:ml-2" style="max-width: 650px"
               >
-              Adipiscing commodo elit at imperdiet dui. Viverra nibh cras pulvinar mattis nunc <sed></sed>
+              Easy to use and navigate, our digital menus are designed to be user-friendly and visually appealing
             </span
             >
           </div>
@@ -426,11 +426,9 @@ const logoUrl = computed(() => {
             >
               <i class="pi pi-fw pi-desktop text-5xl text-yellow-700"></i>
             </div>
-            <h2 class="line-height-1 text-900 text-4xl font-normal">Celerisque Eu Ultrices</h2>
+            <h2 class="line-height-1 text-900 text-4xl font-normal">Restaurator management panel</h2>
             <span class="text-700 text-2xl line-height-3 mr-0 md:mr-2" style="max-width: 650px"
-              >Adipiscing commodo elit at imperdiet dui. Viverra nibh cras pulvinar mattis nunc sed
-              blandit libero. Suspendisse in est ante in. Mauris pharetra et ultrices neque ornare
-              aenean euismod elementum nisi.</span
+              > Easily manage your menu, orders and customers with our intuitive and user-friendly management panel</span
             >
           </div>
 
@@ -439,130 +437,6 @@ const logoUrl = computed(() => {
             style="border-radius: 8px"
           >
             <img src="/images/landing/mockup-desktop.svg" class="w-11" alt="mockup" />
-          </div>
-        </div>
-      </div>
-
-      <div id="pricing" class="py-4 px-4 lg:px-8 my-2 md:my-4">
-        <div class="text-center">
-          <h2 class="text-900 font-normal mb-2">Matchless Pricing</h2>
-          <span class="text-600 text-2xl">Amet consectetur adipiscing elit...</span>
-        </div>
-
-        <div class="grid justify-content-between mt-8 md:mt-0">
-          <div class="col-12 lg:col-4 p-0 md:p-3">
-            <div
-              class="p-3 flex flex-column border-200 pricing-card cursor-pointer border-2 hover:border-primary transition-duration-300 transition-all"
-              style="border-radius: 10px"
-            >
-              <h3 class="text-900 text-center my-5">Free</h3>
-              <img src="/images/landing/free.svg" class="w-10 h-10 mx-auto" alt="free" />
-              <div class="my-5 text-center">
-                <span class="text-5xl font-bold mr-2 text-900">$0</span>
-                <span class="text-600">per month</span>
-                <Button
-                  label="Get Started"
-                  class="block mx-auto mt-4 p-button-rounded border-none ml-3 font-light line-height-2 bg-blue-500 text-white"
-                ></Button>
-              </div>
-              <Divider class="w-full bg-surface-200"></Divider>
-              <ul class="my-5 list-none p-0 flex text-900 flex-column">
-                <li class="py-2">
-                  <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                  <span class="text-xl line-height-3">Responsive Layout</span>
-                </li>
-                <li class="py-2">
-                  <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                  <span class="text-xl line-height-3">Unlimited Push Messages</span>
-                </li>
-                <li class="py-2">
-                  <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                  <span class="text-xl line-height-3">50 Support Ticket</span>
-                </li>
-                <li class="py-2">
-                  <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                  <span class="text-xl line-height-3">Free Shipping</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-12 lg:col-4 p-0 md:p-3 mt-4 md:mt-0">
-            <div
-              class="p-3 flex flex-column border-200 pricing-card cursor-pointer border-2 hover:border-primary transition-duration-300 transition-all"
-              style="border-radius: 10px"
-            >
-              <h3 class="text-900 text-center my-5">Startup</h3>
-              <img src="/images/landing/startup.svg" class="w-10 h-10 mx-auto" alt="startup" />
-              <div class="my-5 text-center">
-                <span class="text-5xl font-bold mr-2 text-900">$1</span>
-                <span class="text-600">per month</span>
-                <Button
-                  label="Try Free"
-                  class="block mx-auto mt-4 p-button-rounded border-none ml-3 font-light line-height-2 bg-blue-500 text-white"
-                ></Button>
-              </div>
-              <Divider class="w-full bg-surface-200"></Divider>
-              <ul class="my-5 list-none p-0 flex text-900 flex-column">
-                <li class="py-2">
-                  <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                  <span class="text-xl line-height-3">Responsive Layout</span>
-                </li>
-                <li class="py-2">
-                  <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                  <span class="text-xl line-height-3">Unlimited Push Messages</span>
-                </li>
-                <li class="py-2">
-                  <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                  <span class="text-xl line-height-3">50 Support Ticket</span>
-                </li>
-                <li class="py-2">
-                  <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                  <span class="text-xl line-height-3">Free Shipping</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-12 lg:col-4 p-0 md:p-3 mt-4 md:mt-0">
-            <div
-              class="p-3 flex flex-column border-200 pricing-card cursor-pointer border-2 hover:border-primary transition-duration-300 transition-all"
-              style="border-radius: 10px"
-            >
-              <h3 class="text-900 text-center my-5">Enterprise</h3>
-              <img
-                src="/images/landing/enterprise.svg"
-                class="w-10 h-10 mx-auto"
-                alt="enterprise"
-              />
-              <div class="my-5 text-center">
-                <span class="text-5xl font-bold mr-2 text-900">$999</span>
-                <span class="text-600">per month</span>
-                <Button
-                  label="Get a Quote"
-                  class="block mx-auto mt-4 p-button-rounded border-none ml-3 font-light line-height-2 bg-blue-500 text-white"
-                ></Button>
-              </div>
-              <Divider class="w-full bg-surface-200"></Divider>
-              <ul class="my-5 list-none p-0 flex text-900 flex-column">
-                <li class="py-2">
-                  <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                  <span class="text-xl line-height-3">Responsive Layout</span>
-                </li>
-                <li class="py-2">
-                  <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                  <span class="text-xl line-height-3">Unlimited Push Messages</span>
-                </li>
-                <li class="py-2">
-                  <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                  <span class="text-xl line-height-3">50 Support Ticket</span>
-                </li>
-                <li class="py-2">
-                  <i class="pi pi-fw pi-check text-xl text-cyan-500 mr-2"></i>
-                  <span class="text-xl line-height-3">Free Shipping</span>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
@@ -581,33 +455,13 @@ const logoUrl = computed(() => {
 
           <div class="col-12 md:col-10 lg:col-7">
             <div class="grid text-center md:text-left">
-              <div class="col-12 md:col-3">
-                <h4 class="font-medium text-2xl line-height-3 mb-3 text-900">Company</h4>
-                <a class="line-height-3 text-xl block cursor-pointer mb-2 text-700">About Us</a>
-                <a class="line-height-3 text-xl block cursor-pointer mb-2 text-700">News</a>
-                <a class="line-height-3 text-xl block cursor-pointer mb-2 text-700"
-                  >Investor Relations</a
-                >
-                <a class="line-height-3 text-xl block cursor-pointer mb-2 text-700">Careers</a>
-                <a class="line-height-3 text-xl block cursor-pointer text-700">Media Kit</a>
-              </div>
-
+          
               <div class="col-12 md:col-3 mt-4 md:mt-0">
                 <h4 class="font-medium text-2xl line-height-3 mb-3 text-900">Resources</h4>
                 <a class="line-height-3 text-xl block cursor-pointer mb-2 text-700">Get Started</a>
                 <a class="line-height-3 text-xl block cursor-pointer mb-2 text-700">Learn</a>
-                <a class="line-height-3 text-xl block cursor-pointer text-700">Case Studies</a>
               </div>
 
-              <div class="col-12 md:col-3 mt-4 md:mt-0">
-                <h4 class="font-medium text-2xl line-height-3 mb-3 text-900">Community</h4>
-                <a class="line-height-3 text-xl block cursor-pointer mb-2 text-700">Discord</a>
-                <a class="line-height-3 text-xl block cursor-pointer mb-2 text-700"
-                  >Events<img src="/images/landing/new-badge.svg" class="ml-2"
-                /></a>
-                <a class="line-height-3 text-xl block cursor-pointer mb-2 text-700">FAQ</a>
-                <a class="line-height-3 text-xl block cursor-pointer text-700">Blog</a>
-              </div>
 
               <div class="col-12 md:col-3 mt-4 md:mt-0">
                 <h4 class="font-medium text-2xl line-height-3 mb-3 text-900">Legal</h4>
