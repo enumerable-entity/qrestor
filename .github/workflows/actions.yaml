@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: jarivs
+    runs-on: self-hosted
 
     steps:
     - name: Checkout code
